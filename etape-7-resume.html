@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="fr-CH">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cours FIDE — 7. Résumé — Ce qu'il faut retenir</title>
+  <link rel="stylesheet" href="shared.css">
+  <script src="shared.js" defer></script>
+  <style>
+    .content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px 24px;
+      align-content: start;
+    }
+
+    /* 4 messages clés */
+    .keys-row {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .key-card {
+      background: var(--green-pale);
+      border-top: 5px solid var(--green-main);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: box-shadow var(--transition);
+    }
+
+    .key-card:hover { box-shadow: var(--shadow-sm); }
+
+    .kc-num  { font-size: 1.8em; font-weight: 700; color: var(--green-main); line-height: 1; }
+    .kc-text { font-size: 0.9em; line-height: 1.55; color: #333; }
+    .kc-text strong { color: var(--green-deep); }
+
+    /* Citation */
+    .citation-row {
+      grid-column: 1 / -1;
+      background: var(--green-deep);
+      color: #fff;
+      border-radius: var(--radius-md);
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .citation-quote { font-size: 2.8em; color: var(--green-bg-3); line-height: 1; flex-shrink: 0; }
+    .citation-text  { font-size: 1.1em; line-height: 1.65; font-style: italic; }
+    .citation-text strong { color: var(--green-light); }
+
+    /* Ce que vous repartez avec */
+    .takeaway-col { display: flex; flex-direction: column; gap: 10px; }
+
+    .take-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 6px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .take-row:last-child { border-bottom: none; }
+
+    .take-icon { font-size: 1.2em; flex-shrink: 0; margin-top: 2px; }
+    .take-text { font-size: 0.93em; line-height: 1.5; }
+    .take-text strong { color: var(--green-deep); }
+
+    /* La prochaine étape */
+    .next-col { display: flex; flex-direction: column; gap: 8px; }
+
+    .next-box {
+      background: var(--orange-pale);
+      border-left: 5px solid var(--orange-main);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      padding: 14px 18px;
+      flex: 1;
+    }
+
+    .next-title {
+      font-weight: 700;
+      color: var(--orange-dark);
+      font-size: 0.82em;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+    }
+
+    .next-box ul { margin: 0; padding-left: 18px; font-size: 0.9em; line-height: 1.9; color: #444; }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <header>
+      <h2>7. Résumé — Ce qu'il faut retenir</h2>
+      <p>L'essentiel en un coup d'œil.</p>
+    </header>
+
+    <div class="content">
+
+      <!-- 4 messages clés -->
+      <div class="keys-row">
+        <div class="key-card">
+          <div class="kc-num">1</div>
+          <div class="kc-text"><strong>L'IA n'est pas une méthode pédagogique.</strong> C'est un outil d'assistance — rapide et puissant, mais sans jugement ni expertise pédagogique.</div>
+        </div>
+        <div class="key-card">
+          <div class="kc-num">2</div>
+          <div class="kc-text"><strong>Le prompt reflète votre compétence.</strong> Plus vous êtes précis·e dans la demande, plus le résultat est exploitable directement en classe.</div>
+        </div>
+        <div class="key-card">
+          <div class="kc-num">3</div>
+          <div class="kc-text"><strong>Le cadre FIDE reste central.</strong> L'IA s'adapte à votre cadre — pas l'inverse. Vous êtes l'expert·e pédagogique.</div>
+        </div>
+        <div class="key-card">
+          <div class="kc-num">4</div>
+          <div class="kc-text"><strong>La précision fait gagner du temps.</strong> 2 minutes de paramétrage dans le générateur = cours exploitable sans correction majeure.</div>
+        </div>
+      </div>
+
+      <!-- Citation -->
+      <div class="citation-row">
+        <div class="citation-quote">"</div>
+        <div class="citation-text">
+          Si le cadre est clair, l'IA devient un <strong>accélérateur</strong>.<br>
+          Si le cadre est flou, l'IA amplifie le <strong>flou</strong>.
+        </div>
+      </div>
+
+      <!-- Ce que vous repartez avec -->
+      <div class="takeaway-col">
+        <div class="section-title">Ce que vous repartez avec</div>
+        <div class="take-row"><div class="take-icon">⚙️</div><div class="take-text"><strong>Le générateur de prompt FIDE</strong> — déjà testé aujourd'hui, installé sur vos ordinateurs.</div></div>
+        <div class="take-row"><div class="take-icon">📋</div><div class="take-text"><strong>4 types de prompts générés</strong> — formateur, participant, Word, corrigé — copiables en un clic.</div></div>
+        <div class="take-row"><div class="take-icon">💾</div><div class="take-text"><strong>Vos paramètres sauvegardés</strong> — l'outil les a mémorisés, prêts pour votre prochain cours.</div></div>
+        <div class="take-row"><div class="take-icon">🧠</div><div class="take-text"><strong>La méthode des 5 niveaux</strong> — pour évaluer et améliorer vos prompts au quotidien.</div></div>
+        <div class="take-row"><div class="take-icon">🎯</div><div class="take-text"><strong>Votre regard critique</strong> — vous savez analyser ce que l'IA produit et ce qui demande adaptation.</div></div>
+      </div>
+
+      <!-- Dès demain -->
+      <div class="next-col">
+        <div class="section-title">Dès demain</div>
+        <div class="next-box">
+          <div class="next-title">Continuez sur votre lancée</div>
+          <ul>
+            <li>Ouvrez le générateur avant votre prochain cours</li>
+            <li>Ajustez les paramètres à votre groupe réel (niveau, scénario, canton)</li>
+            <li>Collez le prompt formateur dans ChatGPT ou Claude</li>
+            <li>Lisez le résultat avec votre regard de formateur·rice</li>
+            <li>Adaptez ce qui ne colle pas — utilisez le reste tel quel</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <footer>
+      <div class="notes">Dire&thinsp;: Vous avez généré, testé, analysé. Vous savez maintenant ce que l'outil fait — et ce qu'il ne fera jamais à votre place.</div>
+      <nav>
+        <button class="btn secondary" type="button" data-fullscreen-toggle>Plein écran</button>
+        <a class="btn secondary" href="retour-prompt.html">← Précédent</a>
+        <a class="btn secondary" href="index-etapes.html">Index</a>
+        <a class="btn" href="etape-8-evaluation.html">Évaluation →</a>
+      </nav>
+    </footer>
+
+  </div>
+</body>
+</html>

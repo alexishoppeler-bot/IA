@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="fr-CH">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cours FIDE — 4. Comparaison des niveaux de prompt</title>
+  <link rel="stylesheet" href="shared.css">
+  <script src="shared.js" defer></script>
+  <style>
+    .content {
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-height: 0;
+    }
+
+    .scenario-box {
+      background: #fff;
+      border-radius: var(--radius-md);
+      padding: 11px 20px;
+      font-size: 0.97em;
+      flex-shrink: 0;
+      border-left: 5px solid var(--green-main);
+      color: #333;
+    }
+
+    .scenario-box strong { color: var(--green-deep); }
+
+    /* Ligne du haut : 4 niveaux */
+    .card-grid-top {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    /* Niveau 5 : espace restant */
+    .card-level5-wrap {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      gap: 12px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      border-top: 6px solid var(--green-main);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: box-shadow var(--transition);
+    }
+
+    .card:hover { box-shadow: var(--shadow-sm); }
+
+    .card h3       { margin: 0 0 2px; font-size: 0.95em; color: var(--green-deep); font-weight: 700; }
+    .card-desc     { font-size: 0.78em; color: #999; margin: 0 0 4px; line-height: 1.4; }
+    .card p        { margin: 0; font-size: 0.87em; font-style: italic; line-height: 1.45; background: #f7f8f9; border-radius: var(--radius-sm); padding: 8px 10px; color: #555; }
+
+    .level-0 { border-top-color: var(--red-main); }
+    .level-2 { border-top-color: #fdd835; }
+    .level-3 { border-top-color: var(--green-main); }
+    .level-4 { border-top-color: var(--blue-mid); }
+    .level-5 { border-top-color: var(--purple-main); flex: 1; min-height: 0; flex-direction: row; }
+
+    .good {
+      background: #e8f5e9;
+      border-left: 3px solid var(--green-main);
+      padding: 8px 10px;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    }
+
+    .good p  { margin: 0 0 4px; font-weight: 700; color: var(--green-mid); font-size: 0.82em; background: none; padding: 0; font-style: normal; }
+    .good ul { margin: 0; padding-left: 16px; font-size: 0.82em; line-height: 1.65; color: var(--green-deep); }
+
+    .errors {
+      background: #ffebee;
+      border-left: 3px solid var(--red-dark);
+      padding: 8px 10px;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    }
+
+    .errors p  { margin: 0 0 4px; font-weight: 700; color: #b71c1c; font-size: 0.82em; background: none; padding: 0; font-style: normal; }
+    .errors ul { margin: 0; padding-left: 16px; font-size: 0.82em; line-height: 1.65; }
+
+    .level-5 .card-left {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .level-5 pre {
+      background: #f3f4f6;
+      padding: 12px 14px;
+      white-space: pre-wrap;
+      font-size: 0.78em;
+      border-radius: var(--radius-sm);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      flex: 1;
+      min-height: 0;
+      transition: font-size 0.1s;
+      cursor: text;
+      border: 1px solid #e0e0e0;
+      line-height: 1.55;
+    }
+
+    .zoom-hint {
+      font-size: 0.72em;
+      color: #aaa;
+      text-align: right;
+      flex-shrink: 0;
+      margin-top: -4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <header>
+      <h2>4. Comparaison des niveaux de prompt</h2>
+      <p>Même scénario, même IA — seul le niveau de précision du prompt change le résultat.</p>
+    </header>
+
+    <div class="content">
+
+      <div class="scenario-box">
+        <strong>Scénario :</strong> Je raconte mes compétences &nbsp;|&nbsp;
+        <strong>Objectif :</strong> Je peux raconter mes compétences techniques &nbsp;|&nbsp;
+        <strong>Champ d'action :</strong> Recherche d'emploi
+      </div>
+
+      <div class="card-grid-top">
+
+        <div class="card level-0">
+          <h3>Niveau 0 — Flou</h3>
+          <div class="card-desc">Aucun cadre. Résultat générique, imprévisible et inutilisable.</div>
+          <p>"J'ai besoin d'un cours FIDE sur les compétences. Fais quelque chose."</p>
+          <div class="errors">
+            <p>Manques :</p>
+            <ul>
+              <li>Objectif communicatif non défini</li>
+              <li>Niveau CECR absent</li>
+              <li>Aucune tâche finale observable</li>
+              <li>Pas d'ancrage FIDE ni contexte suisse</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card level-2">
+          <h3>Niveau 2 — Structure simple</h3>
+          <div class="card-desc">Quelques mots-clés présents, mais pas assez de précision pour guider l'IA.</div>
+          <p>"Crée une séquence FIDE A1 recherche d'emploi pour parler des compétences."</p>
+          <div class="errors">
+            <p>Manques :</p>
+            <ul>
+              <li>Scénario trop général</li>
+              <li>Absence de déroulé par étapes</li>
+              <li>Aucune consigne d'évaluation formative</li>
+              <li>Supports et différenciation non demandés</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card level-3">
+          <h3>Niveau 3 — Formateur sérieux</h3>
+          <div class="card-desc">Bon cadre de base — mais les éléments FIDE essentiels sont encore absents.</div>
+          <p>"Séquence FIDE A1 (90 min), champ recherche d'emploi, scénario : je raconte mes compétences."</p>
+          <div class="errors">
+            <p>Manques :</p>
+            <ul>
+              <li>Dialogues modèles non exigés</li>
+              <li>Ressources langagières non détaillées</li>
+              <li>Critères observables d'évaluation absents</li>
+              <li>Connaissances socioculturelles peu explicites</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card level-4">
+          <h3>Niveau 4 — Structure FIDE</h3>
+          <div class="card-desc">Bien structuré — mais quelques paramètres de contexte manquent encore.</div>
+          <p>"Crée un scénario FIDE A1 avec étapes, dialogues et évaluation formative."</p>
+          <div class="errors">
+            <p>Manques :</p>
+            <ul>
+              <li>Contexte insuffisant (public, matériel, groupe)</li>
+              <li>Format final pas toujours précisé</li>
+              <li>Différenciation pas systématiquement imposée</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="card-level5-wrap">
+        <div class="card level-5">
+          <div class="card-left">
+            <h3>Niveau 5 — Prompt expert (complet)</h3>
+            <div class="card-desc">Tous les paramètres définis. Résultat structuré, ancré dans le contexte suisse, directement exploitable en classe.</div>
+            <div class="zoom-hint">Ctrl + molette pour zoomer</div>
+            <pre id="pre-expert">Tu es un·e expert·e en pédagogie FIDE (Suisse).
+Crée une fiche complète pour formateur·rice selon l'approche FIDE
+(enseignement basé sur des scénarios).
+
+CONTEXTE SUISSE FIDE :
+- Public : Migrants adultes, région : Vaud, Vevey
+- Niveau : A1 (CECR)
+- Champ d'action FIDE : Recherche d'emploi
+- Scénario : Raconter mes compétences
+- Objectif communicatif : Être capable de raconter mes compétences techniques
+- Compétences visées : interaction
+- Durée : 90 minutes
+- Modalité : présentiel
+- Taille du groupe : 12 personnes
+- Matériel : projecteur, tableau blanc, imprimante, Word
+- Contraintes : langues maternelles variées
+- Ton du français : standard
+
+INSTRUCTIONS OBLIGATOIRES :
+1) Propose un scénario FIDE complet ancré dans le quotidien suisse
+   (ORP, entretien simple, CV oral, contacts professionnels).
+2) Structure le scénario en 3 à 6 ÉTAPES logiques avec TÂCHES COMMUNICATIVES observables.
+3) Pour chaque étape, précise :
+   - moyens de communication (face-à-face, téléphone, formulaire...)
+   - interlocuteurs
+   - ressources langagières nécessaires
+4) Crée au moins deux DIALOGUES modèles :
+   - un très guidé (A1 faible)
+   - un plus autonome (A1 en cours / acquis)
+5) Fournis un LEXIQUE UTILE et des EXPRESSIONS CLÉS directement exploitables.
+6) Propose des ACTIVITÉS PROGRESSIVES :
+   - échauffement / sensibilisation
+   - pratique guidée
+   - production semi-autonome
+   - tâche finale actionnelle
+7) Intègre des SUPPORTS PRÊTS À IMPRIMER (fiches, cartes, modèles).
+8) Propose trois VARIANTES DE DIFFÉRENCIATION : débutant / en cours / acquis.
+9) Crée une GRILLE D'ÉVALUATION FORMATIVE avec descripteurs "je peux..." et critères observables.
+10) Ajoute des CONNAISSANCES SOCIOCULTURELLES liées à la recherche d'emploi en Suisse.
+11) Suggère des PROLONGEMENTS vers d'autres scénarios FIDE emploi.
+
+EXIGENCES :
+- Français clair, inclusif, non infantilisant
+- Approche actionnelle centrée sur les besoins
+- Ancrage suisse authentique
+- Production observable et transférable
+
+FORMAT ATTENDU :
+# SCÉNARIO FIDE
+## 1. Description du scénario
+## 2. Étapes et tâches communicatives
+## 3. Dialogues modèles
+## 4. Lexique et expressions
+## 5. Déroulé pédagogique (activités + timing)
+## 6. Supports à imprimer
+## 7. Consignes participant·e·s
+## 8. Différenciation
+## 9. Évaluation formative
+## 10. Connaissances socioculturelles
+## 11. Prolongements</pre>
+          </div>
+          <div style="min-width:210px; display:flex; flex-direction:column; gap:10px; align-self:stretch;">
+            <div class="good">
+              <p>Ce que ce prompt produit :</p>
+              <ul>
+                <li>Scénario ancré dans le quotidien suisse</li>
+                <li>3 à 6 étapes communicatives observables</li>
+                <li>2 dialogues modèles (A1 faible / acquis)</li>
+                <li>Lexique et expressions clés prêts à l'emploi</li>
+                <li>Activités progressives avec timing</li>
+                <li>Supports à imprimer inclus</li>
+                <li>3 variantes de différenciation</li>
+                <li>Grille d'évaluation formative</li>
+                <li>Connaissances socioculturelles suisses</li>
+                <li>Prolongements vers d'autres scénarios</li>
+              </ul>
+            </div>
+            <div class="errors">
+              <p>À ajuster :</p>
+              <ul>
+                <li>Adapter les paramètres au public réel</li>
+                <li>Vérifier l'ancrage local (ville, canton)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <footer>
+      <div class="notes">Dire&thinsp;: Même scénario, même IA. La différence entre niveau 0 et niveau 5, c'est votre précision — pas l'outil.</div>
+      <nav>
+        <button class="btn secondary" type="button" data-fullscreen-toggle>Plein écran</button>
+        <a class="btn secondary" href="etape-3-role-prompt.html">← Précédent</a>
+        <a class="btn secondary" href="index-etapes.html">Index</a>
+        <a class="btn" href="etape-5-automatiser-collaborer.html">Suivant →</a>
+      </nav>
+    </footer>
+
+  </div>
+
+  <script>
+    var pre = document.getElementById('pre-expert');
+    var fontSize = 0.78;
+    pre.addEventListener('wheel', function(e) {
+      if (!e.ctrlKey) return;
+      e.preventDefault();
+      fontSize = e.deltaY < 0
+        ? Math.min(fontSize + 0.06, 2.0)
+        : Math.max(fontSize - 0.06, 0.4);
+      pre.style.fontSize = fontSize + 'em';
+    }, { passive: false });
+  </script>
+</body>
+</html>

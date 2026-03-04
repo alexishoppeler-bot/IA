@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="fr-CH">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cours FIDE — 5. Automatiser et collaborer intelligemment</title>
+  <link rel="stylesheet" href="shared.css">
+  <script src="shared.js" defer></script>
+  <style>
+    .content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px 24px;
+      align-content: start;
+    }
+
+    /* Problèmes — pleine largeur */
+    .problem-row {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .prob-card {
+      background: var(--orange-pale);
+      border-top: 5px solid var(--orange-main);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: box-shadow var(--transition);
+    }
+
+    .prob-card:hover { box-shadow: var(--shadow-sm); }
+
+    .pc-icon  { font-size: 1.5em; line-height: 1; }
+    .pc-title { font-weight: 700; color: var(--orange-dark); font-size: 0.95em; }
+    .pc-text  { font-size: 0.88em; line-height: 1.55; color: #555; }
+
+    /* Flèche */
+    .arrow-row {
+      grid-column: 1 / -1;
+      text-align: center;
+      font-size: 1.8em;
+      color: var(--green-main);
+      line-height: 1;
+      margin: -6px 0;
+    }
+
+    /* Solution */
+    .solution-box {
+      grid-column: 1 / -1;
+      background: var(--green-pale);
+      border-left: 6px solid var(--green-main);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      padding: 16px 22px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .sol-icon { font-size: 2.2em; flex-shrink: 0; }
+    .sol-text { font-size: 1.02em; line-height: 1.65; flex: 1; }
+    .sol-text strong { color: var(--green-deep); }
+
+    /* Comment ça fonctionne */
+    .how-col {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .step-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .step-text { font-size: 0.93em; line-height: 1.5; }
+    .step-text strong { color: var(--green-deep); }
+
+    /* Ce que l'outil produit */
+    .features-col {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .feat-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.93em;
+      line-height: 1.4;
+      padding: 4px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .feat-row:last-child { border-bottom: none; }
+
+    .feat-tag {
+      background: var(--green-main);
+      color: #fff;
+      border-radius: var(--radius-sm);
+      font-size: 0.74em;
+      font-weight: 700;
+      padding: 3px 9px;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <header>
+      <h2>5. Automatiser et collaborer intelligemment</h2>
+      <p>Le générateur de prompt FIDE — remplissez le formulaire, l'outil fait le reste.</p>
+    </header>
+
+    <div class="content">
+
+      <!-- Problèmes -->
+      <div class="problem-row">
+        <div class="prob-card">
+          <div class="pc-icon">⏳</div>
+          <div class="pc-title">Modifications longues</div>
+          <div class="pc-text">À chaque nouveau cours, on reprend le prompt à zéro et on modifie manuellement chaque paramètre : niveau, durée, scénario, public — encore et encore.</div>
+        </div>
+        <div class="prob-card">
+          <div class="pc-icon">🔁</div>
+          <div class="pc-title">Travail répétitif</div>
+          <div class="pc-text">Chaque formateur·rice repart de zéro à chaque session. Les bonnes pratiques ne se partagent pas. On réinvente la roue sans capitaliser sur ce qui fonctionne.</div>
+        </div>
+        <div class="prob-card">
+          <div class="pc-icon">🧩</div>
+          <div class="pc-title">Paramètres oubliés</div>
+          <div class="pc-text">Sans structure guidée, on oublie facilement des éléments essentiels : différenciation, évaluation formative, ancrage suisse, format de sortie...</div>
+        </div>
+      </div>
+
+      <div class="arrow-row">↓</div>
+
+      <!-- Solution -->
+      <div class="solution-box">
+        <div class="sol-icon">⚙️</div>
+        <div class="sol-text">
+          <strong>Le générateur de prompt FIDE</strong> est un formulaire qui construit automatiquement un prompt expert complet à partir de vos choix.
+          Vous remplissez les champs — l'outil assemble le prompt structuré, prêt à coller dans n'importe quelle IA.
+        </div>
+        <a class="btn cta" href="generateur.html" target="_blank">Ouvrir le générateur →</a>
+      </div>
+
+      <!-- Comment ça fonctionne -->
+      <div class="how-col">
+        <div class="section-title">Comment ça fonctionne</div>
+        <div class="step-row">
+          <div class="step-num">1</div>
+          <div class="step-text"><strong>Remplissez le formulaire</strong> — niveau CECR, champ d'action FIDE, scénario, objectif, durée, groupe, matériel...</div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">2</div>
+          <div class="step-text"><strong>Cliquez sur "✨ Générer les prompts"</strong> — l'outil produit jusqu'à 4 prompts : Formateur, Participant, Word, Corrigé.</div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">3</div>
+          <div class="step-text"><strong>Copiez le prompt voulu</strong> — bouton "📋 Copier" en un clic, puis collez dans ChatGPT, Claude ou toute autre IA.</div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">4</div>
+          <div class="step-text"><strong>Vos paramètres sont sauvegardés</strong> — l'outil les mémorise automatiquement pour votre prochain cours.</div>
+        </div>
+      </div>
+
+      <!-- Ce que l'outil produit -->
+      <div class="features-col">
+        <div class="section-title">Ce que l'outil produit</div>
+        <div class="feat-row"><span class="feat-tag">🎓 Formateur</span> Fiche complète — étapes, dialogues, évaluation, différenciation</div>
+        <div class="feat-row"><span class="feat-tag">👤 Participant</span> Supports simplifiés — exercices, lexique, fiche progrès</div>
+        <div class="feat-row"><span class="feat-tag">📄 Word</span> Mise en page structurée prête à copier dans Word</div>
+        <div class="feat-row"><span class="feat-tag">✅ Corrigé</span> Réponses attendues, grille d'évaluation, remédiations</div>
+        <div class="feat-row"><span class="feat-tag">💾 Export</span> Téléchargement de tous les prompts en un seul fichier .txt</div>
+        <div class="feat-row"><span class="feat-tag">🔁 Mémoire</span> Paramètres sauvegardés automatiquement dans le navigateur</div>
+      </div>
+
+    </div>
+
+    <footer>
+      <div class="notes">Dire&thinsp;: L'outil ne remplace pas votre expertise — il la structure et l'amplifie.</div>
+      <nav>
+        <button class="btn secondary" type="button" data-fullscreen-toggle>Plein écran</button>
+        <a class="btn secondary" href="etape-4-niveaux-prompt.html">← Précédent</a>
+        <a class="btn secondary" href="index-etapes.html">Index</a>
+        <a class="btn" href="etape-6-acces-outil-prompts.html">Suivant →</a>
+      </nav>
+    </footer>
+
+  </div>
+</body>
+</html>

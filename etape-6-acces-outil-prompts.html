@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="fr-CH">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cours FIDE — 6. Activité pratique — Générer, tester, analyser</title>
+  <link rel="stylesheet" href="shared.css">
+  <script src="shared.js" defer></script>
+  <style>
+    .content {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 14px;
+      align-content: start;
+    }
+
+    /* Consigne — pleine largeur */
+    .consigne-row {
+      grid-column: 1 / -1;
+      background: var(--blue-pale);
+      border-left: 6px solid var(--blue-main);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.98em;
+      line-height: 1.5;
+      color: var(--blue-deep);
+    }
+
+    .consigne-icon { font-size: 1.8em; flex-shrink: 0; }
+
+    /* Colonnes des 3 étapes */
+    .action-col {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-bottom: 8px;
+      border-bottom: 3px solid #e0e0e0;
+    }
+
+    .step-badge {
+      background: var(--green-deep);
+      color: #fff;
+      border-radius: var(--radius-pill);
+      font-size: 0.85em;
+      font-weight: 700;
+      min-width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .step-title { font-weight: 700; font-size: 1em; color: var(--green-deep); flex: 1; }
+    .step-icon  { font-size: 1.4em; }
+
+    .action-col.s1 .step-header { border-color: var(--green-main); }
+    .action-col.s1 .step-badge  { background: var(--green-mid); }
+    .action-col.s1 .step-title  { color: var(--green-mid); }
+
+    .action-col.s2 .step-header { border-color: var(--blue-mid); }
+    .action-col.s2 .step-badge  { background: var(--blue-main); }
+    .action-col.s2 .step-title  { color: var(--blue-main); }
+
+    .action-col.s3 .step-header { border-color: var(--purple-main); }
+    .action-col.s3 .step-badge  { background: var(--purple-mid); }
+    .action-col.s3 .step-title  { color: var(--purple-mid); }
+
+    .step-body { display: flex; flex-direction: column; gap: 6px; }
+
+    .task-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 0.88em;
+      line-height: 1.45;
+      color: #333;
+    }
+
+    .task-check { font-size: 1em; flex-shrink: 0; margin-top: 1px; }
+
+    .tip-box {
+      background: #f5f5f5;
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      font-size: 0.85em;
+      line-height: 1.5;
+      color: #555;
+      border-left: 3px solid #bdbdbd;
+      margin-top: 4px;
+    }
+
+    .tip-box.green  { background: #e8f5e9;         border-color: var(--green-main);  color: var(--green-mid); }
+    .tip-box.blue   { background: var(--blue-pale); border-color: var(--blue-mid);   color: var(--blue-main); }
+    .tip-box.purple { background: var(--purple-pale); border-color: var(--purple-main); color: var(--purple-deep); }
+
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <header>
+      <h2>6. Activité pratique — Générer, tester, analyser</h2>
+      <p>À vous de jouer — ouvrez le générateur et testez avec votre propre scénario.</p>
+    </header>
+
+    <div class="content">
+
+      <div class="consigne-row">
+        <div class="consigne-icon">🧪</div>
+        <div>
+          <strong>Activité en 3 étapes :</strong> générez un prompt, testez‑le dans une IA, puis analysez.
+        </div>
+      </div>
+
+      <!-- Étape 1 -->
+      <div class="action-col s1">
+        <div class="step-header">
+          <div class="step-badge">1</div>
+          <div class="step-title">Générer &amp; télécharger</div>
+          <div class="step-icon">⚙️</div>
+        </div>
+        <div class="step-body">
+          <div class="task-row"><span class="task-check">☐</span> Ouvrir le générateur</div>
+          <div class="task-row"><span class="task-check">☐</span> Choisir niveau + champ d'action</div>
+          <div class="task-row"><span class="task-check">☐</span> Compléter objectif + paramètres du groupe</div>
+          <div class="task-row"><span class="task-check">☐</span> Cocher compétences + formats</div>
+          <div class="task-row"><span class="task-check">☐</span> Cliquer <strong>"✨ Générer les prompts"</strong></div>
+          <div class="task-row"><span class="task-check">☐</span> Cliquer <strong>"💾 Télécharger tous les prompts"</strong></div>
+          <div class="tip-box green">💡 Vos paramètres sont mémorisés automatiquement — ils seront là à votre prochaine ouverture.</div>
+        </div>
+      </div>
+
+      <!-- Étape 2 -->
+      <div class="action-col s2">
+        <div class="step-header">
+          <div class="step-badge">2</div>
+          <div class="step-title">Coller dans une IA</div>
+          <div class="step-icon">🤖</div>
+        </div>
+        <div class="step-body">
+          <div class="task-row"><span class="task-check">☐</span> Cliquer <strong>"📋 Copier"</strong> (Prompt Formateur)</div>
+          <div class="task-row"><span class="task-check">☐</span> Ouvrir ChatGPT ou Claude</div>
+          <div class="task-row"><span class="task-check">☐</span> Coller le prompt (<strong>Ctrl+V</strong>)</div>
+          <div class="task-row"><span class="task-check">☐</span> Envoyer et attendre la réponse</div>
+          <div class="task-row"><span class="task-check">☐</span> Optionnel : tester Prompt Participant</div>
+          <div class="tip-box blue">💡 Si la réponse est tronquée, tapez <em>"Continue"</em> ou <em>"Suite"</em> pour obtenir la suite.</div>
+        </div>
+      </div>
+
+      <!-- Étape 3 -->
+      <div class="action-col s3">
+        <div class="step-header">
+          <div class="step-badge">3</div>
+          <div class="step-title">Analyser le résultat</div>
+          <div class="step-icon">🔍</div>
+        </div>
+        <div class="step-body">
+          <div class="task-row"><span class="task-check">☐</span> Lire la réponse complète</div>
+          <div class="task-row"><span class="task-check">☐</span> Vérifier les 11 sections</div>
+          <div class="task-row"><span class="task-check">☐</span> Noter ce qui est utilisable</div>
+          <div class="task-row"><span class="task-check">☐</span> Repérer ce qui doit être adapté</div>
+          <div class="task-row"><span class="task-check">☐</span> Garder 1 point fort + 1 correction</div>
+          <div class="tip-box purple">💡 L'IA produit un premier jet — votre expertise pédagogique reste indispensable pour valider et adapter.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <footer>
+      <div class="notes">Dire&thinsp;: L'IA produit un premier jet structuré — vous êtes le filtre pédagogique qui valide, adapte et décide.</div>
+      <nav>
+        <button class="btn secondary" type="button" data-fullscreen-toggle>Plein écran</button>
+        <a class="btn secondary" href="etape-5-automatiser-collaborer.html">← Précédent</a>
+        <a class="btn secondary" href="index-etapes.html">Index</a>
+        <a class="btn" href="retour-prompt.html">Suivant →</a>
+      </nav>
+    </footer>
+
+  </div>
+
+</body>
+</html>

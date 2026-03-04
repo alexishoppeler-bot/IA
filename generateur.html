@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Générateur de prompts fide</title>
+<script src="shared.js" defer></script>
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #e8f5e9 0%, #e3f2fd 100%);
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+.top-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: #546e7a;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 14px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fafafa;
+  transition: all 0.2s;
+}
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+  padding: 40px;
+}
+h1 {
+  color: #2e7d32;
+  margin-bottom: 8px;
+  font-size: 32px;
+  font-weight: 300;
+  letter-spacing: -0.5px;
+}
+.subtitle {
+  color: #546e7a;
+  margin-bottom: 40px;
+  font-size: 15px;
+  font-weight: 300;
+}
+.info-box {
+  background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%);
+  border-left: 4px solid #43a047;
+  padding: 20px;
+  margin-bottom: 40px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #1b5e20;
+  line-height: 1.6;
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+label {
+  font-weight: 500;
+  color: #37474f;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+input, select, textarea {
+  padding: 12px 14px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.2s;
+  font-family: inherit;
+  background: white;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: #43a047;
+  box-shadow: 0 0 0 3px rgba(67, 160, 71, 0.1);
+}
+textarea {
+  resize: vertical;
+  min-height: 90px;
+  line-height: 1.5;
+}
+.checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 10px;
+}
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.checkbox-item input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #43a047;
+}
+.checkbox-item label {
+  margin: 0;
+  font-weight: 400;
+  cursor: pointer;
+  font-size: 14px;
+}
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 40px 0;
+}
+button {
+  padding: 14px 28px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-primary {
+  background: linear-gradient(135deg, #43a047 0%, #2e7d32 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(67, 160, 71, 0.3);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(67, 160, 71, 0.4);
+}
+.btn-secondary {
+  background: linear-gradient(135deg, #1e88e5 0%, #1565c0 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(30, 136, 229, 0.3);
+}
+.btn-secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(30, 136, 229, 0.4);
+}
+.btn-danger {
+  background: #fff;
+  color: #757575;
+  border: 1.5px solid #e0e0e0;
+  box-shadow: none;
+}
+.btn-danger:hover {
+  background: #fafafa;
+  border-color: #bdbdbd;
+}
+.output-section {
+  margin-top: 50px;
+  display: none;
+}
+.output-section.active {
+  display: block;
+}
+.output-box {
+  background: #fafafa;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  position: relative;
+}
+.output-box h3 {
+  color: #2e7d32;
+  margin-bottom: 16px;
+  font-size: 18px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.output-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  white-space: pre-wrap;
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 13px;
+  max-height: 450px;
+  overflow-y: auto;
+  line-height: 1.7;
+  border: 1px solid #e0e0e0;
+}
+.copy-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 10px 18px;
+  background: linear-gradient(135deg, #1e88e5 0%, #1565c0 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-weight: 500;
+}
+.copy-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(30, 136, 229, 0.3);
+}
+.section-title {
+  color: #2e7d32;
+  font-size: 20px;
+  font-weight: 500;
+  margin: 40px 0 24px 0;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #e8f5e9;
+}
+@media (max-width: 768px) {
+  .container {
+    padding: 24px;
+  }
+  h1 {
+    font-size: 26px;
+  }
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  .button-group {
+    flex-direction: column;
+  }
+  button {
+    width: 100%;
+    justify-content: center;
+  }
+  .copy-btn {
+    position: static;
+    width: 100%;
+    margin-bottom: 12px;
+  }
+}
+.hidden {
+  display: none;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="top-actions">
+    <a class="back-link" href="etape-6-acces-outil-prompts.html">← Retour à la formation</a>
+    <button type="button" class="btn-secondary" data-fullscreen-toggle>Plein écran</button>
+  </div>
+  <h1>Générateur de prompts fide</h1>
+  <p class="subtitle">Créez des prompts pour générer des ressources pédagogiques conformes à l'approche fide</p>
+
+  <div class="info-box">
+    <strong>Comment ça marche ?</strong> Remplissez les champs, cliquez sur "Générer", puis copiez-collez les prompts dans votre IA (ChatGPT, Claude, etc.).
+  </div>
+
+  <form id="promptForm">
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="niveau">Niveau CECR *</label>
+        <select id="niveau" required>
+          <option value="">-- Sélectionnez --</option>
+          <option value="A0">A0 (grand débutant)</option>
+          <option value="A1">A1</option>
+          <option value="A1.1">A1.1</option>
+          <option value="A1.2">A1.2</option>
+          <option value="A2">A2</option>
+          <option value="A2.1">A2.1</option>
+          <option value="A2.2">A2.2</option>
+          <option value="B1">B1</option>
+          <option value="B1.1">B1.1</option>
+          <option value="B1.2">B1.2</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="public">Public cible *</label>
+        <input type="text" id="public" placeholder="Ex: migrants adultes, insertion professionnelle..." required>
+      </div>
+
+      <div class="form-group">
+        <label for="canton">Canton / Lieu</label>
+        <input type="text" id="canton" placeholder="Ex: Vaud, Lausanne, Genève...">
+      </div>
+
+      <div class="form-group">
+        <label for="champAction">Champ d'action fide *</label>
+        <select id="champAction" required>
+          <option value="">-- Sélectionnez --</option>
+          <option value="Logement">Logement</option>
+          <option value="Enfants">Enfants</option>
+          <option value="Travail">Travail</option>
+          <option value="Recherche d'emploi">Recherche d'emploi</option>
+          <option value="Administration">Administration</option>
+          <option value="Médias et loisirs">Médias et loisirs</option>
+          <option value="Mobilité">Mobilité</option>
+          <option value="Achats">Achats</option>
+          <option value="Poste, banque, assurances">Poste, banque, assurances</option>
+          <option value="Santé">Santé</option>
+          <option value="Formation">Formation</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="scenario">Scénario (optionnel)</label>
+        <input type="text" id="scenario" placeholder="Ex: Renouveler son permis de séjour...">
+      </div>
+
+      <div class="form-group">
+        <label for="objectif">Objectif communicatif *</label>
+        <textarea id="objectif" placeholder="Ex: Être capable de prendre rendez-vous par téléphone" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="duree">Durée (minutes) *</label>
+        <input type="number" id="duree" min="30" max="480" value="90" required>
+      </div>
+
+      <div class="form-group">
+        <label for="modalite">Modalité *</label>
+        <select id="modalite" required>
+          <option value="présentiel">Présentiel</option>
+          <option value="distanciel">Distanciel</option>
+          <option value="hybride">Hybride</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="tailleGroupe">Taille du groupe</label>
+        <input type="text" id="tailleGroupe" placeholder="Ex: 8-12 personnes">
+      </div>
+
+      <div class="form-group">
+        <label for="materiel">Matériel disponible</label>
+        <input type="text" id="materiel" placeholder="Ex: smartphone, papier, tableau...">
+      </div>
+
+      <div class="form-group">
+        <label for="contraintes">Contraintes / Particularités</label>
+        <textarea id="contraintes" placeholder="Ex: faible littératie, langues maternelles variées..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="ton">Ton et simplicité *</label>
+        <select id="ton" required>
+          <option value="très simple">Très simple (A0-A1)</option>
+          <option value="standard">Standard (A2-B1)</option>
+          <option value="soutenu">Soutenu (B1+)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="section-title">Compétences langagières visées *</div>
+    <div class="checkbox-group">
+      <div class="checkbox-item">
+        <input type="checkbox" id="comp_parler" value="parler">
+        <label for="comp_parler">Parler</label>
+      </div>
+      <div class="checkbox-item">
+        <input type="checkbox" id="comp_comprendre" value="comprendre">
+        <label for="comp_comprendre">Comprendre</label>
+      </div>
+      <div class="checkbox-item">
+        <input type="checkbox" id="comp_lire" value="lire">
+        <label for="comp_lire">Lire</label>
+      </div>
+      <div class="checkbox-item">
+        <input type="checkbox" id="comp_ecrire" value="écrire">
+        <label for="comp_ecrire">Écrire</label>
+      </div>
+      <div class="checkbox-item">
+        <input type="checkbox" id="comp_interaction" value="interaction">
+        <label for="comp_interaction">Interaction</label>
+      </div>
+      <div class="checkbox-item">
+        <input type="checkbox" id="comp_mediation" value="médiation">
+        <label for="comp_mediation">Médiation</label>
+      </div>
+    </div>
+
+    <div class="section-title">Formats de sortie *</div>
+    <div class="checkbox-group">
+      <div class="checkbox-item">
+        <input type="checkbox" id="sortie_word" value="word" checked>
+        <label for="sortie_word">Document Word</label>
+      </div>
+      <div class="checkbox-item">
+        <input type="checkbox" id="sortie_corrige" value="corrige" checked>
+        <label for="sortie_corrige">Corrigé</label>
+      </div>
+    </div>
+
+    <div class="button-group">
+      <button type="submit" class="btn-primary">
+        <span>✨</span> Générer les prompts
+      </button>
+      <button type="button" id="resetBtn" class="btn-danger">
+        <span>↺</span> Réinitialiser
+      </button>
+    </div>
+  </form>
+
+  <div id="outputSection" class="output-section">
+    <div class="section-title">Prompts générés</div>
+
+    <div class="output-box">
+      <button class="copy-btn" data-target="outputFormateur">📋 Copier</button>
+      <h3>🎓 Prompt Formateur</h3>
+      <div id="outputFormateur" class="output-content"></div>
+    </div>
+
+    <div class="output-box">
+      <button class="copy-btn" data-target="outputParticipant">📋 Copier</button>
+      <h3>👤 Prompt Participant</h3>
+      <div id="outputParticipant" class="output-content"></div>
+    </div>
+
+    <div class="output-box" id="outputWordBox">
+      <button class="copy-btn" data-target="outputWord">📋 Copier</button>
+      <h3>📄 Prompt Word</h3>
+      <div id="outputWord" class="output-content"></div>
+    </div>
+
+    <div class="output-box" id="outputCorrigeBox">
+      <button class="copy-btn" data-target="outputCorrige">📋 Copier</button>
+      <h3>✅ Prompt Corrigé</h3>
+      <div id="outputCorrige" class="output-content"></div>
+    </div>
+
+    <div class="button-group">
+      <button type="button" id="downloadBtn" class="btn-secondary">
+        <span>💾</span> Télécharger tous les prompts
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'fide_prompt_v2';
+
+function saveFormData() {
+  const formData = {
+    niveau: document.getElementById('niveau').value,
+    public: document.getElementById('public').value,
+    canton: document.getElementById('canton').value,
+    champAction: document.getElementById('champAction').value,
+    scenario: document.getElementById('scenario').value,
+    objectif: document.getElementById('objectif').value,
+    duree: document.getElementById('duree').value,
+    modalite: document.getElementById('modalite').value,
+    tailleGroupe: document.getElementById('tailleGroupe').value,
+    materiel: document.getElementById('materiel').value,
+    contraintes: document.getElementById('contraintes').value,
+    ton: document.getElementById('ton').value,
+    competences: Array.from(document.querySelectorAll('input[type="checkbox"][id^="comp_"]:checked')).map(cb => cb.value),
+    sorties: Array.from(document.querySelectorAll('input[type="checkbox"][id^="sortie_"]:checked')).map(cb => cb.value)
+  };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
+}
+
+function restoreFormData() {
+  const savedData = localStorage.getItem(STORAGE_KEY);
+  if (!savedData) return;
+
+  try {
+    const formData = JSON.parse(savedData);
+    document.getElementById('niveau').value = formData.niveau || '';
+    document.getElementById('public').value = formData.public || '';
+    document.getElementById('canton').value = formData.canton || '';
+    document.getElementById('champAction').value = formData.champAction || '';
+    document.getElementById('scenario').value = formData.scenario || '';
+    document.getElementById('objectif').value = formData.objectif || '';
+    document.getElementById('duree').value = formData.duree || '90';
+    document.getElementById('modalite').value = formData.modalite || 'présentiel';
+    document.getElementById('tailleGroupe').value = formData.tailleGroupe || '';
+    document.getElementById('materiel').value = formData.materiel || '';
+    document.getElementById('contraintes').value = formData.contraintes || '';
+    document.getElementById('ton').value = formData.ton || 'standard';
+
+    document.querySelectorAll('input[type="checkbox"][id^="comp_"]').forEach(cb => {
+      cb.checked = formData.competences && formData.competences.includes(cb.value);
+    });
+
+    document.querySelectorAll('input[type="checkbox"][id^="sortie_"]').forEach(cb => {
+      cb.checked = formData.sorties && formData.sorties.includes(cb.value);
+    });
+  } catch (e) {
+    console.error('Erreur restauration:', e);
+  }
+}
+
+restoreFormData();
+
+document.getElementById('promptForm').addEventListener('input', saveFormData);
+document.getElementById('promptForm').addEventListener('change', saveFormData);
+
+document.getElementById('promptForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const niveau = document.getElementById('niveau').value;
+  const publicCible = document.getElementById('public').value;
+  const canton = document.getElementById('canton').value;
+  const champAction = document.getElementById('champAction').value;
+  const scenario = document.getElementById('scenario').value;
+  const objectif = document.getElementById('objectif').value;
+  const duree = document.getElementById('duree').value;
+  const modalite = document.getElementById('modalite').value;
+  const tailleGroupe = document.getElementById('tailleGroupe').value;
+  const materiel = document.getElementById('materiel').value;
+  const contraintes = document.getElementById('contraintes').value;
+  const ton = document.getElementById('ton').value;
+
+  const competences = Array.from(document.querySelectorAll('input[type="checkbox"][id^="comp_"]:checked'))
+    .map(cb => cb.value).join(', ');
+
+  const sorties = Array.from(document.querySelectorAll('input[type="checkbox"][id^="sortie_"]:checked'))
+    .map(cb => cb.value);
+
+  if (!competences) {
+    alert('Veuillez sélectionner au moins une compétence langagière.');
+    return;
+  }
+
+  if (sorties.length === 0) {
+    alert('Veuillez sélectionner au moins un format de sortie.');
+    return;
+  }
+
+  const lignesCX = [];
+  lignesCX.push(`- Public: ${publicCible}${canton ? ', région: ' + canton : ''}`);
+  lignesCX.push(`- Niveau: ${niveau} (CECR)`);
+  lignesCX.push(`- Champ d'action fide: ${champAction}`);
+  if (scenario) lignesCX.push(`- Scénario: ${scenario}`);
+  lignesCX.push(`- Objectif communicatif: ${objectif}`);
+  lignesCX.push(`- Compétences visées: ${competences}`);
+  lignesCX.push(`- Durée: ${duree} minutes`);
+  lignesCX.push(`- Modalité: ${modalite}`);
+  if (tailleGroupe) lignesCX.push(`- Taille du groupe: ${tailleGroupe}`);
+  if (materiel) lignesCX.push(`- Matériel: ${materiel}`);
+  if (contraintes) lignesCX.push(`- Contraintes: ${contraintes}`);
+  lignesCX.push(`- Ton du français: ${ton}`);
+  const contexteCommun = 'CONTEXTE SUISSE fide:\n' + lignesCX.join('\n');
+
+  const promptFormateur = `Tu es un·e expert·e en pédagogie fide (Suisse). Crée une fiche complète pour FORMATEUR·RICE selon l'approche fide (enseignement basé sur des scénarios).
+
+${contexteCommun}
+
+INSTRUCTIONS OBLIGATOIRES:
+1) Propose un scénario fide complet ancré dans le quotidien suisse (commune, régie, caisse maladie, ORP, transports publics, etc.).
+2) Structure le scénario en 3 à 6 ÉTAPES logiques avec TÂCHES COMMUNICATIVES précises.
+3) Pour chaque étape, indique:
+   - Moyens de communication (téléphone, SMS, formulaire, face-à-face…)
+   - Interlocuteurs (employé·e, voisin·e, médecin…)
+   - Ressources langagières nécessaires
+4) Crée au moins 2 DIALOGUES modèles (un simple niveau ${niveau}, un plus riche).
+5) Fournis LEXIQUE UTILE + EXPRESSIONS CLÉS.
+6) Propose ACTIVITÉS PROGRESSIVES:
+   - Échauffement / sensibilisation
+   - Pratique guidée (exercices, jeux de rôle)
+   - Production semi-autonome
+   - Tâche finale actionnelle
+7) Inclus SUPPORTS PRÊTS À IMPRIMER (mini-fiches, cartes, formulaires fictifs).
+8) Rédige CONSIGNES en français ${ton}, phrases courtes, verbes d'action clairs.
+9) Propose 3 VARIANTES DE DIFFÉRENCIATION (débutant / en cours / acquis).
+10) Crée GRILLE D'ÉVALUATION FORMATIVE avec descripteurs "je peux…" + critères observables.
+11) Ajoute CONNAISSANCES SOCIOCULTURELLES liées au champ d'action suisse.
+12) Suggère PROLONGEMENTS et liens avec d'autres scénarios fide.
+
+EXIGENCES:
+- Français clair, inclusif, non infantilisant
+- Aucun contenu discriminatoire
+- Ancrage Suisse authentique
+- Approche actionnelle, orientation besoins, autonomie
+
+FORMAT:
+# SCÉNARIO FIDE: [titre]
+## 1. Description du scénario
+## 2. Étapes et tâches communicatives
+## 3. Dialogues modèles
+## 4. Lexique et expressions
+## 5. Déroulé pédagogique (activités + timing)
+## 6. Supports à imprimer
+## 7. Consignes participant·e·s
+## 8. Différenciation
+## 9. Évaluation formative
+## 10. Connaissances socioculturelles
+## 11. Prolongements`;
+
+  const promptParticipant = `Tu es un·e expert·e en pédagogie fide (Suisse). Crée des SUPPORTS POUR PARTICIPANT·E·S (version simplifiée).
+
+${contexteCommun}
+
+INSTRUCTIONS:
+1) Rédige CONSIGNES ULTRA-SIMPLES (français ${ton}, phrases courtes, verbes infinitif/impératif).
+2) Fournis SUPPORTS VISUELS DÉCRITS (cartes photos, pictogrammes, schémas).
+3) Crée FICHES D'EXERCICES:
+   - QCM
+   - Vrai/Faux
+   - Remettre dans l'ordre
+   - Compléter les blancs
+   - Associer
+4) Propose DIALOGUES À COMPLÉTER avec aide lexicale.
+5) Ajoute fiche "MES PROGRÈS" avec "je peux…" niveau ${niveau}.
+6) Inclus RESSOURCES UTILES: numéros fictifs, sites suisses, QR codes, adresses.
+
+EXIGENCES:
+- Langue accessible niveau ${niveau}
+- Mise en page aérée
+- Pas infantilisant
+
+FORMAT:
+# SUPPORTS PARTICIPANT·E·S: [titre]
+## 1. Consignes simplifiées
+## 2. Fiches d'exercices
+## 3. Dialogues à compléter
+## 4. Fiche "Mes progrès"
+## 5. Ressources utiles`;
+
+  document.getElementById('outputFormateur').textContent = promptFormateur;
+  document.getElementById('outputParticipant').textContent = promptParticipant;
+
+  if (sorties.includes('word')) {
+    const promptWord = `Tu es un·e expert·e en documents pédagogiques. Crée un DOCUMENT WORD structuré (format texte).
+
+${contexteCommun}
+
+INSTRUCTIONS:
+1) Structure avec TITRES, SOUS-TITRES, LISTES.
+2) Sections logiques (identiques prompt formateur).
+3) Tableaux pour grilles d'évaluation.
+4) Texte formaté pour copier-coller direct dans Word.
+
+FORMAT:
+- Titre principal (gras, 16pt)
+- Sous-titres (gras, 14pt)
+- Listes numérotées/à puces
+- Tableaux avec bordures
+- Espacement cohérent`;
+
+    document.getElementById('outputWord').textContent = promptWord;
+    document.getElementById('outputWordBox').classList.remove('hidden');
+  } else {
+    document.getElementById('outputWordBox').classList.add('hidden');
+  }
+
+  if (sorties.includes('corrige')) {
+    const promptCorrige = `Tu es un·e expert·e en évaluation fide. Crée un CORRIGÉ DÉTAILLÉ.
+
+${contexteCommun}
+
+INSTRUCTIONS:
+1) RÉPONSES ATTENDUES pour tous exercices.
+2) Pour chaque exercice:
+   - Réponse correcte
+   - Explications
+   - Variantes acceptables
+   - Erreurs fréquentes + corrections
+3) CRITÈRES D'ÉVALUATION tâche finale (3-5 critères observables).
+4) PISTES DE REMÉDIATION.
+5) ACTIVITÉS COMPLÉMENTAIRES.
+
+FORMAT:
+# CORRIGÉ: [titre]
+## 1. Réponses aux exercices
+## 2. Grille évaluation tâche finale
+## 3. Erreurs fréquentes et remédiations
+## 4. Activités complémentaires`;
+
+    document.getElementById('outputCorrige').textContent = promptCorrige;
+    document.getElementById('outputCorrigeBox').classList.remove('hidden');
+  } else {
+    document.getElementById('outputCorrigeBox').classList.add('hidden');
+  }
+
+  document.getElementById('outputSection').classList.add('active');
+  document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
+});
+
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const targetId = this.getAttribute('data-target');
+    const content = document.getElementById(targetId).textContent;
+
+    navigator.clipboard.writeText(content).then(() => {
+      const originalText = this.textContent;
+      this.textContent = '✅ Copié !';
+      setTimeout(() => {
+        this.textContent = originalText;
+      }, 2000);
+    }).catch(() => {
+      alert('Erreur. Copiez manuellement.');
+    });
+  });
+});
+
+document.getElementById('downloadBtn').addEventListener('click', function() {
+  let all = '='.repeat(80) + '\nPROMPTS FIDE\n' + '='.repeat(80) + '\n\n';
+
+  all += 'PROMPT FORMATEUR\n' + '-'.repeat(80) + '\n';
+  all += document.getElementById('outputFormateur').textContent + '\n\n';
+
+  all += 'PROMPT PARTICIPANT\n' + '-'.repeat(80) + '\n';
+  all += document.getElementById('outputParticipant').textContent + '\n\n';
+
+  if (!document.getElementById('outputWordBox').classList.contains('hidden')) {
+    all += 'PROMPT WORD\n' + '-'.repeat(80) + '\n';
+    all += document.getElementById('outputWord').textContent + '\n\n';
+  }
+
+  if (!document.getElementById('outputCorrigeBox').classList.contains('hidden')) {
+    all += 'PROMPT CORRIGÉ\n' + '-'.repeat(80) + '\n';
+    all += document.getElementById('outputCorrige').textContent + '\n\n';
+  }
+
+  const blob = new Blob([all], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'prompts_fide_' + new Date().toISOString().split('T')[0] + '.txt';
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
+document.getElementById('resetBtn').addEventListener('click', function() {
+  if (confirm('Réinitialiser tous les champs ?')) {
+    localStorage.removeItem(STORAGE_KEY);
+    document.getElementById('promptForm').reset();
+    document.getElementById('outputSection').classList.remove('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr-CH">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cours FIDE — 3. Le rôle du prompt</title>
+  <link rel="stylesheet" href="shared.css">
+  <script src="shared.js" defer></script>
+  <style>
+    .content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px 24px;
+      align-content: start;
+    }
+
+    /* 4 rôles — pleine largeur */
+    .roles-grid {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .role-card {
+      background: var(--green-pale);
+      border-top: 5px solid var(--green-main);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      transition: box-shadow var(--transition);
+    }
+
+    .role-card:hover { box-shadow: var(--shadow-sm); }
+
+    .rc-icon  { font-size: 1.6em; line-height: 1; }
+    .rc-title { font-size: 0.97em; font-weight: 700; color: var(--green-deep); }
+    .rc-text  { font-size: 0.88em; line-height: 1.55; color: #444; }
+
+    /* Ingrédients d'un bon prompt */
+    .ingredients {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .ingredient-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.93em;
+      line-height: 1.4;
+      padding: 4px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .ingredient-row:last-child { border-bottom: none; }
+
+    /* Colonne droite */
+    .right-col {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .analogy {
+      background: var(--purple-pale);
+      border-left: 5px solid var(--purple-main);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      padding: 14px 18px;
+    }
+
+    .analogy-title {
+      font-weight: 700;
+      color: var(--purple-mid);
+      font-size: 0.8em;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 6px;
+    }
+
+    .analogy p {
+      margin: 0;
+      font-size: 0.92em;
+      line-height: 1.55;
+      font-style: italic;
+      color: var(--purple-deep);
+    }
+
+    .eviter {
+      background: var(--yellow-pale);
+      border-left: 5px solid var(--yellow-main);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      padding: 14px 18px;
+    }
+
+    .eviter-title {
+      font-weight: 700;
+      color: var(--orange-dark);
+      font-size: 0.8em;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 6px;
+    }
+
+    .eviter ul {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 0.92em;
+      line-height: 1.9;
+      color: #444;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <header>
+      <h2>3. Le rôle du prompt</h2>
+      <p>Le prompt, c'est votre cahier des charges — plus il est précis, meilleur est le résultat.</p>
+    </header>
+
+    <div class="content">
+
+      <!-- 4 rôles -->
+      <div class="roles-grid">
+        <div class="role-card">
+          <div class="rc-icon">🎯</div>
+          <div class="rc-title">Donner un cadre pédagogique</div>
+          <div class="rc-text">Le prompt définit le niveau, le public, la durée, les objectifs. Sans cadre précis, l'IA improvise — et le résultat ne correspond pas à votre groupe.</div>
+        </div>
+        <div class="role-card">
+          <div class="rc-icon">🧩</div>
+          <div class="rc-title">Structurer la tâche</div>
+          <div class="rc-text">Il décompose la demande en éléments précis : scénario, dialogues, évaluation formative, lexique, différenciation...</div>
+        </div>
+        <div class="role-card">
+          <div class="rc-icon">⏱️</div>
+          <div class="rc-title">Réduire les essais inutiles</div>
+          <div class="rc-text">Un prompt précis = moins de corrections. On évite les allers-retours et on obtient un résultat directement exploitable en classe.</div>
+        </div>
+        <div class="role-card">
+          <div class="rc-icon">🇨🇭</div>
+          <div class="rc-title">Garantir la cohérence FIDE</div>
+          <div class="rc-text">En imposant le cadre FIDE dès le départ, on obtient un résultat ancré dans la réalité suisse.</div>
+        </div>
+      </div>
+
+      <!-- Ingrédients d'un bon prompt -->
+      <div class="ingredients">
+        <div class="section-title">Ce qu'un bon prompt contient</div>
+        <div class="ingredient-row"><span class="tag tag-blue">Rôle</span> Qui est l'IA dans cette tâche ?</div>
+        <div class="ingredient-row"><span class="tag tag-blue">Public</span> Niveau, langue, contexte des apprenants</div>
+        <div class="ingredient-row"><span class="tag tag-blue">Objectif</span> Ce que l'apprenant doit pouvoir faire</div>
+        <div class="ingredient-row"><span class="tag tag-blue">Scénario</span> La situation de communication FIDE</div>
+        <div class="ingredient-row"><span class="tag tag-blue">Format</span> Structure attendue de la réponse</div>
+        <div class="ingredient-row"><span class="tag tag-blue">Contraintes</span> Durée, matériel, différenciation</div>
+      </div>
+
+      <!-- Analogie + À éviter -->
+      <div class="right-col">
+        <div class="analogy">
+          <div class="analogy-title">Analogie</div>
+          <p>Un prompt, c'est un cahier des charges pédagogique. Comme pour un·e architecte : plus les plans sont précis, plus le résultat ressemble à ce que vous vouliez — du premier coup.</p>
+        </div>
+        <div class="eviter">
+          <div class="eviter-title">À éviter</div>
+          <ul>
+            <li>"Fais-moi un cours FIDE" → beaucoup trop vague</li>
+            <li>Oublier le niveau CECR ou le champ d'action FIDE</li>
+            <li>Ne pas préciser le public ni le contexte suisse</li>
+            <li>Mettre toute la demande en une seule phrase non structurée</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <footer>
+      <div class="notes">Dire&thinsp;: Un bon prompt ne demande pas une phrase magique — il décrit un contexte, un public, un objectif, un format.</div>
+      <nav>
+        <button class="btn secondary" type="button" data-fullscreen-toggle>Plein écran</button>
+        <a class="btn secondary" href="etape-2-fonctionnement-ia.html">← Précédent</a>
+        <a class="btn secondary" href="index-etapes.html">Index</a>
+        <a class="btn" href="etape-4-niveaux-prompt.html">Suivant →</a>
+      </nav>
+    </footer>
+
+  </div>
+</body>
+</html>

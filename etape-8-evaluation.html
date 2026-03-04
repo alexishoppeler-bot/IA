@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="fr-CH">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cours FIDE — 8. Évaluation de la formation</title>
+  <link rel="stylesheet" href="shared.css">
+  <script src="shared.js" defer></script>
+  <style>
+    html, body { overflow: hidden; }
+
+    /* Note globale + critères */
+    .top-row {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      padding: 12px 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 16px;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .top-label {
+      font-size: 0.78em;
+      font-weight: 700;
+      color: #aaa;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      white-space: nowrap;
+    }
+
+    .top-sep {
+      width: 1px;
+      background: #e8e8e8;
+      align-self: stretch;
+      margin: 0 4px;
+      flex-shrink: 0;
+    }
+
+    .top-card {
+      font-size: 0.88em;
+      padding: 8px 14px;
+      min-height: 38px;
+    }
+
+    /* 3 colonnes */
+    .columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      min-height: 0;
+    }
+
+    .column {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      overflow: hidden;
+    }
+
+    .col-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #eef0f2;
+    }
+
+    .col-title { font-weight: 700; font-size: 0.95em; color: var(--green-deep); line-height: 1.3; }
+
+    .cards-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      overflow-y: auto;
+      align-content: flex-start;
+      flex: 1;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <header>
+      <h2>8. Évaluation de la formation</h2>
+      <p>Votez les cartes qui vous correspondent — votre retour nous aide à améliorer la formation.</p>
+    </header>
+
+    <!-- Note globale + critères -->
+    <div class="top-row" id="top-row">
+      <span class="top-label">Note globale</span>
+      <div class="vote-card top-card" onclick="vote(this)">1</div>
+      <div class="vote-card top-card" onclick="vote(this)">2</div>
+      <div class="vote-card top-card" onclick="vote(this)">3</div>
+      <div class="vote-card top-card" onclick="vote(this)">4</div>
+      <div class="vote-card top-card" onclick="vote(this)">5</div>
+      <span class="top-sep"></span>
+      <span class="top-label">Critères</span>
+      <div class="vote-card top-card" onclick="vote(this)">Clarté</div>
+      <div class="vote-card top-card" onclick="vote(this)">Rythme</div>
+      <div class="vote-card top-card" onclick="vote(this)">Générateur</div>
+      <div class="vote-card top-card" onclick="vote(this)">Autonomie</div>
+      <div class="vote-card top-card" onclick="vote(this)">Exemples</div>
+      <button class="reset-btn" style="margin-left:auto" onclick="resetGrid('top-row')">Réinitialiser</button>
+    </div>
+
+    <!-- 3 colonnes -->
+    <div class="columns">
+
+      <div class="column">
+        <div class="col-header">
+          <span class="col-title">Ce qui m'a été le plus utile</span>
+          <button class="reset-btn" onclick="resetGrid('grid-utile')">Réinitialiser</button>
+        </div>
+        <div class="cards-grid" id="grid-utile">
+          <div class="vote-card" onclick="vote(this)">Le générateur de prompt</div>
+          <div class="vote-card" onclick="vote(this)">La comparaison des niveaux de prompt</div>
+          <div class="vote-card" onclick="vote(this)">L'activité pratique avec l'IA</div>
+          <div class="vote-card" onclick="vote(this)">La compréhension du fonctionnement de l'IA</div>
+          <div class="vote-card" onclick="vote(this)">Les exemples concrets FIDE</div>
+          <div class="vote-card" onclick="vote(this)">Le prompt expert niveau 5</div>
+          <div class="vote-card" onclick="vote(this)">La sauvegarde automatique des paramètres</div>
+          <div class="vote-card" onclick="vote(this)">Les 4 types de prompts disponibles</div>
+          <div class="vote-card" onclick="vote(this)">L'ancrage dans le contexte suisse</div>
+          <div class="vote-card" onclick="vote(this)">Le rythme et la structure de la journée</div>
+          <div class="vote-card" onclick="vote(this)">Les échanges avec les collègues</div>
+          <div class="vote-card" onclick="vote(this)">Le bouton "Télécharger tous les prompts"</div>
+        </div>
+      </div>
+
+      <div class="column">
+        <div class="col-header">
+          <span class="col-title">Ce qui mériterait plus de temps</span>
+          <button class="reset-btn" onclick="resetGrid('grid-manque')">Réinitialiser</button>
+        </div>
+        <div class="cards-grid" id="grid-manque">
+          <div class="vote-card" onclick="vote(this)">Plus de temps pour tester le générateur</div>
+          <div class="vote-card" onclick="vote(this)">Plus d'exemples avec différents niveaux CECR</div>
+          <div class="vote-card" onclick="vote(this)">Comment adapter et valider le résultat de l'IA</div>
+          <div class="vote-card" onclick="vote(this)">Partager des ressources en équipe</div>
+          <div class="vote-card" onclick="vote(this)">Utilisation sur smartphone ou tablette</div>
+          <div class="vote-card" onclick="vote(this)">Plus d'exercices pratiques en groupe</div>
+          <div class="vote-card" onclick="vote(this)">Les autres champs d'action FIDE</div>
+          <div class="vote-card" onclick="vote(this)">Comment évaluer la qualité du résultat IA</div>
+          <div class="vote-card" onclick="vote(this)">Créer un prompt pour le Prompt Participant</div>
+          <div class="vote-card" onclick="vote(this)">Intégration dans ma pratique quotidienne</div>
+          <div class="vote-card" onclick="vote(this)">Les questions de confidentialité des données</div>
+          <div class="vote-card" onclick="vote(this)">La différenciation pédagogique avec l'IA</div>
+        </div>
+      </div>
+
+      <div class="column">
+        <div class="col-header">
+          <span class="col-title">Je vais essayer dès demain</span>
+          <button class="reset-btn" onclick="resetGrid('grid-demain')">Réinitialiser</button>
+        </div>
+        <div class="cards-grid" id="grid-demain">
+          <div class="vote-card" onclick="vote(this)">Ouvrir le générateur pour mon prochain cours</div>
+          <div class="vote-card" onclick="vote(this)">Tester un prompt avec un autre champ d'action</div>
+          <div class="vote-card" onclick="vote(this)">Comparer le résultat IA avec ma fiche habituelle</div>
+          <div class="vote-card" onclick="vote(this)">Utiliser le Prompt Participant en classe</div>
+          <div class="vote-card" onclick="vote(this)">Partager le générateur avec un·e collègue</div>
+          <div class="vote-card" onclick="vote(this)">Télécharger mes prompts pour les avoir offline</div>
+          <div class="vote-card" onclick="vote(this)">Tester avec un niveau CECR différent</div>
+          <div class="vote-card" onclick="vote(this)">Utiliser le Prompt Corrigé après la tâche finale</div>
+          <div class="vote-card" onclick="vote(this)">Adapter le prompt à mon groupe réel</div>
+          <div class="vote-card" onclick="vote(this)">Montrer l'outil à mon responsable</div>
+          <div class="vote-card" onclick="vote(this)">Préparer une séquence entière avec l'IA</div>
+          <div class="vote-card" onclick="vote(this)">Rien pour l'instant — j'ai besoin de temps pour digérer</div>
+        </div>
+      </div>
+
+    </div>
+
+    <footer>
+      <div class="notes">Dire&thinsp;: Merci pour votre participation. Vos retours nous permettent d'améliorer chaque session.</div>
+      <nav>
+        <button class="btn secondary" type="button" data-fullscreen-toggle>Plein écran</button>
+        <a class="btn secondary" href="etape-7-resume.html">← Précédent</a>
+        <a class="btn secondary" href="index-etapes.html">Index</a>
+      </nav>
+    </footer>
+
+  </div>
+
+  <script>
+    const EVAL_KEY = 'eval_formation_v3';
+
+    function applyClass(card, n) {
+      card.classList.remove('voted-1','voted-2','voted-3','voted-4','voted-5plus');
+      if      (n === 1) card.classList.add('voted-1');
+      else if (n === 2) card.classList.add('voted-2');
+      else if (n === 3) card.classList.add('voted-3');
+      else if (n === 4) card.classList.add('voted-4');
+      else if (n >= 5)  card.classList.add('voted-5plus');
+    }
+
+    function vote(card) {
+      const n = parseInt(card.dataset.votes || '0') + 1;
+      card.dataset.votes = n;
+      applyClass(card, n);
+      let badge = card.querySelector('.badge');
+      if (!badge) { badge = document.createElement('span'); badge.className = 'badge'; card.appendChild(badge); }
+      badge.textContent = n;
+      autosave();
+    }
+
+    function resetGrid(id) {
+      document.querySelectorAll('#' + id + ' .vote-card').forEach(function(card) {
+        card.dataset.votes = '0';
+        card.classList.remove('voted-1','voted-2','voted-3','voted-4','voted-5plus');
+        const b = card.querySelector('.badge');
+        if (b) b.remove();
+      });
+      autosave();
+    }
+
+    function autosave() {
+      const votes = {};
+      document.querySelectorAll('.vote-card').forEach(function(card, i) { votes[i] = parseInt(card.dataset.votes || '0'); });
+      localStorage.setItem(EVAL_KEY, JSON.stringify({ votes: votes }));
+    }
+
+    function restoreEval() {
+      const saved = localStorage.getItem(EVAL_KEY);
+      if (!saved) return;
+      try {
+        const data = JSON.parse(saved);
+        if (!data.votes) return;
+        document.querySelectorAll('.vote-card').forEach(function(card, i) {
+          const v = data.votes[i] || 0;
+          if (v > 0) {
+            card.dataset.votes = v;
+            applyClass(card, v);
+            let badge = card.querySelector('.badge');
+            if (!badge) { badge = document.createElement('span'); badge.className = 'badge'; card.appendChild(badge); }
+            badge.textContent = v;
+          }
+        });
+      } catch(e) {}
+    }
+
+    restoreEval();
+  </script>
+</body>
+</html>

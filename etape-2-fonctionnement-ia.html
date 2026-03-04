@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="fr-CH">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cours FIDE — 2. Comment fonctionne une IA ?</title>
+  <link rel="stylesheet" href="shared.css">
+  <script src="shared.js" defer></script>
+  <style>
+    .content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 16px 24px;
+      align-content: start;
+    }
+
+    /* 3 points clés */
+    .key-points {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .key-card {
+      background: var(--green-pale);
+      border-top: 5px solid var(--green-main);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: box-shadow var(--transition);
+    }
+
+    .key-card:hover { box-shadow: var(--shadow-sm); }
+
+    .kc-num {
+      font-size: 1.8em;
+      font-weight: 700;
+      color: var(--green-main);
+      line-height: 1;
+    }
+
+    .kc-title {
+      font-size: 1em;
+      font-weight: 700;
+      color: var(--green-deep);
+    }
+
+    .kc-text {
+      font-size: 0.9em;
+      line-height: 1.55;
+      color: #444;
+    }
+
+    /* OUI / NON */
+    .compare {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .compare-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.93em;
+      line-height: 1.4;
+      padding: 4px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .compare-row:last-child { border-bottom: none; }
+
+    /* Analogie */
+    .analogy {
+      background: var(--purple-pale);
+      border-left: 5px solid var(--purple-main);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      padding: 14px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .analogy-title {
+      font-weight: 700;
+      color: var(--purple-mid);
+      font-size: 0.8em;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .analogy p {
+      margin: 0;
+      font-size: 0.93em;
+      line-height: 1.55;
+      font-style: italic;
+      color: var(--purple-deep);
+    }
+
+    /* À retenir */
+    .retenir {
+      background: var(--yellow-pale);
+      border-left: 5px solid var(--yellow-main);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      padding: 14px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .retenir-title {
+      font-weight: 700;
+      color: var(--orange-dark);
+      font-size: 0.8em;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .retenir ul {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 0.93em;
+      line-height: 1.9;
+      color: #444;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <header>
+      <h2>2. Comment fonctionne une IA ?</h2>
+      <p>Ce qu'elle fait vraiment — et ce qu'elle ne fera jamais à votre place.</p>
+    </header>
+
+    <div class="content">
+
+      <!-- 3 points clés -->
+      <div class="key-points">
+        <div class="key-card">
+          <div class="kc-num">1</div>
+          <div class="kc-title">Elle prédit du texte</div>
+          <div class="kc-text">L'IA a été entraînée sur des milliards de textes. Elle prédit le mot le plus probable après chaque mot — comme une autocomplétion très sophistiquée.</div>
+        </div>
+        <div class="key-card">
+          <div class="kc-num">2</div>
+          <div class="kc-title">Elle calcule des probabilités</div>
+          <div class="kc-text">Elle ne "comprend" pas le sens. Elle identifie des régularités statistiques dans les données. Un mot suit un autre parce que c'est probable — pas parce que c'est vrai.</div>
+        </div>
+        <div class="key-card">
+          <div class="kc-num">3</div>
+          <div class="kc-title">Elle dépend de votre demande</div>
+          <div class="kc-text">La qualité de la réponse dépend entièrement de la qualité de la demande. Une consigne vague produit un résultat vague. C'est pour ça que le prompt est central.</div>
+        </div>
+      </div>
+
+      <!-- Ce que l'IA fait / ne fait pas -->
+      <div class="compare">
+        <div class="section-title">Ce que l'IA fait ou ne fait pas</div>
+        <div class="compare-row"><span class="tag tag-green">OUI</span> Génère du texte fluide et structuré</div>
+        <div class="compare-row"><span class="tag tag-green">OUI</span> Suit des instructions précises</div>
+        <div class="compare-row"><span class="tag tag-green">OUI</span> Adapte le niveau de langue</div>
+        <div class="compare-row"><span class="tag tag-green">OUI</span> Propose des variantes rapidement</div>
+        <div class="compare-row"><span class="tag tag-red">NON</span> Comprend le sens comme un humain</div>
+        <div class="compare-row"><span class="tag tag-red">NON</span> Vérifie si c'est pédagogiquement juste</div>
+        <div class="compare-row"><span class="tag tag-red">NON</span> Connaît vos apprenants</div>
+        <div class="compare-row"><span class="tag tag-red">NON</span> Garantit l'exactitude des faits</div>
+      </div>
+
+      <!-- Analogie + À retenir -->
+      <div style="display:flex; flex-direction:column; gap:14px;">
+        <div class="analogy">
+          <div class="analogy-title">Analogie</div>
+          <p>L'IA, c'est comme un assistant très rapide qui a lu des millions de documents — mais qui n'a jamais enseigné. Il peut rédiger, reformuler, structurer. C'est vous qui apportez le jugement pédagogique.</p>
+        </div>
+        <div class="retenir">
+          <div class="retenir-title">À retenir</div>
+          <ul>
+            <li>L'IA amplifie ce que vous lui donnez</li>
+            <li>Cadre flou → résultat flou</li>
+            <li>Cadre précis → résultat exploitable</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <footer>
+      <div class="notes">Dire&thinsp;: L'IA n'a pas de bon sens pédagogique — elle a le vôtre, si vous lui donnez un cadre clair.</div>
+      <nav>
+        <button class="btn secondary" type="button" data-fullscreen-toggle>Plein écran</button>
+        <a class="btn secondary" href="etape-1-usages-ia.html">← Précédent</a>
+        <a class="btn secondary" href="index-etapes.html">Index</a>
+        <a class="btn" href="etape-3-role-prompt.html">Suivant →</a>
+      </nav>
+    </footer>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr-CH">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cours FIDE — Retour sur les prompts</title>
+  <link rel="stylesheet" href="shared.css">
+  <script src="shared.js" defer></script>
+  <style>
+    .content {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      align-content: start;
+    }
+
+    .vote-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+    }
+
+    .vote-col { display: flex; flex-direction: column; gap: 8px; }
+
+    .vote-col-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 6px;
+      border-bottom: 2px solid #eee;
+    }
+
+    .vote-col-title         { font-weight: 700; font-size: 0.9em; }
+    .vote-col-title.green   { color: var(--green-mid); }
+    .vote-col-title.orange  { color: var(--orange-dark); }
+    .vote-col-title.blue    { color: var(--blue-main); }
+
+    .cards-wrap { display: flex; flex-wrap: wrap; gap: 6px; }
+    .vote-card  { font-size: 0.85em; padding: 8px 12px; min-height: 36px; }
+
+    .sol-empty { font-size: 0.82em; color: #bbb; font-style: italic; padding: 6px 4px; }
+
+    .sol-card {
+      background: var(--blue-pale);
+      border: 1.5px solid var(--blue-light);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      font-size: 0.85em;
+      line-height: 1.4;
+      color: var(--blue-deep);
+      animation: fadeIn 0.25s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to   { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <header>
+      <h2>Retour sur les prompts</h2>
+      <p>Votez les points forts, ce qui reste à corriger, et les solutions proposées.</p>
+    </header>
+
+    <div class="content">
+
+      <div class="vote-row">
+
+        <div class="vote-col">
+          <div class="vote-col-header">
+            <span class="vote-col-title green">✅ Points forts du résultat</span>
+            <button class="reset-btn" onclick="resetCards('grid-forts')">Réinitialiser</button>
+          </div>
+          <div class="cards-wrap" id="grid-forts">
+            <div class="vote-card" onclick="vote(this)">Contexte suisse réaliste</div>
+            <div class="vote-card" onclick="vote(this)">Niveau de langue respecté</div>
+            <div class="vote-card" onclick="vote(this)">Structure claire en 11 sections</div>
+            <div class="vote-card" onclick="vote(this)">Dialogues utilisables directement</div>
+            <div class="vote-card" onclick="vote(this)">Consignes adaptées aux apprenants</div>
+            <div class="vote-card" onclick="vote(this)">Lexique ciblé et pertinent</div>
+            <div class="vote-card" onclick="vote(this)">Tâche finale réaliste</div>
+            <div class="vote-card" onclick="vote(this)">Corrigé inclus et utilisable</div>
+          </div>
+        </div>
+
+        <div class="vote-col">
+          <div class="vote-col-header">
+            <span class="vote-col-title orange">🔧 Points à corriger</span>
+            <button class="reset-btn" onclick="resetCards('grid-correct')">Réinitialiser</button>
+          </div>
+          <div class="cards-wrap" id="grid-correct">
+            <div class="vote-card" data-label="Contexte pas assez local"          onclick="vote(this)">Contexte pas assez local</div>
+            <div class="vote-card" data-label="Niveau trop difficile"             onclick="vote(this)">Niveau trop difficile</div>
+            <div class="vote-card" data-label="Niveau trop facile"                onclick="vote(this)">Niveau trop facile</div>
+            <div class="vote-card" data-label="Consignes trop complexes"          onclick="vote(this)">Consignes trop complexes</div>
+            <div class="vote-card" data-label="Trop de vocabulaire inconnu"       onclick="vote(this)">Trop de vocabulaire inconnu</div>
+            <div class="vote-card" data-label="Scénario peu motivant"             onclick="vote(this)">Scénario peu motivant</div>
+            <div class="vote-card" data-label="Format trop long pour la séquence" onclick="vote(this)">Format trop long pour la séquence</div>
+            <div class="vote-card" data-label="Manque d'ancrage culturel"         onclick="vote(this)">Manque d'ancrage culturel</div>
+          </div>
+        </div>
+
+        <div class="vote-col">
+          <div class="vote-col-header">
+            <span class="vote-col-title blue">💡 Solutions proposées</span>
+          </div>
+          <div class="cards-wrap" id="grid-solutions">
+            <div class="sol-empty">← Votez un point à corriger pour voir les solutions</div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <footer>
+      <div class="notes">Dire&thinsp;: On garde ce qui marche, on ajuste le reste — c'est un premier jet.</div>
+      <nav>
+        <button class="btn secondary" type="button" data-fullscreen-toggle>Plein écran</button>
+        <a class="btn secondary" href="etape-6-acces-outil-prompts.html">← Précédent</a>
+        <a class="btn secondary" href="index-etapes.html">Index</a>
+        <a class="btn" href="etape-7-resume.html">Suivant →</a>
+      </nav>
+    </footer>
+
+  </div>
+
+  <script>
+    const VOTE6_KEY = 'vote_etape6_v2';
+
+    const SOLUTIONS = {
+      'Contexte pas assez local': [
+        '→ Champ <strong>Canton / Lieu</strong> : saisir la ville ou le canton (ex. "Lausanne", "Vaud")',
+        '→ Champ <strong>Scénario</strong> : nommer un lieu réel (ex. "à l\'ORP de Lausanne")'
+      ],
+      'Niveau trop difficile': [
+        '→ Champ <strong>Niveau CECR</strong> : baisser d\'un cran (ex. B1 → A2)',
+        '→ Champ <strong>Ton et simplicité</strong> : choisir "Très simple (A0-A1)"'
+      ],
+      'Niveau trop facile': [
+        '→ Champ <strong>Niveau CECR</strong> : monter d\'un cran (ex. A2 → B1)',
+        '→ Champ <strong>Contraintes</strong> : ajouter "inclure argumentation, connecteurs logiques"'
+      ],
+      'Consignes trop complexes': [
+        '→ Champ <strong>Ton et simplicité</strong> : choisir un niveau plus simple',
+        '→ Champ <strong>Contraintes</strong> : ajouter "consignes courtes, une seule instruction par consigne"'
+      ],
+      'Trop de vocabulaire inconnu': [
+        '→ Champ <strong>Contraintes</strong> : écrire "lexique de base, max 6 mots nouveaux"',
+        '→ Champ <strong>Ton et simplicité</strong> : baisser d\'un cran pour limiter le vocabulaire'
+      ],
+      'Scénario peu motivant': [
+        '→ Champ <strong>Champ d\'action FIDE</strong> : choisir un domaine plus proche du vécu réel',
+        '→ Champ <strong>Contraintes</strong> : préciser la situation (ex. "adultes en insertion à Genève")'
+      ],
+      'Format trop long pour la séquence': [
+        '→ Champ <strong>Durée (minutes)</strong> : réduire à 45 ou 60 minutes',
+        '→ Section <strong>Formats de sortie</strong> : décocher "Document Word" ou "Corrigé"'
+      ],
+      'Manque d\'ancrage culturel': [
+        '→ Champ <strong>Canton / Lieu</strong> : préciser la région (ex. "Suisse romande, Genève")',
+        '→ Champ <strong>Contraintes</strong> : ajouter "éviter références franco-françaises"'
+      ]
+    };
+
+    function applyVoteClass(card, n) {
+      card.classList.remove('voted-1','voted-2','voted-3','voted-4','voted-5plus');
+      if      (n === 1) card.classList.add('voted-1');
+      else if (n === 2) card.classList.add('voted-2');
+      else if (n === 3) card.classList.add('voted-3');
+      else if (n === 4) card.classList.add('voted-4');
+      else if (n >= 5)  card.classList.add('voted-5plus');
+    }
+
+    function vote(card) {
+      const n = parseInt(card.dataset.votes || '0') + 1;
+      card.dataset.votes = n;
+      applyVoteClass(card, n);
+      let badge = card.querySelector('.badge');
+      if (!badge) { badge = document.createElement('span'); badge.className = 'badge'; card.appendChild(badge); }
+      badge.textContent = n;
+      if (card.closest('#grid-correct') && n === 1) showSolution(card.dataset.label);
+      autosave();
+    }
+
+    function showSolution(probleme) {
+      const wrap = document.getElementById('grid-solutions');
+      const empty = wrap.querySelector('.sol-empty');
+      if (empty) empty.remove();
+      const sols = SOLUTIONS[probleme] || ['→ Reformuler le prompt : préciser "' + probleme.toLowerCase() + '" dans les paramètres'];
+      sols.forEach(function(sol) {
+        const key = probleme + '|' + sol;
+        if (Array.from(wrap.querySelectorAll('.sol-card')).some(function(el) { return el.dataset.key === key; })) return;
+        const div = document.createElement('div');
+        div.className = 'sol-card';
+        div.dataset.key = key;
+        div.innerHTML = '<strong>' + probleme + '</strong><br>' + sol;
+        wrap.appendChild(div);
+      });
+    }
+
+    function resetCards(id) {
+      document.querySelectorAll('#' + id + ' .vote-card').forEach(function(card) {
+        card.dataset.votes = '0';
+        card.classList.remove('voted-1','voted-2','voted-3','voted-4','voted-5plus');
+        const b = card.querySelector('.badge');
+        if (b) b.remove();
+      });
+      if (id === 'grid-correct') {
+        document.getElementById('grid-solutions').innerHTML = '<div class="sol-empty">← Votez un point à corriger pour voir les solutions</div>';
+      }
+      autosave();
+    }
+
+    function autosave() {
+      const votes = {};
+      document.querySelectorAll('.vote-card').forEach(function(card, i) { votes[i] = parseInt(card.dataset.votes || '0'); });
+      localStorage.setItem(VOTE6_KEY, JSON.stringify(votes));
+    }
+
+    function restore() {
+      const saved = localStorage.getItem(VOTE6_KEY);
+      if (!saved) return;
+      try {
+        const votes = JSON.parse(saved);
+        document.querySelectorAll('.vote-card').forEach(function(card, i) {
+          const v = votes[i] || 0;
+          if (v > 0) {
+            card.dataset.votes = v;
+            applyVoteClass(card, v);
+            let badge = card.querySelector('.badge');
+            if (!badge) { badge = document.createElement('span'); badge.className = 'badge'; card.appendChild(badge); }
+            badge.textContent = v;
+            if (card.closest('#grid-correct')) showSolution(card.dataset.label);
+          }
+        });
+      } catch(e) {}
+    }
+
+    restore();
+  </script>
+</body>
+</html>
