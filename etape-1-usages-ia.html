@@ -132,19 +132,16 @@
       line-height: 1.35;
     }
 
-    .live-notes {
-      margin: 4px 0 0;
-      padding-left: 18px;
-      max-height: 120px;
-      overflow-y: auto;
+    .live-cards {
+      margin-top: 6px;
       border-top: 1px solid #eef0f2;
       padding-top: 8px;
+      min-height: 72px;
     }
 
-    .live-notes li {
-      margin-bottom: 6px;
-      font-size: 0.9em;
-      line-height: 1.35;
+    .live-cards .vote-card {
+      pointer-events: none;
+      white-space: normal;
     }
   </style>
 </head>
@@ -165,7 +162,7 @@
           <span class="notes">Saisie libre</span>
         </div>
         <p class="empty-col">Les participants écrivent eux-mêmes leurs usages.</p>
-        <ul class="live-notes" id="notes-usages"></ul>
+        <div class="cards-grid live-cards" id="cards-usages"></div>
       </div>
 
       <!-- Colonne 2 — Freins -->
@@ -175,7 +172,7 @@
           <span class="notes">Saisie libre</span>
         </div>
         <p class="empty-col">Les participants écrivent eux-mêmes leurs freins.</p>
-        <ul class="live-notes" id="notes-freins"></ul>
+        <div class="cards-grid live-cards" id="cards-freins"></div>
       </div>
 
       <!-- Colonne 3 — Attentes -->
@@ -185,7 +182,7 @@
           <span class="notes">Saisie libre</span>
         </div>
         <p class="empty-col">Les participants écrivent eux-mêmes leurs attentes.</p>
-        <ul class="live-notes" id="notes-attentes"></ul>
+        <div class="cards-grid live-cards" id="cards-attentes"></div>
       </div>
 
     </div>
@@ -203,7 +200,6 @@
         <button class="btn" type="button" id="send-comment-btn">Envoyer</button>
       </div>
       <p class="comment-status" id="comment-status" aria-live="polite"></p>
-      <ul class="messages-list" id="messages-list"></ul>
     </section>
 
     <footer>
@@ -244,10 +240,9 @@ const firebaseConfig = {
     const textarea = document.getElementById('free-comment-input');
     const targetSelect = document.getElementById('comment-target');
     const sendBtn = document.getElementById('send-comment-btn');
-    const messagesList = document.getElementById('messages-list');
-    const notesUsages = document.getElementById('notes-usages');
-    const notesFreins = document.getElementById('notes-freins');
-    const notesAttentes = document.getElementById('notes-attentes');
+    const cardsUsages = document.getElementById('cards-usages');
+    const cardsFreins = document.getElementById('cards-freins');
+    const cardsAttentes = document.getElementById('cards-attentes');
     const charCount = document.getElementById('char-count');
     const statusEl = document.getElementById('comment-status');
     let currentUid = null;
@@ -259,10 +254,9 @@ const firebaseConfig = {
     }
 
     function renderMessages(raw) {
-      messagesList.innerHTML = '';
-      notesUsages.innerHTML = '';
-      notesFreins.innerHTML = '';
-      notesAttentes.innerHTML = '';
+      cardsUsages.innerHTML = '';
+      cardsFreins.innerHTML = '';
+      cardsAttentes.innerHTML = '';
       if (!raw) return;
 
       const items = [];
@@ -281,25 +275,14 @@ const firebaseConfig = {
       const lastItems = items.slice(-40);
 
       lastItems.forEach(function(msg) {
-        const targetList = msg.col === 'usages' ? notesUsages : (msg.col === 'freins' ? notesFreins : notesAttentes);
-        if (!targetList) return;
-        const targetLi = document.createElement('li');
+        const targetGrid = msg.col === 'usages' ? cardsUsages : (msg.col === 'freins' ? cardsFreins : cardsAttentes);
+        if (!targetGrid) return;
+        const card = document.createElement('div');
+        card.className = 'vote-card voted-1';
         const ts = Number(msg.date) || 0;
-        targetLi.textContent = '[' + formatMessageDate(ts) + '] ' + msg.texte;
-        targetList.appendChild(targetLi);
-
-        const li = document.createElement('li');
-        const ts = Number(msg.date) || 0;
-        li.textContent = '[' + formatMessageDate(ts) + '] ' + columnLabel(msg.col) + ' — ' + msg.texte;
-        messagesList.appendChild(li);
+        card.textContent = '[' + formatMessageDate(ts) + '] ' + msg.texte;
+        targetGrid.appendChild(card);
       });
-    }
-
-    function columnLabel(col) {
-      if (col === 'usages') return 'Usages';
-      if (col === 'freins') return 'Freins';
-      if (col === 'attentes') return 'Attentes';
-      return 'Autre';
     }
 
     function formatMessageDate(timestamp) {
