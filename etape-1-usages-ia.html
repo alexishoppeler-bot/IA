@@ -236,7 +236,7 @@
 
     <header>
       <h2>1. Vos usages actuels de l'IA</h2>
-      <p>Ajoutez vos retours libres dans la colonne choisie. Les commentaires s'affichent en direct.</p>
+      <p>Écrivez vos idées librement et classez-les dans Usages, Freins ou Attentes. Les cartes apparaissent en direct.</p>
     </header>
 
     <div class="columns">
@@ -247,7 +247,7 @@
           <span class="col-title">Usages fréquents</span>
           <span class="notes">Saisie libre</span>
         </div>
-        <p class="empty-col">Les participants écrivent eux-mêmes leurs usages.</p>
+        <p class="empty-col">Exemples d'usages partagés par le groupe.</p>
         <div class="cards-grid live-cards" id="cards-usages"></div>
       </div>
 
@@ -257,7 +257,7 @@
           <span class="col-title">Freins &amp; craintes</span>
           <span class="notes">Saisie libre</span>
         </div>
-        <p class="empty-col">Les participants écrivent eux-mêmes leurs freins.</p>
+        <p class="empty-col">Freins et craintes remontés par le groupe.</p>
         <div class="cards-grid live-cards" id="cards-freins"></div>
       </div>
 
@@ -267,20 +267,20 @@
           <span class="col-title">Attentes</span>
           <span class="notes">Saisie libre</span>
         </div>
-        <p class="empty-col">Les participants écrivent eux-mêmes leurs attentes.</p>
+        <p class="empty-col">Attentes exprimées par le groupe.</p>
         <div class="cards-grid live-cards" id="cards-attentes"></div>
       </div>
 
     </div>
 
     <section class="free-comment" aria-label="Commentaires libres">
-      <h3>Autre / commentaire libre</h3>
+      <h3>Ajouter une idée</h3>
       <select id="comment-target">
         <option value="usages">Usages fréquents</option>
         <option value="freins">Freins &amp; craintes</option>
         <option value="attentes">Attentes</option>
       </select>
-      <textarea id="free-comment-input" maxlength="300" placeholder="Écrivez un retour en 300 caractères max."></textarea>
+      <textarea id="free-comment-input" maxlength="300" placeholder="Écrivez votre idée (300 caractères max)."></textarea>
       <div class="free-comment-controls">
         <span class="char-count" id="char-count">0/300</span>
         <button class="btn" type="button" id="send-comment-btn">Envoyer</button>
@@ -290,11 +290,11 @@
 
     <section class="qr-box" aria-label="QR participants">
       <div id="participants-qr"></div>
-      <div class="qr-label">Scannez ce QR pour ouvrir cette étape sur téléphone.</div>
+      <div class="qr-label">Participants: scannez ce QR pour ouvrir cette page sur votre téléphone.</div>
     </section>
 
     <footer>
-      <div class="notes">Dire&thinsp;: L'objectif n'est pas de juger les usages, mais de comprendre d'où on part.</div>
+      <div class="notes">Objectif: visualiser rapidement les besoins du groupe pour orienter la suite de l'atelier.</div>
       <nav>
         <button class="btn secondary" type="button" data-fullscreen-toggle>Plein écran</button>
         <a class="btn secondary" href="etape-0-introduction.html">← Précédent</a>
