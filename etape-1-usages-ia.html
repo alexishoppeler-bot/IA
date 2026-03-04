@@ -64,6 +64,69 @@
     .col-usages  .col-header { border-color: var(--green-main); }
     .col-freins  .col-header { border-color: var(--red-main); }
     .col-attentes .col-header { border-color: var(--blue-mid); }
+
+    .free-comment {
+      margin-top: 12px;
+      background: #fff;
+      border-radius: var(--radius-lg);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .free-comment h3 {
+      margin: 0;
+      font-size: 1em;
+      color: var(--green-deep);
+    }
+
+    .free-comment textarea {
+      width: 100%;
+      min-height: 72px;
+      resize: vertical;
+      border: 1px solid #d9dee3;
+      border-radius: 10px;
+      padding: 10px;
+      font: inherit;
+    }
+
+    .free-comment-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .char-count {
+      font-size: 0.86em;
+      color: #5f6b77;
+    }
+
+    .comment-status {
+      font-size: 0.86em;
+      color: #5f6b77;
+      min-height: 1.2em;
+      margin: 0;
+    }
+
+    .comment-status.error {
+      color: var(--red-dark);
+    }
+
+    .messages-list {
+      margin: 0;
+      padding-left: 18px;
+      max-height: 140px;
+      overflow-y: auto;
+    }
+
+    .messages-list li {
+      margin-bottom: 6px;
+      font-size: 0.94em;
+      line-height: 1.35;
+    }
   </style>
 </head>
 <body>
@@ -156,6 +219,17 @@
 
     </div>
 
+    <section class="free-comment" aria-label="Commentaires libres">
+      <h3>Autre / commentaire libre</h3>
+      <textarea id="free-comment-input" maxlength="300" placeholder="Écrivez un retour en 300 caractères max."></textarea>
+      <div class="free-comment-controls">
+        <span class="char-count" id="char-count">0/300</span>
+        <button class="btn" type="button" id="send-comment-btn">Envoyer</button>
+      </div>
+      <p class="comment-status" id="comment-status" aria-live="polite"></p>
+      <ul class="messages-list" id="messages-list"></ul>
+    </section>
+
     <footer>
       <div class="notes">Dire&thinsp;: L'objectif n'est pas de juger les usages, mais de comprendre d'où on part.</div>
       <nav>
@@ -168,8 +242,49 @@
 
   </div>
 
-  <script>
-    const STORAGE_KEY = 'vote_etape1_v1';
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js';
+    import { getDatabase, ref, onValue, runTransaction, set } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js';
+    import { getAuth, signInAnonymously, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js';
+
+    // A completer avec votre projet Firebase (console Firebase > Parametres du projet).
+const firebaseConfig = {
+  apiKey: "AIzaSyDzCPe5-f343AXu5SFMlSxfyf5xT2T2K_0",
+  authDomain: "wex9-8f6d7.firebaseapp.com",
+  databaseURL: "https://wex9-8f6d7-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "wex9-8f6d7",
+  storageBucket: "wex9-8f6d7.firebasestorage.app",
+  messagingSenderId: "658086152687",
+  appId: "1:658086152687:web:507881c485ebe836868e1a",
+  measurementId: "G-MVH8CY4QSL"
+};
+
+    // Important: la securite se regle dans les regles Firebase (console),
+    // jamais avec un secret/mot de passe cote client.
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const auth = getAuth(app);
+    const votesRef = ref(db, 'votes/etape1');
+    const messagesRef = ref(db, 'messages/etape1');
+    const cards = Array.from(document.querySelectorAll('.vote-card'));
+    const textarea = document.getElementById('free-comment-input');
+    const sendBtn = document.getElementById('send-comment-btn');
+    const messagesList = document.getElementById('messages-list');
+    const charCount = document.getElementById('char-count');
+    const statusEl = document.getElementById('comment-status');
+    const MESSAGE_COOLDOWN_MS = 15000;
+    let currentUid = null;
+    let sendLocked = false;
+
+    cards.forEach(function(card, index) {
+      card.dataset.index = String(index);
+      applyVoteClass(card, 0);
+    });
+
+    function setStatus(message, isError) {
+      statusEl.textContent = message || '';
+      statusEl.classList.toggle('error', Boolean(isError));
+    }
 
     function applyVoteClass(card, n) {
       card.dataset.votes = n;
@@ -194,35 +309,140 @@
       }
     }
 
-    function vote(card) {
-      applyVoteClass(card, parseInt(card.dataset.votes || '0') + 1);
-      saveState();
+    async function vote(card) {
+      if (!currentUid) return;
+      const index = card.dataset.index;
+      if (typeof index === 'undefined') return;
+      await runTransaction(ref(db, 'votes/etape1/' + index), function(current) {
+        return (current || 0) + 1;
+      });
     }
 
-    function resetGrid(id) {
-      document.querySelectorAll('#' + id + ' .vote-card').forEach(function(c) { applyVoteClass(c, 0); });
-      saveState();
+    async function resetGrid(id) {
+      if (!currentUid) return;
+      const colCards = document.querySelectorAll('#' + id + ' .vote-card');
+      const writes = Array.from(colCards).map(function(c) {
+        return set(ref(db, 'votes/etape1/' + c.dataset.index), 0);
+      });
+      await Promise.all(writes);
     }
 
-    function saveState() {
-      const state = {};
-      document.querySelectorAll('.vote-card').forEach(function(c, i) { state[i] = parseInt(c.dataset.votes || '0'); });
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    function renderVotes(votes) {
+      cards.forEach(function(card, i) {
+        const value = votes && typeof votes[i] !== 'undefined' ? Number(votes[i]) : 0;
+        applyVoteClass(card, Number.isFinite(value) && value > 0 ? value : 0);
+      });
     }
 
-    function restoreState() {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (!saved) return;
-      try {
-        const state = JSON.parse(saved);
-        document.querySelectorAll('.vote-card').forEach(function(c, i) {
-          const v = state[i] || 0;
-          if (v > 0) applyVoteClass(c, v);
+    function renderMessages(raw) {
+      messagesList.innerHTML = '';
+      if (!raw) return;
+
+      const items = [];
+      Object.keys(raw).forEach(function(uid) {
+        const byUser = raw[uid];
+        if (!byUser || typeof byUser !== 'object') return;
+        Object.keys(byUser).forEach(function(ts) {
+          const msg = byUser[ts];
+          if (msg && typeof msg.texte === 'string') items.push(msg);
         });
-      } catch(e) {}
+      });
+
+      items.sort(function(a, b) { return (a.date || 0) - (b.date || 0); });
+      const lastItems = items.slice(-25);
+
+      lastItems.forEach(function(msg) {
+        const li = document.createElement('li');
+        const ts = Number(msg.date) || 0;
+        li.textContent = '[' + formatMessageDate(ts) + '] ' + msg.texte;
+        messagesList.appendChild(li);
+      });
     }
 
-    restoreState();
+    function formatMessageDate(timestamp) {
+      if (!timestamp) return '--:--';
+      const d = new Date(timestamp);
+      const now = new Date();
+      const sameDay = d.getFullYear() === now.getFullYear()
+        && d.getMonth() === now.getMonth()
+        && d.getDate() === now.getDate();
+      const hh = String(d.getHours()).padStart(2, '0');
+      const mm = String(d.getMinutes()).padStart(2, '0');
+      if (sameDay) return hh + ':' + mm;
+      const dd = String(d.getDate()).padStart(2, '0');
+      const mo = String(d.getMonth() + 1).padStart(2, '0');
+      return dd + '/' + mo + ' ' + hh + ':' + mm;
+    }
+
+    function updateCharCount() {
+      charCount.textContent = textarea.value.length + '/300';
+    }
+
+    sendBtn.addEventListener('click', async function() {
+      if (!currentUid || sendLocked) return;
+      const texte = textarea.value.trim();
+      if (!texte) return;
+      if (texte.length > 300) return;
+      sendLocked = true;
+      sendBtn.disabled = true;
+      try {
+        const nowTs = Date.now();
+        const lastMessageRef = ref(db, 'userMeta/etape1/' + currentUid + '/lastMessageAt');
+
+        // Transaction atomique: reserve un envoi si le cooldown est respecte.
+        const tx = await runTransaction(lastMessageRef, function(current) {
+          const last = Number(current) || 0;
+          if (nowTs - last < MESSAGE_COOLDOWN_MS) return;
+          return nowTs;
+        });
+
+        if (!tx.committed) {
+          setStatus('Patientez quelques secondes avant un nouveau message.', true);
+          return;
+        }
+
+        await set(ref(db, 'messages/etape1/' + currentUid + '/' + nowTs), {
+          texte: texte,
+          date: nowTs
+        });
+        textarea.value = '';
+        updateCharCount();
+        setStatus('Message envoye.', false);
+      } catch (error) {
+        setStatus('Envoi impossible pour le moment.', true);
+      } finally {
+        sendLocked = false;
+        sendBtn.disabled = false;
+      }
+    });
+
+    textarea.addEventListener('input', updateCharCount);
+    updateCharCount();
+
+    onValue(votesRef, function(snapshot) {
+      renderVotes(snapshot.val());
+    });
+
+    onValue(messagesRef, function(snapshot) {
+      renderMessages(snapshot.val());
+    });
+
+    onAuthStateChanged(auth, function(user) {
+      currentUid = user ? user.uid : null;
+      if (currentUid) {
+        setStatus('Connecte en mode anonyme.', false);
+      } else {
+        setStatus('Connexion en cours...', false);
+      }
+    });
+
+    signInAnonymously(auth).catch(function() {
+      setStatus('Connexion anonyme impossible. Verifiez Firebase Auth.', true);
+    });
+
+    // Conserve les handlers HTML existants (onclick="vote(this)", onclick="resetGrid(...)").
+    window.vote = vote;
+    window.resetGrid = resetGrid;
   </script>
 </body>
 </html>
