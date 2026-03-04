@@ -264,10 +264,22 @@ const firebaseConfig = {
         const byColumn = raw[colKey];
         if (!byColumn || typeof byColumn !== 'object') return;
         Object.keys(byColumn).forEach(function(messageId) {
-          const msg = byColumn[messageId];
-          if (msg && typeof msg.texte === 'string') {
-            items.push({ col: colKey, texte: msg.texte, date: msg.date });
+          const node = byColumn[messageId];
+          if (!node || typeof node !== 'object') return;
+
+          // Nouveau format: messages/etape1/{col}/{msgId}
+          if (typeof node.texte === 'string') {
+            items.push({ col: colKey, texte: node.texte, date: node.date });
+            return;
           }
+
+          // Ancien format: messages/etape1/{col}/{uid}/{timestamp}
+          Object.keys(node).forEach(function(ts) {
+            const msg = node[ts];
+            if (msg && typeof msg.texte === 'string') {
+              items.push({ col: colKey, texte: msg.texte, date: msg.date });
+            }
+          });
         });
       });
 
@@ -283,6 +295,10 @@ const firebaseConfig = {
         card.textContent = '[' + formatMessageDate(ts) + '] ' + msg.texte;
         targetGrid.appendChild(card);
       });
+
+      if (!lastItems.length) {
+        setStatus('Aucun message a afficher pour le moment.', false);
+      }
     }
 
     function formatMessageDate(timestamp) {
