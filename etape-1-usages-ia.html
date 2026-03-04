@@ -305,7 +305,11 @@ const firebaseConfig = {
     }
 
     sendBtn.addEventListener('click', async function() {
-      if (!currentUid || sendLocked) return;
+      if (sendLocked) return;
+      if (!currentUid) {
+        setStatus('Connexion Firebase non etablie. Activez Auth anonyme et rechargez la page.', true);
+        return;
+      }
       const texte = textarea.value.trim();
       const col = targetSelect.value;
       if (!texte) return;
@@ -324,7 +328,8 @@ const firebaseConfig = {
         updateCharCount();
         setStatus('Message envoye.', false);
       } catch (error) {
-        setStatus('Envoi impossible pour le moment.', true);
+        const details = error && (error.code || error.message) ? ' (' + (error.code || error.message) + ')' : '';
+        setStatus('Envoi impossible pour le moment' + details, true);
       } finally {
         sendLocked = false;
         sendBtn.disabled = false;
@@ -336,6 +341,9 @@ const firebaseConfig = {
 
     onValue(messagesRef, function(snapshot) {
       renderMessages(snapshot.val());
+    }, function(error) {
+      const details = error && (error.code || error.message) ? ' (' + (error.code || error.message) + ')' : '';
+      setStatus('Lecture Firebase refusee' + details, true);
     });
 
     onAuthStateChanged(auth, function(user) {
@@ -347,8 +355,9 @@ const firebaseConfig = {
       }
     });
 
-    signInAnonymously(auth).catch(function() {
-      setStatus('Connexion anonyme impossible. Verifiez Firebase Auth.', true);
+    signInAnonymously(auth).catch(function(error) {
+      const details = error && (error.code || error.message) ? ' (' + (error.code || error.message) + ')' : '';
+      setStatus('Connexion anonyme impossible. Verifiez Firebase Auth.' + details, true);
     });
 
     // Votes desactives: plus de handler global necessaire.
