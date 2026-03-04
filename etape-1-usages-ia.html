@@ -42,6 +42,26 @@
       color: var(--green-deep);
     }
 
+    .col-head-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .col-count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 26px;
+      height: 22px;
+      padding: 0 8px;
+      border-radius: 999px;
+      background: #eef2f5;
+      color: #42505d;
+      font-size: 0.8em;
+      font-weight: 700;
+    }
+
     .cards-grid {
       display: flex;
       flex-wrap: wrap;
@@ -83,6 +103,20 @@
       margin: 0;
       font-size: 1em;
       color: var(--green-deep);
+    }
+
+    .composer-hint {
+      margin: 0;
+      color: #5f6b77;
+      font-size: 0.9em;
+    }
+
+    #comment-target {
+      border: 1px solid #d9dee3;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font: inherit;
+      background: #fff;
     }
 
     .free-comment textarea {
@@ -142,7 +176,13 @@
     .live-cards .vote-card {
       pointer-events: none;
       white-space: normal;
+      border-left: 4px solid transparent;
+      box-shadow: 0 1px 1px rgba(10, 20, 30, 0.05);
     }
+
+    .col-usages .live-cards .vote-card { border-left-color: var(--green-main); }
+    .col-freins .live-cards .vote-card { border-left-color: var(--red-main); }
+    .col-attentes .live-cards .vote-card { border-left-color: var(--blue-mid); }
 
     .admin-tools {
       display: flex;
@@ -221,6 +261,9 @@
       .admin-tools {
         margin-bottom: 10px;
       }
+      .admin-toggle {
+        font-size: 0.84em;
+      }
     }
   </style>
 </head>
@@ -244,7 +287,10 @@
       <!-- Colonne 1 — Usages -->
       <div class="column col-usages">
         <div class="col-header">
-          <span class="col-title">Usages fréquents</span>
+          <div class="col-head-left">
+            <span class="col-title">Usages fréquents</span>
+            <span class="col-count" id="count-usages">0</span>
+          </div>
           <span class="notes">Saisie libre</span>
         </div>
         <p class="empty-col">Exemples d'usages partagés par le groupe.</p>
@@ -254,7 +300,10 @@
       <!-- Colonne 2 — Freins -->
       <div class="column col-freins">
         <div class="col-header">
-          <span class="col-title">Freins &amp; craintes</span>
+          <div class="col-head-left">
+            <span class="col-title">Freins &amp; craintes</span>
+            <span class="col-count" id="count-freins">0</span>
+          </div>
           <span class="notes">Saisie libre</span>
         </div>
         <p class="empty-col">Freins et craintes remontés par le groupe.</p>
@@ -264,7 +313,10 @@
       <!-- Colonne 3 — Attentes -->
       <div class="column col-attentes">
         <div class="col-header">
-          <span class="col-title">Attentes</span>
+          <div class="col-head-left">
+            <span class="col-title">Attentes</span>
+            <span class="col-count" id="count-attentes">0</span>
+          </div>
           <span class="notes">Saisie libre</span>
         </div>
         <p class="empty-col">Attentes exprimées par le groupe.</p>
@@ -275,6 +327,7 @@
 
     <section class="free-comment" aria-label="Commentaires libres">
       <h3>Ajouter une idée</h3>
+      <p class="composer-hint">1) Choisissez la colonne, 2) écrivez, 3) envoyez.</p>
       <select id="comment-target">
         <option value="usages">Usages fréquents</option>
         <option value="freins">Freins &amp; craintes</option>
@@ -340,6 +393,9 @@ const firebaseConfig = {
     const cardsUsages = document.getElementById('cards-usages');
     const cardsFreins = document.getElementById('cards-freins');
     const cardsAttentes = document.getElementById('cards-attentes');
+    const countUsages = document.getElementById('count-usages');
+    const countFreins = document.getElementById('count-freins');
+    const countAttentes = document.getElementById('count-attentes');
     const charCount = document.getElementById('char-count');
     const statusEl = document.getElementById('comment-status');
     const ADMIN_CODE = '1984';
@@ -366,6 +422,9 @@ const firebaseConfig = {
       cardsUsages.innerHTML = '';
       cardsFreins.innerHTML = '';
       cardsAttentes.innerHTML = '';
+      countUsages.textContent = '0';
+      countFreins.textContent = '0';
+      countAttentes.textContent = '0';
       if (!raw) return;
 
       const items = [];
@@ -402,6 +461,7 @@ const firebaseConfig = {
         freins: cardsFreins,
         attentes: cardsAttentes
       };
+      const colCounts = { usages: 0, freins: 0, attentes: 0 };
 
       lastItems.forEach(function(msg) {
         const targetGrid = gridByCol[msg.col];
@@ -410,7 +470,12 @@ const firebaseConfig = {
         card.className = 'vote-card voted-1';
         card.textContent = msg.texte;
         targetGrid.appendChild(card);
+        colCounts[msg.col] += 1;
       });
+
+      countUsages.textContent = String(colCounts.usages);
+      countFreins.textContent = String(colCounts.freins);
+      countAttentes.textContent = String(colCounts.attentes);
 
       if (!lastItems.length) {
         setStatus('Aucun message a afficher pour le moment.', false);
