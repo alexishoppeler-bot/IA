@@ -289,6 +289,7 @@ const firebaseConfig = {
     const ADMIN_CODE = '1984';
     let currentUid = null;
     let sendLocked = false;
+    let unsubscribeMessages = null;
 
     function setStatus(message, isError) {
       statusEl.textContent = message || '';
@@ -421,19 +422,24 @@ const firebaseConfig = {
     textarea.addEventListener('input', updateCharCount);
     updateCharCount();
 
-    onValue(messagesRef, function(snapshot) {
-      renderMessages(snapshot.val());
-    }, function(error) {
-      const details = error && (error.code || error.message) ? ' (' + (error.code || error.message) + ')' : '';
-      setStatus('Lecture Firebase refusee' + details, true);
-    });
-
     onAuthStateChanged(auth, function(user) {
       currentUid = user ? user.uid : null;
       if (currentUid) {
         setStatus('Connecte en mode anonyme.', false);
+        if (!unsubscribeMessages) {
+          unsubscribeMessages = onValue(messagesRef, function(snapshot) {
+            renderMessages(snapshot.val());
+          }, function(error) {
+            const details = error && (error.code || error.message) ? ' (' + (error.code || error.message) + ')' : '';
+            setStatus('Lecture Firebase refusee' + details, true);
+          });
+        }
       } else {
         setStatus('Connexion en cours...', false);
+        if (unsubscribeMessages) {
+          unsubscribeMessages();
+          unsubscribeMessages = null;
+        }
       }
     });
 
