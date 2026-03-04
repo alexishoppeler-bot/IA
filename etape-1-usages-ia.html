@@ -143,10 +143,47 @@
       pointer-events: none;
       white-space: normal;
     }
+
+    .admin-tools {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 6px;
+    }
+
+    .admin-toggle {
+      font-size: 0.78em;
+      opacity: 0.65;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+      padding: 2px 4px;
+    }
+
+    .admin-panel {
+      display: none;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .admin-panel input {
+      width: 88px;
+      padding: 4px 6px;
+      border: 1px solid #d9dee3;
+      border-radius: 8px;
+      font: inherit;
+      font-size: 0.85em;
+    }
   </style>
 </head>
 <body>
   <div class="page">
+    <div class="admin-tools">
+      <button class="admin-toggle" type="button" id="admin-toggle-btn">admin</button>
+      <div class="admin-panel" id="admin-panel">
+        <input id="admin-code-input" type="password" placeholder="code">
+        <button class="btn secondary" type="button" id="admin-reset-btn">Reset total</button>
+      </div>
+    </div>
 
     <header>
       <h2>1. Vos usages actuels de l'IA</h2>
@@ -197,10 +234,7 @@
       <textarea id="free-comment-input" maxlength="300" placeholder="Écrivez un retour en 300 caractères max."></textarea>
       <div class="free-comment-controls">
         <span class="char-count" id="char-count">0/300</span>
-        <div>
-          <button class="btn secondary" type="button" id="reset-comments-btn">Reset</button>
-          <button class="btn" type="button" id="send-comment-btn">Envoyer</button>
-        </div>
+        <button class="btn" type="button" id="send-comment-btn">Envoyer</button>
       </div>
       <p class="comment-status" id="comment-status" aria-live="polite"></p>
     </section>
@@ -243,12 +277,16 @@ const firebaseConfig = {
     const textarea = document.getElementById('free-comment-input');
     const targetSelect = document.getElementById('comment-target');
     const sendBtn = document.getElementById('send-comment-btn');
-    const resetBtn = document.getElementById('reset-comments-btn');
+    const adminToggleBtn = document.getElementById('admin-toggle-btn');
+    const adminPanel = document.getElementById('admin-panel');
+    const adminCodeInput = document.getElementById('admin-code-input');
+    const adminResetBtn = document.getElementById('admin-reset-btn');
     const cardsUsages = document.getElementById('cards-usages');
     const cardsFreins = document.getElementById('cards-freins');
     const cardsAttentes = document.getElementById('cards-attentes');
     const charCount = document.getElementById('char-count');
     const statusEl = document.getElementById('comment-status');
+    const ADMIN_CODE = '1984';
     let currentUid = null;
     let sendLocked = false;
 
@@ -340,15 +378,28 @@ const firebaseConfig = {
       }
     });
 
-    resetBtn.addEventListener('click', async function() {
+    adminToggleBtn.addEventListener('click', function() {
+      adminPanel.style.display = adminPanel.style.display === 'flex' ? 'none' : 'flex';
+    });
+
+    adminCodeInput.addEventListener('keydown', function(event) {
+      if (event.key === 'Enter') adminResetBtn.click();
+    });
+
+    adminResetBtn.addEventListener('click', async function() {
       if (sendLocked) return;
       if (!currentUid) {
         setStatus('Connexion Firebase non etablie. Activez Auth anonyme et rechargez la page.', true);
         return;
       }
+      const enteredCode = adminCodeInput.value.trim();
+      if (enteredCode !== ADMIN_CODE) {
+        setStatus('Code admin incorrect.', true);
+        return;
+      }
       sendLocked = true;
       sendBtn.disabled = true;
-      resetBtn.disabled = true;
+      adminResetBtn.disabled = true;
       try {
         await Promise.all([
           remove(ref(db, 'messages/etape1/usages')),
@@ -356,13 +407,14 @@ const firebaseConfig = {
           remove(ref(db, 'messages/etape1/attentes'))
         ]);
         setStatus('Toutes les cartes ont ete reinitialisees.', false);
+        adminCodeInput.value = '';
       } catch (error) {
         const details = error && (error.code || error.message) ? ' (' + (error.code || error.message) + ')' : '';
-        setStatus('Reset impossible' + details, true);
+        setStatus('Code valide, mais reset refuse par Firebase' + details, true);
       } finally {
         sendLocked = false;
         sendBtn.disabled = false;
-        resetBtn.disabled = false;
+        adminResetBtn.disabled = false;
       }
     });
 
