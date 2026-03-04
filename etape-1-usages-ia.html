@@ -111,6 +111,17 @@
       font-size: 0.9em;
     }
 
+    .privacy-warning {
+      margin: 0;
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: #fff7e6;
+      border: 1px solid #f2d8a5;
+      color: #7a5400;
+      font-size: 0.88em;
+      line-height: 1.35;
+    }
+
     #comment-target {
       border: 1px solid #d9dee3;
       border-radius: 10px;
@@ -223,12 +234,45 @@
       align-items: center;
       gap: 10px;
       border: 1px solid #e7ebef;
+      cursor: zoom-in;
     }
 
     .qr-label {
       font-size: 0.86em;
       color: #5f6b77;
       max-width: 220px;
+    }
+
+    .qr-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(12, 18, 26, 0.78);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 20px;
+    }
+
+    .qr-overlay.open {
+      display: flex;
+    }
+
+    .qr-overlay-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      max-width: 92vw;
+    }
+
+    .qr-overlay-hint {
+      margin: 0;
+      color: #5f6b77;
+      font-size: 0.9em;
     }
 
     @media (max-width: 900px) {
@@ -257,6 +301,9 @@
       .qr-box {
         width: 100%;
         justify-content: flex-start;
+      }
+      .qr-overlay-card {
+        width: 100%;
       }
       .admin-tools {
         margin-bottom: 10px;
@@ -328,6 +375,7 @@
     <section class="free-comment" aria-label="Commentaires libres">
       <h3>Ajouter une idée</h3>
       <p class="composer-hint">1) Choisissez la colonne, 2) écrivez, 3) envoyez.</p>
+      <p class="privacy-warning">Attention: n'écrivez pas de données sensibles (noms complets, e-mails, numéros, informations personnelles).</p>
       <select id="comment-target">
         <option value="usages">Usages fréquents</option>
         <option value="freins">Freins &amp; craintes</option>
@@ -345,6 +393,12 @@
       <div id="participants-qr"></div>
       <div class="qr-label">Participants: scannez ce QR pour ouvrir cette page sur votre téléphone.</div>
     </section>
+    <div class="qr-overlay" id="qr-overlay" aria-hidden="true">
+      <div class="qr-overlay-card">
+        <div id="participants-qr-large"></div>
+        <p class="qr-overlay-hint">Cliquez n'importe où pour fermer.</p>
+      </div>
+    </div>
 
     <footer>
       <div class="notes">Objectif: visualiser rapidement les besoins du groupe pour orienter la suite de l'atelier.</div>
@@ -390,6 +444,9 @@ const firebaseConfig = {
     const adminCodeInput = document.getElementById('admin-code-input');
     const adminResetBtn = document.getElementById('admin-reset-btn');
     const qrContainer = document.getElementById('participants-qr');
+    const qrBox = document.querySelector('.qr-box');
+    const qrOverlay = document.getElementById('qr-overlay');
+    const qrLargeContainer = document.getElementById('participants-qr-large');
     const cardsUsages = document.getElementById('cards-usages');
     const cardsFreins = document.getElementById('cards-freins');
     const cardsAttentes = document.getElementById('cards-attentes');
@@ -409,6 +466,25 @@ const firebaseConfig = {
         width: 96,
         height: 96,
         correctLevel: window.QRCode.CorrectLevel.M
+      });
+      if (qrLargeContainer) {
+        qrLargeContainer.innerHTML = '';
+        new window.QRCode(qrLargeContainer, {
+          text: window.location.href,
+          width: 320,
+          height: 320,
+          correctLevel: window.QRCode.CorrectLevel.M
+        });
+      }
+    }
+    if (qrBox && qrOverlay) {
+      qrBox.addEventListener('click', function() {
+        qrOverlay.classList.add('open');
+        qrOverlay.setAttribute('aria-hidden', 'false');
+      });
+      qrOverlay.addEventListener('click', function() {
+        qrOverlay.classList.remove('open');
+        qrOverlay.setAttribute('aria-hidden', 'true');
       });
     }
     let unsubscribeMessages = null;
