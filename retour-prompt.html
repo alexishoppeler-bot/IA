@@ -40,6 +40,17 @@
 
     .sol-empty { font-size: 0.82em; color: #bbb; font-style: italic; padding: 6px 4px; }
 
+    .sol-select {
+      width: 100%;
+      border: 1px solid #d7dbe0;
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      font: inherit;
+      font-size: 0.86em;
+      background: #fff;
+      color: #334;
+    }
+
     .sol-card {
       background: var(--blue-pale);
       border: 1.5px solid var(--blue-light);
@@ -108,7 +119,10 @@
             <span class="vote-col-title blue">💡 Solutions proposées</span>
           </div>
           <div class="cards-wrap" id="grid-solutions">
-            <div class="sol-empty">← Votez un point à corriger pour voir les solutions</div>
+            <select id="solutions-select" class="sol-select">
+              <option value="">Choisir un point à corriger…</option>
+            </select>
+            <div id="solutions-output" class="sol-empty">← Votez un point à corriger puis choisissez-le dans la liste</div>
           </div>
         </div>
 
@@ -117,11 +131,11 @@
     </div>
 
     <footer>
-      <div class="notes">Dire&thinsp;: On garde ce qui marche, on ajuste le reste — c'est un premier jet.</div>
+      <div class="notes">👍&thinsp; On garde ce qui marche, on ajuste le reste — c'est un premier jet.</div>
       <nav>
         <button class="btn secondary" type="button" data-fullscreen-toggle>Plein écran</button>
         <a class="btn secondary" href="etape-6-acces-outil-prompts.html">← Précédent</a>
-        <a class="btn secondary" href="index-etapes.html">Index</a>
+        <a class="btn secondary" href="index.html">Index</a>
         <a class="btn" href="etape-7-resume.html">Suivant →</a>
       </nav>
     </footer>
@@ -187,19 +201,34 @@
     }
 
     function showSolution(probleme) {
-      const wrap = document.getElementById('grid-solutions');
-      const empty = wrap.querySelector('.sol-empty');
-      if (empty) empty.remove();
+      const select = document.getElementById('solutions-select');
+      if (!select) return;
+      const exists = Array.from(select.options).some(function(opt) { return opt.value === probleme; });
+      if (!exists) {
+        const opt = document.createElement('option');
+        opt.value = probleme;
+        opt.textContent = probleme;
+        select.appendChild(opt);
+      }
+      select.value = probleme;
+      renderSelectedSolutions();
+    }
+
+    function renderSelectedSolutions() {
+      const select = document.getElementById('solutions-select');
+      const out = document.getElementById('solutions-output');
+      if (!select || !out) return;
+      const probleme = select.value;
+      if (!probleme) {
+        out.className = 'sol-empty';
+        out.textContent = '← Votez un point à corriger puis choisissez-le dans la liste';
+        return;
+      }
       const sols = SOLUTIONS[probleme] || ['→ Reformuler le prompt : préciser "' + probleme.toLowerCase() + '" dans les paramètres'];
-      sols.forEach(function(sol) {
-        const key = probleme + '|' + sol;
-        if (Array.from(wrap.querySelectorAll('.sol-card')).some(function(el) { return el.dataset.key === key; })) return;
-        const div = document.createElement('div');
-        div.className = 'sol-card';
-        div.dataset.key = key;
-        div.innerHTML = '<strong>' + probleme + '</strong><br>' + sol;
-        wrap.appendChild(div);
-      });
+      out.className = '';
+      out.innerHTML = sols.map(function(sol) {
+        return '<div class="sol-card"><strong>' + probleme + '</strong><br>' + sol + '</div>';
+      }).join('');
     }
 
     function resetCards(id) {
@@ -210,7 +239,11 @@
         if (b) b.remove();
       });
       if (id === 'grid-correct') {
-        document.getElementById('grid-solutions').innerHTML = '<div class="sol-empty">← Votez un point à corriger pour voir les solutions</div>';
+        const select = document.getElementById('solutions-select');
+        if (select) {
+          select.innerHTML = '<option value="">Choisir un point à corriger…</option>';
+        }
+        renderSelectedSolutions();
       }
       autosave();
     }
@@ -240,6 +273,7 @@
       } catch(e) {}
     }
 
+    document.getElementById('solutions-select').addEventListener('change', renderSelectedSolutions);
     restore();
   </script>
 </body>

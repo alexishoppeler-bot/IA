@@ -3,127 +3,115 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cours FIDE — Programme de séance</title>
+  <title>Cours FIDE — Introduction</title>
   <link rel="stylesheet" href="shared.css">
   <script src="shared.js" defer></script>
+  <style>
+    .welcome-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 20, 35, 0.55);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 9999;
+    }
+    .welcome-box {
+      width: min(760px, 96vw);
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25);
+      padding: 22px 24px;
+    }
+    .welcome-box p {
+      margin: 0 0 12px;
+      line-height: 1.6;
+      color: #243446;
+    }
+    .welcome-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
-  <div class="page compact">
+  <div class="welcome-overlay" id="welcome-overlay">
+    <div class="welcome-box" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
+      <p id="welcome-title"><strong>Quand on a l’impression que la préparation de cours prend tout l’espace et qu’on travaille tout le temps, ce n’est pas anodin.</strong> Dans notre métier, il y a le cours qu’on donne, mais aussi tout le travail invisible autour. Et souvent, c’est ce travail-là qui finit par nous épuiser.</p>
+      <p>C’est pour ça qu’on peut s’aider de l’IA. Pas pour faire le travail à notre place, mais pour aller plus vite, avoir une base, trouver des idées et alléger une partie de la préparation.</p>
+      <div class="welcome-actions">
+        <button class="btn" type="button" id="welcome-close">Continuer</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
 
     <header>
       <div class="header-stack">
-        <h1 class="title-hero">Utilisation de l'IA pour créer des cours FIDE</h1>
-        <p class="subtitle-hero">Programme de séance — 9h00 à 12h00</p>
+        <h1>Utilisation de l'IA pour créer des cours FIDE</h1>
+        <p>Formation formateurs — utiliser l'IA avec méthode, esprit critique et coopération.</p>
       </div>
     </header>
 
-    <div class="content content-hero">
-      <section>
-        <div class="section-title">Programme détaillé</div>
-        <ul class="schedule schedule-2col">
-          <li class="schedule-block">9h00 – 10h30</li>
-          <li>
-            <a class="card-link" href="etape-1-usages-ia.html">
-              <span class="card-num">1</span>
-              <div>
-                <div class="card-title">Vos usages actuels de l'IA</div>
-                <div class="card-meta">9h00–9h15</div>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a class="card-link" href="etape-2-fonctionnement-ia.html">
-              <span class="card-num">2</span>
-              <div>
-                <div class="card-title">Comment fonctionne une IA ?</div>
-                <div class="card-meta">9h15–9h35</div>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a class="card-link" href="etape-3-role-prompt.html">
-              <span class="card-num">3</span>
-              <div>
-                <div class="card-title">Le rôle du prompt</div>
-                <div class="card-meta">9h35–9h55</div>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a class="card-link" href="etape-4-niveaux-prompt.html">
-              <span class="card-num">4</span>
-              <div>
-                <div class="card-title">Comparaison des niveaux de prompt</div>
-                <div class="card-meta">9h55–10h15</div>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a class="card-link" href="etape-5-automatiser-collaborer.html">
-              <span class="card-num">5</span>
-              <div>
-                <div class="card-title">Automatiser et collaborer</div>
-                <div class="card-meta">10h15–10h30</div>
-              </div>
-            </a>
-          </li>
-          <li class="schedule-break">10h30 – 10h45 — Pause</li>
+    <div class="content content-split">
 
-          <li class="schedule-block">10h45 – 12h00</li>
-          <li>
-            <a class="card-link" href="etape-6-acces-outil-prompts.html">
-              <span class="card-num">6</span>
-              <div>
-                <div class="card-title">Activité pratique — Générer, tester, analyser</div>
-                <div class="card-meta">10h45–11h30</div>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a class="card-link" href="retour-prompt.html">
-              <span class="card-num">7</span>
-              <div>
-                <div class="card-title">Retour sur les prompts</div>
-                <div class="card-meta">11h30–11h40</div>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a class="card-link" href="etape-7-resume.html">
-              <span class="card-num">8</span>
-              <div>
-                <div class="card-title">Résumé — Ce qu'il faut retenir</div>
-                <div class="card-meta">11h40–11h50</div>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a class="card-link" href="etape-8-evaluation.html">
-              <span class="card-num">9</span>
-              <div>
-                <div class="card-title">Évaluation de la formation</div>
-                <div class="card-meta">11h50–12h00</div>
-              </div>
-            </a>
-          </li>
+      <div class="callout span-full">
+        <strong>Bienvenue.</strong> L'IA produit vite un premier jet. Votre rôle reste central: cadrer, vérifier, adapter, puis partager les versions utiles avec l'équipe.
+      </div>
+
+      <div class="panel objectifs">
+        <div class="section-title">Objectifs</div>
+        <ul class="bullets">
+          <li>Comprendre ce que l'IA fait bien, et ses limites</li>
+          <li>Écrire des prompts clairs et directement exploitables</li>
+          <li>Générer un cours FIDE structuré avec le générateur</li>
+          <li>Analyser, corriger et contextualiser les résultats</li>
+          <li>Capitaliser en équipe dans un dossier partagé</li>
         </ul>
-      </section>
+      </div>
 
-      <aside>
-        <div class="section-title">Visuel</div>
-        <div class="media-frame">Espace image / logo / photo</div>
-      </aside>
+      <div class="panel programme">
+        <div class="section-title">Programme</div>
+        <p class="program-inline">Introduction · Vos usages · Fonctionnement de l'IA · Rôle du prompt · Niveaux de prompt · Automatiser · Activité pratique · Retour sur les prompts · Résumé · Évaluation</p>
+        <ol class="program-steps">
+          <li class="program-item"><span class="prog-num">1</span><span>Vos usages actuels de l'IA</span></li>
+          <li class="program-item"><span class="prog-num">2</span><span>Comment fonctionne une IA ?</span></li>
+          <li class="program-item"><span class="prog-num">3</span><span>Le rôle du prompt</span></li>
+          <li class="program-item"><span class="prog-num">4</span><span>Comparaison des niveaux de prompt</span></li>
+          <li class="program-item"><span class="prog-num">5</span><span>Automatiser et collaborer intelligemment</span></li>
+          <li class="program-item"><span class="prog-num">6</span><span>Activité pratique — Générer, tester, analyser</span></li>
+          <li class="program-item"><span class="prog-num">7</span><span>Retour sur les prompts</span></li>
+          <li class="program-item"><span class="prog-num">8</span><span>Résumé — Ce qu'il faut retenir</span></li>
+          <li class="program-item"><span class="prog-num">9</span><span>Évaluation de la formation</span></li>
+        </ol>
+      </div>
+
     </div>
 
     <footer>
-      <div class="notes">Rappel animation&thinsp;: 60&nbsp;% pratique, 40&nbsp;% apports. Favoriser les exemples concrets des participants.</div>
+      <div class="notes">👍&thinsp; On utilise l'IA pour gagner du temps, puis on valide humainement pour garantir la qualité pédagogique.</div>
       <nav>
         <button class="btn secondary" type="button" data-fullscreen-toggle>Plein écran</button>
-        <a class="btn secondary" href="etape-0-introduction.html">Introduction</a>
-        <a class="btn" href="etape-0-introduction.html">Commencer →</a>
+        <a class="btn secondary" href="planning.html">Planning</a>
+        <a class="btn" href="planning.html">Suivant →</a>
       </nav>
     </footer>
 
   </div>
+  <script>
+    (function() {
+      var overlay = document.getElementById('welcome-overlay');
+      var closeBtn = document.getElementById('welcome-close');
+      if (!overlay || !closeBtn) return;
+      closeBtn.addEventListener('click', function() {
+        overlay.style.display = 'none';
+      });
+    })();
+  </script>
 </body>
 </html>

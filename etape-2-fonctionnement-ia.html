@@ -35,6 +35,7 @@
     }
 
     .key-card:hover { box-shadow: var(--shadow-sm); }
+    .key-card { cursor: zoom-in; }
 
     .kc-num {
       font-size: 1.8em;
@@ -53,6 +54,20 @@
       font-size: 0.9em;
       line-height: 1.55;
       color: #444;
+    }
+
+    .kc-example {
+      margin-top: 6px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #d8e6d8;
+      background: #fff;
+    }
+
+    .kc-example img {
+      display: block;
+      width: 100%;
+      height: auto;
     }
 
     /* OUI / NON */
@@ -127,6 +142,48 @@
       line-height: 1.9;
       color: #444;
     }
+
+    .card-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(12, 18, 26, 0.78);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 20px;
+      overflow: hidden;
+    }
+
+    .card-overlay.open {
+      display: flex;
+    }
+
+    .card-overlay-inner {
+      width: min(1200px, 96vw);
+      max-height: 90vh;
+      overflow: hidden;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .card-overlay .key-card {
+      cursor: default;
+      margin: 0;
+      width: 100%;
+      max-height: 86vh;
+      overflow: hidden;
+    }
+
+    .card-overlay .key-card.is-zoomed {
+      transform: none !important;
+      width: 100%;
+      min-width: 0;
+      margin: 0;
+    }
   </style>
 </head>
 <body>
@@ -134,7 +191,7 @@
 
     <header>
       <h2>2. Comment fonctionne une IA ?</h2>
-      <p>Comprendre le mécanisme pour mieux guider les réponses en contexte de formation.</p>
+      <p>3 idées simples pour comprendre ce que l'IA fait bien, ses limites, et comment mieux la piloter en classe.</p>
     </header>
 
     <div class="content">
@@ -144,61 +201,100 @@
         <div class="key-card">
           <div class="kc-num">1</div>
           <div class="kc-title">Elle prédit la suite la plus probable</div>
-          <div class="kc-text">Le modèle enchaîne des mots selon des probabilités apprises sur de très grands corpus. Il ne "récite" pas un document: il construit une réponse pas à pas.</div>
+          <div class="kc-text">Exemple de l'image: « Aujourd'hui il fait très... ». L'IA propose une suite naturelle comme « beau » car c'est fréquent dans la langue. Elle choisit le probable, pas le "vrai" universel.</div>
+          <div class="kc-example">
+            <img src="ia-fait-beau.png" alt="Exemple IA: compléter la phrase Aujourd'hui il fait très...">
+          </div>
         </div>
         <div class="key-card">
           <div class="kc-num">2</div>
           <div class="kc-title">Elle calcule, elle ne raisonne pas comme un humain</div>
-          <div class="kc-text">L'IA repère des régularités de langage. Une réponse peut sembler convaincante tout en étant inexacte. La vérification reste indispensable.</div>
+          <div class="kc-text">Exemple de l'image: la demande « je suis en retard » produit un message poli et crédible. C'est fluide, mais il faut encore vérifier le ton, la précision et l'adéquation au contexte réel.</div>
+          <div class="kc-example">
+            <img src="ia-2.png" alt="Exemple IA: message de retard naturel mais à vérifier selon le contexte">
+          </div>
         </div>
         <div class="key-card">
           <div class="kc-num">3</div>
           <div class="kc-title">Elle dépend fortement de votre consigne</div>
-          <div class="kc-text">Plus la demande est précise (objectif, public, niveau, format), plus la sortie est utile. Le prompt sert à cadrer la qualité.</div>
+          <div class="kc-text">Exemple de l'image: « Fais-moi un cours de français » donne un résultat large. Une consigne FIDE précise (niveau, durée, lieu, objectif oral) donne une production directement exploitable.</div>
+          <div class="kc-example">
+            <img src="ia-3.png" alt="Exemple IA: différence entre consigne floue et consigne précise">
+          </div>
         </div>
       </div>
 
       <!-- Ce que l'IA fait / ne fait pas -->
       <div class="compare">
         <div class="section-title">Ce que l'IA fait ou ne fait pas</div>
-        <div class="compare-row"><span class="tag tag-green">OUI</span> Génère vite des brouillons exploitables</div>
-        <div class="compare-row"><span class="tag tag-green">OUI</span> Reformule selon un niveau de langue demandé</div>
-        <div class="compare-row"><span class="tag tag-green">OUI</span> Suit un format précis (liste, tableau, fiche, dialogue)</div>
-        <div class="compare-row"><span class="tag tag-green">OUI</span> Propose des variantes pédagogiques rapidement</div>
-        <div class="compare-row"><span class="tag tag-red">NON</span> Ne connaît pas votre classe ni votre contexte réel</div>
-        <div class="compare-row"><span class="tag tag-red">NON</span> Ne valide pas la justesse pédagogique à votre place</div>
-        <div class="compare-row"><span class="tag tag-red">NON</span> Ne garantit pas l'exactitude factuelle</div>
-        <div class="compare-row"><span class="tag tag-red">NON</span> Ne remplace pas votre jugement professionnel</div>
+        <div class="compare-row"><span class="tag tag-green">OUI</span> Propose rapidement des formulations et des variantes</div>
+        <div class="compare-row"><span class="tag tag-green">OUI</span> Reformule pour un niveau de langue ciblé</div>
+        <div class="compare-row"><span class="tag tag-green">OUI</span> Génère des supports structurés (liste, dialogue, fiche)</div>
+        <div class="compare-row"><span class="tag tag-green">OUI</span> Aide à gagner du temps de préparation</div>
+        <div class="compare-row"><span class="tag tag-red">NON</span> Ne connaît pas vos apprenants ni votre réalité de classe</div>
+        <div class="compare-row"><span class="tag tag-red">NON</span> Ne vérifie pas automatiquement les faits</div>
+        <div class="compare-row"><span class="tag tag-red">NON</span> Ne garantit pas la pertinence pédagogique</div>
+        <div class="compare-row"><span class="tag tag-red">NON</span> Ne remplace pas votre expertise de formateur</div>
       </div>
 
       <!-- Analogie + À retenir -->
       <div style="display:flex; flex-direction:column; gap:14px;">
         <div class="analogy">
           <div class="analogy-title">Analogie</div>
-          <p>L'IA ressemble à un assistant de rédaction très rapide: elle propose, reformule et structure. Mais elle ne connaît ni vos apprenants ni vos objectifs implicites. Le rôle du formateur reste central.</p>
+          <p>L'IA, c'est comme un GPS du langage: elle propose un itinéraire rapide, mais c'est vous qui choisissez la bonne route selon le terrain, les contraintes et la destination pédagogique.</p>
         </div>
         <div class="retenir">
           <div class="retenir-title">À retenir</div>
           <ul>
-            <li>IA = outil de production, pas autorité de vérité</li>
-            <li>Prompt précis = gain de temps réel</li>
-            <li>Vérifier, adapter, contextualiser avant d'utiliser en classe</li>
+            <li>L'IA est un assistant de production, pas une source infaillible</li>
+            <li>Consigne claire = réponse plus utile</li>
+            <li>Toujours vérifier, adapter et contextualiser avant la classe</li>
           </ul>
         </div>
       </div>
 
     </div>
 
+    <div class="card-overlay" id="card-overlay" aria-hidden="true">
+      <div class="card-overlay-inner" id="card-overlay-inner"></div>
+    </div>
+
     <footer>
-      <div class="notes">Dire&thinsp;: Le bon usage de l'IA, c'est "proposer vite" puis "valider avec expertise".</div>
+      <div class="notes">👍&thinsp; Ces 3 images montrent la règle clé: l'IA écrit ce qui semble probable; à vous de cadrer et valider.</div>
       <nav>
         <button class="btn secondary" type="button" data-fullscreen-toggle>Plein écran</button>
         <a class="btn secondary" href="etape-1-usages-ia.html">← Précédent</a>
-        <a class="btn secondary" href="index-etapes.html">Index</a>
+        <a class="btn secondary" href="index.html">Index</a>
         <a class="btn" href="etape-3-role-prompt.html">Suivant →</a>
       </nav>
     </footer>
 
   </div>
 </body>
+<script>
+  (function() {
+    const overlay = document.getElementById('card-overlay');
+    const overlayInner = document.getElementById('card-overlay-inner');
+    const cards = document.querySelectorAll('.key-card');
+    if (!overlay || !overlayInner || !cards.length) return;
+
+    cards.forEach(function(card) {
+      card.addEventListener('click', function() {
+        overlayInner.innerHTML = '';
+        const cloned = card.cloneNode(true);
+        cloned.classList.add('is-zoomed');
+        overlayInner.appendChild(cloned);
+
+        overlay.classList.add('open');
+        overlay.setAttribute('aria-hidden', 'false');
+      });
+    });
+
+    overlay.addEventListener('click', function() {
+      overlay.classList.remove('open');
+      overlay.setAttribute('aria-hidden', 'true');
+      overlayInner.innerHTML = '';
+    });
+  })();
+</script>
 </html>

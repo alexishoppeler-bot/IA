@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="fr-CH">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Export PDF — Cours FIDE</title>
+  <style>
+    :root { color-scheme: light; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f2f5f8;
+      color: #1f2d3d;
+    }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: #ffffffee;
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid #dde5ee;
+      padding: 10px 14px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .actions { display: flex; gap: 8px; }
+    .btn {
+      border: 0;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 14px;
+      cursor: pointer;
+      background: #2e7d32;
+      color: #fff;
+    }
+    .btn.secondary {
+      background: #e8eef5;
+      color: #223247;
+    }
+    .hint {
+      font-size: 13px;
+      color: #53657a;
+    }
+    .doc {
+      width: min(1200px, 96vw);
+      margin: 14px auto 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .page-wrap {
+      background: #fff;
+      border: 1px solid #d7e0ea;
+      border-radius: 12px;
+      overflow: visible;
+      page-break-after: always;
+      break-after: page;
+    }
+    .page-wrap:last-child {
+      page-break-after: auto;
+      break-after: auto;
+    }
+    .page-title {
+      margin: 0;
+      padding: 8px 12px;
+      font-size: 12px;
+      letter-spacing: .03em;
+      text-transform: uppercase;
+      color: #516273;
+      background: #f5f8fb;
+      border-bottom: 1px solid #e0e8f0;
+    }
+    iframe {
+      display: block;
+      width: 100%;
+      height: 980px;
+      border: 0;
+      background: #fff;
+    }
+    .page-wrap.tall iframe { height: 1200px; }
+    .page-wrap.xl iframe { height: 1450px; }
+    .page-wrap.ready {
+      border-color: #c8d8ea;
+    }
+    @media print {
+      .topbar { display: none !important; }
+      body { background: #fff; }
+      .doc { width: 100%; margin: 0; gap: 0; }
+      .page-wrap {
+        border: 0;
+        border-radius: 0;
+      }
+      .page-title { display: none; }
+      iframe { height: 1120px; }
+      .page-wrap.tall iframe { height: 1320px; }
+      .page-wrap.xl iframe { height: 1580px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="hint">Exporter tout en PDF: cliquer sur "Imprimer / PDF", puis enregistrer.</div>
+    <div class="actions">
+      <a class="btn secondary" href="planning.html" style="text-decoration:none;">Retour</a>
+      <button class="btn" id="print-btn" type="button">Imprimer / PDF</button>
+    </div>
+  </div>
+
+  <main class="doc">
+    <section class="page-wrap"><h2 class="page-title">Introduction</h2><iframe src="index.html" loading="eager"></iframe></section>
+    <section class="page-wrap"><h2 class="page-title">Planning</h2><iframe src="planning.html" loading="eager"></iframe></section>
+    <section class="page-wrap tall"><h2 class="page-title">Étape 1</h2><iframe src="etape-1-usages-ia.html" loading="eager"></iframe></section>
+    <section class="page-wrap"><h2 class="page-title">Étape 2</h2><iframe src="etape-2-fonctionnement-ia.html" loading="eager"></iframe></section>
+    <section class="page-wrap"><h2 class="page-title">Étape 3</h2><iframe src="etape-3-role-prompt.html" loading="eager"></iframe></section>
+    <section class="page-wrap"><h2 class="page-title">Étape 4</h2><iframe src="etape-4-niveaux-prompt.html" loading="eager"></iframe></section>
+    <section class="page-wrap"><h2 class="page-title">Étape 5</h2><iframe src="etape-5-automatiser-collaborer.html" loading="eager"></iframe></section>
+    <section class="page-wrap xl"><h2 class="page-title">Étape 6</h2><iframe src="etape-6-acces-outil-prompts.html" loading="eager"></iframe></section>
+    <section class="page-wrap tall"><h2 class="page-title">Étape 7</h2><iframe src="retour-prompt.html" loading="eager"></iframe></section>
+    <section class="page-wrap tall"><h2 class="page-title">Étape 8</h2><iframe src="etape-7-resume.html" loading="eager"></iframe></section>
+    <section class="page-wrap tall"><h2 class="page-title">Étape 9</h2><iframe src="etape-8-evaluation.html" loading="eager"></iframe></section>
+  </main>
+
+  <script>
+    function getSelectDisplayValue(select) {
+      const picked = Array.from(select.selectedOptions || []).map(function(opt) {
+        return (opt.textContent || '').trim();
+      }).filter(Boolean);
+      if (picked.length) return picked.join(', ');
+      return (select.options[select.selectedIndex] && select.options[select.selectedIndex].textContent || '').trim() || '—';
+    }
+
+    function ensureExportStyles(doc) {
+      if (doc.getElementById('pdf-export-style')) return;
+      const style = doc.createElement('style');
+      style.id = 'pdf-export-style';
+      style.textContent = [
+        'html,body{height:auto !important;overflow:visible !important;}',
+        '.page{height:auto !important;min-height:0 !important;grid-template-rows:auto auto auto !important;}',
+        '.content,.columns,.column,.cards-grid,.live-cards,[class*="grid"]{overflow:visible !important;max-height:none !important;}',
+        '.vote-card{white-space:normal !important;overflow-wrap:anywhere !important;word-break:break-word !important;align-items:flex-start !important;}',
+        '.free-comment,.qr-box,.qr-overlay,.admin-tools{display:none !important;}',
+        '.privacy-warning,.composer-hint,.char-count,.comment-status{display:none !important;}',
+        'footer nav,[data-fullscreen-toggle]{display:none !important;}',
+        '.pdf-export-source{display:none !important;}',
+        '.pdf-export-value{',
+        'display:block;',
+        'width:100%;',
+        'border:1px solid #d7dbe0;',
+        'border-radius:8px;',
+        'padding:8px 10px;',
+        'font:inherit;',
+        'font-size:0.86em;',
+        'line-height:1.4;',
+        'color:#223247;',
+        'background:#fff;',
+        'white-space:normal;',
+        'word-break:break-word;',
+        '}'
+      ].join('');
+      (doc.head || doc.documentElement).appendChild(style);
+    }
+
+    function convertSelects(doc) {
+      ensureExportStyles(doc);
+      const selects = doc.querySelectorAll('select');
+      selects.forEach(function(select) {
+        let output = select.nextElementSibling;
+        if (!output || !output.classList.contains('pdf-export-value')) {
+          output = doc.createElement('div');
+          output.className = 'pdf-export-value';
+          select.insertAdjacentElement('afterend', output);
+        }
+        output.textContent = getSelectDisplayValue(select);
+        select.classList.add('pdf-export-source');
+        select.addEventListener('change', function() {
+          output.textContent = getSelectDisplayValue(select);
+        });
+      });
+    }
+
+    function resizeIframe(iframe) {
+      try {
+        const doc = iframe.contentDocument;
+        if (!doc) return;
+        const body = doc.body;
+        const html = doc.documentElement;
+        const contentHeight = Math.max(
+          body ? body.scrollHeight : 0,
+          body ? body.offsetHeight : 0,
+          html ? html.scrollHeight : 0,
+          html ? html.offsetHeight : 0
+        );
+        const minHeight = 980;
+        iframe.style.height = Math.max(contentHeight + 16, minHeight) + 'px';
+      } catch (e) {}
+    }
+
+    function prepareIframe(iframe) {
+      try {
+        const doc = iframe.contentDocument;
+        if (!doc) return;
+        convertSelects(doc);
+        resizeIframe(iframe);
+        iframe.closest('.page-wrap')?.classList.add('ready');
+      } catch (e) {}
+    }
+
+    function prepareAllIframes() {
+      document.querySelectorAll('iframe').forEach(function(iframe) {
+        prepareIframe(iframe);
+      });
+    }
+
+    document.querySelectorAll('iframe').forEach(function(iframe) {
+      iframe.addEventListener('load', function() {
+        prepareIframe(iframe);
+        setTimeout(function() { resizeIframe(iframe); }, 120);
+      });
+    });
+
+    window.addEventListener('load', function() {
+      setTimeout(prepareAllIframes, 180);
+    });
+
+    document.getElementById('print-btn').addEventListener('click', function() {
+      prepareAllIframes();
+      setTimeout(function() { window.print(); }, 180);
+    });
+  </script>
+</body>
+</html>

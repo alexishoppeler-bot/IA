@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="fr-CH">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cours FIDE — Niveau 5 Prompt Expert</title>
+  <link rel="stylesheet" href="shared.css">
+  <script src="shared.js" defer></script>
+  <style>
+    .content {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 14px;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .panel {
+      background: #fff;
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      border-top: 6px solid var(--purple-main);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 0;
+    }
+
+    .panel h3 {
+      margin: 0;
+      color: var(--purple-mid);
+      font-size: 1em;
+    }
+
+    .panel-desc {
+      margin: 0;
+      color: #666;
+      font-size: 0.88em;
+      line-height: 1.4;
+    }
+
+    pre {
+      margin: 0;
+      flex: 1;
+      min-height: 0;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+      background: #f5f6f8;
+      border: 1px solid #e2e4e8;
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      white-space: pre-wrap;
+      font-size: 0.86em;
+      line-height: 1.5;
+    }
+
+    .hint {
+      font-size: 0.78em;
+      color: #8a8a8a;
+      text-align: right;
+    }
+
+    .aside {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 0;
+    }
+
+    .box {
+      background: #fff;
+      border-radius: var(--radius-md);
+      padding: 10px 12px;
+      border-left: 4px solid var(--green-main);
+    }
+
+    .box.error {
+      border-left-color: var(--red-main);
+      background: #fff7f7;
+    }
+
+    .box h4 {
+      margin: 0 0 6px;
+      font-size: 0.9em;
+      color: var(--green-deep);
+    }
+
+    .box.error h4 {
+      color: #b71c1c;
+    }
+
+    .box ul {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 0.86em;
+      line-height: 1.55;
+    }
+
+    @media (max-width: 980px) {
+      .content {
+        grid-template-columns: 1fr;
+        overflow: auto;
+      }
+      .aside {
+        order: 2;
+      }
+      .panel {
+        min-height: 60vh;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <h2>Niveau 5 — Prompt expert (complet)</h2>
+      <p>Version dédiée: prompt complet, paramètres explicites, sortie directement exploitable.</p>
+    </header>
+
+    <div class="content">
+      <section class="panel">
+        <h3>Prompt prêt à copier</h3>
+        <p class="panel-desc">Utilisez ce modèle comme base, puis adaptez canton, public et contraintes réelles.</p>
+        <div class="hint">Ctrl + molette pour zoomer</div>
+        <pre id="pre-expert">Tu es un·e expert·e en pédagogie FIDE (Suisse).
+Crée une fiche complète pour formateur·rice selon l'approche FIDE
+(enseignement basé sur des scénarios).
+
+CONTEXTE SUISSE FIDE :
+- Public : Migrants adultes, région : Vaud, Vevey
+- Niveau : A1 (CECR)
+- Champ d'action FIDE : Recherche d'emploi
+- Scénario : Raconter mes compétences
+- Objectif communicatif : Être capable de raconter mes compétences techniques
+- Compétences visées : interaction
+- Durée : 90 minutes
+- Modalité : présentiel
+- Taille du groupe : 12 personnes
+- Matériel : projecteur, tableau blanc, imprimante, Word
+- Contraintes : langues maternelles variées
+- Ton du français : standard
+
+INSTRUCTIONS OBLIGATOIRES :
+1) Propose un scénario FIDE complet ancré dans le quotidien suisse
+   (ORP, entretien simple, CV oral, contacts professionnels).
+2) Structure le scénario en 3 à 6 ÉTAPES logiques avec TÂCHES COMMUNICATIVES observables.
+3) Pour chaque étape, précise :
+   - moyens de communication (face-à-face, téléphone, formulaire...)
+   - interlocuteurs
+   - ressources langagières nécessaires
+4) Crée au moins deux DIALOGUES modèles :
+   - un très guidé (A1 faible)
+   - un plus autonome (A1 en cours / acquis)
+5) Fournis un LEXIQUE UTILE et des EXPRESSIONS CLÉS directement exploitables.
+6) Propose des ACTIVITÉS PROGRESSIVES :
+   - échauffement / sensibilisation
+   - pratique guidée
+   - production semi-autonome
+   - tâche finale actionnelle
+7) Intègre des SUPPORTS PRÊTS À IMPRIMER (fiches, cartes, modèles).
+8) Propose trois VARIANTES DE DIFFÉRENCIATION : débutant / en cours / acquis.
+9) Crée une GRILLE D'ÉVALUATION FORMATIVE avec descripteurs "je peux..." et critères observables.
+10) Ajoute des CONNAISSANCES SOCIOCULTURELLES liées à la recherche d'emploi en Suisse.
+11) Suggère des PROLONGEMENTS vers d'autres scénarios FIDE emploi.
+
+EXIGENCES :
+- Français clair, inclusif, non infantilisant
+- Approche actionnelle centrée sur les besoins
+- Ancrage suisse authentique
+- Production observable et transférable
+
+FORMAT ATTENDU :
+# SCÉNARIO FIDE
+## 1. Description du scénario
+## 2. Étapes et tâches communicatives
+## 3. Dialogues modèles
+## 4. Lexique et expressions
+## 5. Déroulé pédagogique (activités + timing)
+## 6. Supports à imprimer
+## 7. Consignes participant·e·s
+## 8. Différenciation
+## 9. Évaluation formative
+## 10. Connaissances socioculturelles
+## 11. Prolongements</pre>
+      </section>
+
+      <aside class="aside">
+        <section class="box">
+          <h4>Ce que ce prompt produit</h4>
+          <ul>
+            <li>Sortie structurée et actionnable</li>
+            <li>Ancrage FIDE + contexte suisse</li>
+            <li>Différenciation et évaluation intégrées</li>
+            <li>Supports directement utilisables en classe</li>
+          </ul>
+        </section>
+        <section class="box error">
+          <h4>Points à ajuster</h4>
+          <ul>
+            <li>Ville/canton et réalité locale</li>
+            <li>Niveau réel du groupe</li>
+            <li>Temps et matériel disponibles</li>
+          </ul>
+        </section>
+      </aside>
+    </div>
+
+    <footer>
+      <div class="notes">Dire&thinsp;: Plus le cadrage est explicite, plus la sortie est directement exploitable.</div>
+      <nav>
+        <button class="btn secondary" type="button" data-fullscreen-toggle>Plein écran</button>
+        <a class="btn secondary" href="etape-4-niveaux-prompt.html">← Précédent</a>
+        <a class="btn secondary" href="index.html">Index</a>
+        <a class="btn" href="etape-5-automatiser-collaborer.html">Suivant →</a>
+      </nav>
+    </footer>
+  </div>
+
+  <script>
+    var pre = document.getElementById('pre-expert');
+    var fontSize = 0.86;
+    pre.addEventListener('wheel', function(e) {
+      if (!e.ctrlKey) return;
+      e.preventDefault();
+      fontSize = e.deltaY < 0
+        ? Math.min(fontSize + 0.06, 2.0)
+        : Math.max(fontSize - 0.06, 0.4);
+      pre.style.fontSize = fontSize + 'em';
+    }, { passive: false });
+  </script>
+</body>
+</html>

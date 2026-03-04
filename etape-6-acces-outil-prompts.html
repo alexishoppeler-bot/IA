@@ -12,6 +12,9 @@
       grid-template-columns: 1fr 1fr 1fr;
       gap: 14px;
       align-content: start;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+      min-height: 0;
     }
 
     /* Consigne — pleine largeur */
@@ -19,7 +22,7 @@
       grid-column: 1 / -1;
       background: var(--blue-pale);
       border-left: 6px solid var(--blue-main);
-      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      border-radius: var(--radius-md);
       padding: 12px 18px;
       display: flex;
       align-items: center;
@@ -36,6 +39,10 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
+      background: #fff;
+      border-radius: var(--radius-md);
+      padding: 12px 12px 10px;
+      box-shadow: var(--shadow-xs);
     }
 
     .step-header {
@@ -75,7 +82,7 @@
     .action-col.s3 .step-badge  { background: var(--purple-mid); }
     .action-col.s3 .step-title  { color: var(--purple-mid); }
 
-    .step-body { display: flex; flex-direction: column; gap: 6px; }
+    .step-body { display: flex; flex-direction: column; gap: 6px; min-height: 0; }
 
     .task-row {
       display: flex;
@@ -84,7 +91,10 @@
       font-size: 0.88em;
       line-height: 1.45;
       color: #333;
+      padding: 4px 0;
+      border-bottom: 1px dashed #eceff2;
     }
+    .task-row:last-of-type { border-bottom: none; }
 
     .task-check { font-size: 1em; flex-shrink: 0; margin-top: 1px; }
 
@@ -103,6 +113,36 @@
     .tip-box.blue   { background: var(--blue-pale); border-color: var(--blue-mid);   color: var(--blue-main); }
     .tip-box.purple { background: var(--purple-pale); border-color: var(--purple-main); color: var(--purple-deep); }
 
+    .quick-links {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .quick-links .btn {
+      padding: 8px 12px;
+      font-size: 0.88em;
+    }
+
+    .quick-links .quick-note {
+      font-size: 0.84em;
+      color: #66707a;
+    }
+
+    @media (max-width: 980px) {
+      .content {
+        grid-template-columns: 1fr;
+      }
+      .consigne-row {
+        align-items: flex-start;
+      }
+      .consigne-icon {
+        font-size: 1.5em;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -120,6 +160,12 @@
         <div>
           <strong>Activité en 3 étapes :</strong> générez un prompt, testez‑le dans une IA, puis analysez.
         </div>
+      </div>
+
+      <div class="quick-links">
+        <a class="btn" href="generateur.html">✨ Ouvrir le générateur</a>
+        <a class="btn secondary" href="retour-prompt.html">🔍 Aller au retour prompt</a>
+        <span class="quick-note">Astuce : gardez cette page ouverte comme checklist.</span>
       </div>
 
       <!-- Étape 1 -->
@@ -177,11 +223,11 @@
     </div>
 
     <footer>
-      <div class="notes">Dire&thinsp;: L'IA produit un premier jet structuré — vous êtes le filtre pédagogique qui valide, adapte et décide.</div>
+      <div class="notes">👍&thinsp; L'IA produit un premier jet structuré — vous êtes le filtre pédagogique qui valide, adapte et décide.</div>
       <nav>
         <button class="btn secondary" type="button" data-fullscreen-toggle>Plein écran</button>
         <a class="btn secondary" href="etape-5-automatiser-collaborer.html">← Précédent</a>
-        <a class="btn secondary" href="index-etapes.html">Index</a>
+        <a class="btn secondary" href="index.html">Index</a>
         <a class="btn" href="retour-prompt.html">Suivant →</a>
       </nav>
     </footer>

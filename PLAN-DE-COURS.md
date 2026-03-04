@@ -28,25 +28,26 @@ Cette formation vise à outiller les formateurs·rices FIDE pour intégrer l'int
 
 ## Programme détaillé
 
-### Bloc 1 — 9h00 à 10h30
+### Bloc 1 — 9h00 à 10h15
 
 | Heure | # | Étape | Fichier |
 |---|---|---|---|
-| 9h00–9h15 | 1 | Vos usages actuels de l'IA | `etape-1-usages-ia.html` |
-| 9h15–9h35 | 2 | Comment fonctionne une IA ? | `etape-2-fonctionnement-ia.html` |
-| 9h35–9h55 | 3 | Le rôle du prompt | `etape-3-role-prompt.html` |
-| 9h55–10h15 | 4 | Comparaison des niveaux de prompt | `etape-4-niveaux-prompt.html` |
-| 10h15–10h30 | 5 | Automatiser et collaborer intelligemment | `etape-5-automatiser-collaborer.html` |
+| 9h00–9h10 | 1 | Vos usages actuels de l'IA | `etape-1-usages-ia.html` |
+| 9h10–9h25 | 2 | Comment fonctionne une IA ? | `etape-2-fonctionnement-ia.html` |
+| 9h25–9h40 | 3 | Le rôle du prompt | `etape-3-role-prompt.html` |
+| 9h40–9h55 | 4 | Comparaison des niveaux de prompt | `etape-4-niveaux-prompt.html` |
+| 9h55–10h15 | 5 | Automatiser et collaborer intelligemment | `etape-5-automatiser-collaborer.html` |
 
-☕ **Pause — 10h30 à 10h45**
+☕ **Pause — 10h15 à 10h30**
 
-### Bloc 2 — 10h45 à 12h00
+### Bloc 2 — 10h30 à 12h00
 
 | Heure | # | Étape | Fichier |
 |---|---|---|---|
-| 10h45–11h30 | 6 | Activité pratique — Générer, tester, analyser | `etape-6-acces-outil-prompts.html` |
-| 11h30–11h45 | 7 | Résumé — Ce qu'il faut retenir | `etape-7-resume.html` |
-| 11h45–12h00 | 8 | Évaluation de la formation | `etape-8-evaluation.html` |
+| 10h30–11h30 | 6 | Activité pratique — Générer, tester, analyser | `etape-6-acces-outil-prompts.html` |
+| 11h30–11h40 | 7 | Retour sur les prompts | `retour-prompt.html` |
+| 11h40–11h50 | 8 | Résumé — Ce qu'il faut retenir | `etape-7-resume.html` |
+| 11h50–12h00 | 9 | Évaluation de la formation | `etape-8-evaluation.html` |
 
 ---
 
@@ -55,15 +56,24 @@ Cette formation vise à outiller les formateurs·rices FIDE pour intégrer l'int
 ---
 
 ### Étape 0 — Introduction
-**Fichier :** `etape-0-introduction.html`
+**Fichier :** `index.html`
 
 Message d'ouverture : cadrer l'approche — l'IA comme outil au service de l'expertise pédagogique, pas comme substitut.
+
+**Affichage d'accueil :** fenêtre flottante d'introduction (charge mentale de préparation, utilité de l'IA comme appui, pas comme remplacement).
 
 **Note animateur :** Dire : Aujourd'hui, on ne subit pas l'IA — on la dirige. Vous repartez avec un outil testé et une méthode.
 
 ---
 
-### Étape 1 — Vos usages actuels de l'IA *(15 min)*
+### Planning — Vue d'ensemble
+**Fichier :** `planning.html`
+
+Vue horaire de la séance avant démarrage des étapes.
+
+---
+
+### Étape 1 — Vos usages actuels de l'IA *(10 min)*
 **Fichier :** `etape-1-usages-ia.html`
 
 **Format :** Activité collective — vote sur cartes interactives (3 colonnes).
@@ -78,7 +88,7 @@ Message d'ouverture : cadrer l'approche — l'IA comme outil au service de l'exp
 
 ---
 
-### Étape 2 — Comment fonctionne une IA ? *(20 min)*
+### Étape 2 — Comment fonctionne une IA ? *(15 min)*
 **Fichier :** `etape-2-fonctionnement-ia.html`
 
 **3 points clés à transmettre :**
@@ -107,7 +117,7 @@ Message d'ouverture : cadrer l'approche — l'IA comme outil au service de l'exp
 
 ---
 
-### Étape 3 — Le rôle du prompt *(20 min)*
+### Étape 3 — Le rôle du prompt *(15 min)*
 **Fichier :** `etape-3-role-prompt.html`
 
 **Pourquoi le prompt est central — 4 rôles :**
@@ -142,7 +152,7 @@ Message d'ouverture : cadrer l'approche — l'IA comme outil au service de l'exp
 
 ---
 
-### Étape 4 — Comparaison des niveaux de prompt *(20 min)*
+### Étape 4 — Comparaison des niveaux de prompt *(15 min)*
 **Fichier :** `etape-4-niveaux-prompt.html`
 
 **Scénario fil rouge :** Je raconte mes compétences | Objectif : Je peux raconter mes compétences techniques | Champ d'action : Recherche d'emploi
@@ -174,7 +184,7 @@ FORMAT : 11 sections numérotées
 
 ---
 
-### Étape 5 — Automatiser et collaborer intelligemment *(15 min)*
+### Étape 5 — Automatiser et collaborer intelligemment *(20 min)*
 **Fichier :** `etape-5-automatiser-collaborer.html`
 
 **Problèmes sans outil :**
@@ -185,6 +195,8 @@ FORMAT : 11 sections numérotées
 **Solution : le générateur de prompt FIDE**
 
 Formulaire qui construit automatiquement un prompt expert complet à partir de vos choix.
+
+**Dimension écologique :** réutiliser les prompts validés et partager les versions sur un dossier commun pour limiter les générations inutiles.
 
 **Mode d'emploi en 4 étapes :**
 1. Remplir le formulaire (niveau CECR, champ d'action, scénario, objectif, durée, groupe, matériel)
@@ -207,11 +219,11 @@ Formulaire qui construit automatiquement un prompt expert complet à partir de v
 
 ---
 
-☕ **PAUSE — 10h30 à 10h45**
+☕ **PAUSE — 10h15 à 10h30**
 
 ---
 
-### Étape 6 — Activité pratique — Générer, tester, analyser *(45 min)*
+### Étape 6 — Activité pratique — Générer, tester, analyser *(60 min)*
 **Fichier :** `etape-6-acces-outil-prompts.html`
 
 **Consigne générale :** Ouvrir le générateur, remplir le formulaire avec un scénario personnel, télécharger les prompts, coller dans une IA, analyser le résultat.
@@ -254,7 +266,24 @@ Formulaire qui construit automatiquement un prompt expert complet à partir de v
 
 ---
 
-### Étape 7 — Résumé — Ce qu'il faut retenir *(15 min)*
+### Étape 7 — Retour sur les prompts *(10 min)*
+**Fichier :** `retour-prompt.html`
+
+**Format :** Vote collectif structuré en 3 colonnes.
+
+| Colonne | Contenu |
+|---|---|
+| ✅ Points forts du résultat | Contexte suisse, niveau respecté, structure claire, dialogues utilisables… |
+| 🔧 Points à corriger | Niveau inadapté, consignes trop complexes, format trop long, ancrage culturel insuffisant… |
+| 💡 Solutions proposées | Ajustements ciblés dans le générateur (niveau CECR, durée, contraintes, lieu, format) |
+
+**But pédagogique :** Transformer les retours en actions concrètes sur les paramètres du prompt.
+
+**Note animateur :** Dire : On garde ce qui marche, on ajuste le reste — l'IA fournit un premier jet, vous décidez de la version finale.
+
+---
+
+### Étape 8 — Résumé — Ce qu'il faut retenir *(10 min)*
 **Fichier :** `etape-7-resume.html`
 
 **4 messages clés :**
@@ -285,7 +314,7 @@ Formulaire qui construit automatiquement un prompt expert complet à partir de v
 
 ---
 
-### Étape 8 — Évaluation de la formation *(15 min)*
+### Étape 9 — Évaluation de la formation *(10 min)*
 **Fichier :** `etape-8-evaluation.html`
 
 **Format :** Vote collectif sur cartes interactives (3 colonnes + note globale).
@@ -306,8 +335,10 @@ Formulaire qui construit automatiquement un prompt expert complet à partir de v
 
 | Ressource | Description |
 |---|---|
+| `index.html` | Introduction de la formation (message d'accueil + objectifs + programme) |
+| `planning.html` | Planning horaire détaillé de la séance |
+| `export-pdf.html` | Export complet en PDF (impression de tout le parcours) |
 | `generateur.html` | Générateur de prompt FIDE — formulaire complet |
-| `index-etapes.html` | Index de navigation entre toutes les étapes |
 | `shared.css` | Feuille de style partagée (design système) |
 
 ---
