@@ -54,7 +54,7 @@
     }
 
     /* Légère variation sur les cartes pour cette page */
-    .vote-card { font-size: 0.93em; padding: 10px 14px; min-height: 44px; }
+    .vote-card { font-size: 0.93em; padding: 10px 14px; min-height: 44px; pointer-events: none; }
 
     /* Couleur d'accentuation par colonne */
     .col-usages  .col-title { color: var(--green-deep); }
@@ -127,6 +127,21 @@
       font-size: 0.94em;
       line-height: 1.35;
     }
+
+    .live-notes {
+      margin: 4px 0 0;
+      padding-left: 18px;
+      max-height: 120px;
+      overflow-y: auto;
+      border-top: 1px solid #eef0f2;
+      padding-top: 8px;
+    }
+
+    .live-notes li {
+      margin-bottom: 6px;
+      font-size: 0.9em;
+      line-height: 1.35;
+    }
   </style>
 </head>
 <body>
@@ -143,84 +158,92 @@
       <div class="column col-usages">
         <div class="col-header">
           <span class="col-title">Usages fréquents</span>
-          <button class="reset-btn" onclick="resetGrid('grid-usages')">Réinitialiser</button>
+          <button class="reset-btn" type="button" disabled>Votes désactivés</button>
         </div>
         <div class="cards-grid" id="grid-usages">
-          <div class="vote-card" onclick="vote(this)">Préparer un cours</div>
-          <div class="vote-card" onclick="vote(this)">Reformuler un texte</div>
-          <div class="vote-card" onclick="vote(this)">Trouver des idées d'activités</div>
-          <div class="vote-card" onclick="vote(this)">Traduire ou simplifier</div>
-          <div class="vote-card" onclick="vote(this)">Créer des exercices</div>
-          <div class="vote-card" onclick="vote(this)">Corriger des textes</div>
-          <div class="vote-card" onclick="vote(this)">Générer des images</div>
-          <div class="vote-card" onclick="vote(this)">Rechercher des informations</div>
-          <div class="vote-card" onclick="vote(this)">Rédiger des consignes claires</div>
-          <div class="vote-card" onclick="vote(this)">Adapter le niveau de langue</div>
-          <div class="vote-card" onclick="vote(this)">Créer des jeux ou quiz</div>
-          <div class="vote-card" onclick="vote(this)">Préparer une évaluation</div>
-          <div class="vote-card" onclick="vote(this)">Résumer un document long</div>
-          <div class="vote-card" onclick="vote(this)">Générer des dialogues modèles</div>
-          <div class="vote-card" onclick="vote(this)">Préparer des supports visuels</div>
-          <div class="vote-card" onclick="vote(this)">Écrire des e-mails ou courriers</div>
-          <div class="vote-card" onclick="vote(this)">Créer un lexique thématique</div>
-          <div class="vote-card" onclick="vote(this)">Je n'utilise pas encore l'IA</div>
+          <div class="vote-card">Préparer un cours</div>
+          <div class="vote-card">Reformuler un texte</div>
+          <div class="vote-card">Trouver des idées d'activités</div>
+          <div class="vote-card">Traduire ou simplifier</div>
+          <div class="vote-card">Créer des exercices</div>
+          <div class="vote-card">Corriger des textes</div>
+          <div class="vote-card">Générer des images</div>
+          <div class="vote-card">Rechercher des informations</div>
+          <div class="vote-card">Rédiger des consignes claires</div>
+          <div class="vote-card">Adapter le niveau de langue</div>
+          <div class="vote-card">Créer des jeux ou quiz</div>
+          <div class="vote-card">Préparer une évaluation</div>
+          <div class="vote-card">Résumer un document long</div>
+          <div class="vote-card">Générer des dialogues modèles</div>
+          <div class="vote-card">Préparer des supports visuels</div>
+          <div class="vote-card">Écrire des e-mails ou courriers</div>
+          <div class="vote-card">Créer un lexique thématique</div>
+          <div class="vote-card">Je n'utilise pas encore l'IA</div>
         </div>
+        <ul class="live-notes" id="notes-usages"></ul>
       </div>
 
       <!-- Colonne 2 — Freins -->
       <div class="column col-freins">
         <div class="col-header">
           <span class="col-title">Freins &amp; craintes</span>
-          <button class="reset-btn" onclick="resetGrid('grid-freins')">Réinitialiser</button>
+          <button class="reset-btn" type="button" disabled>Votes désactivés</button>
         </div>
         <div class="cards-grid" id="grid-freins">
-          <div class="vote-card" onclick="vote(this)">Le prompt est difficile à formuler</div>
-          <div class="vote-card" onclick="vote(this)">Le résultat est trop général</div>
-          <div class="vote-card" onclick="vote(this)">Je manque de confiance</div>
-          <div class="vote-card" onclick="vote(this)">Je ne sais pas si c'est fiable</div>
-          <div class="vote-card" onclick="vote(this)">Ça prend trop de temps à corriger</div>
-          <div class="vote-card" onclick="vote(this)">Questions de confidentialité</div>
-          <div class="vote-card" onclick="vote(this)">Je ne vois pas l'intérêt</div>
-          <div class="vote-card" onclick="vote(this)">Le résultat ne respecte pas FIDE</div>
-          <div class="vote-card" onclick="vote(this)">Peur de perdre mon rôle de formateur</div>
-          <div class="vote-card" onclick="vote(this)">Je ne sais pas par où commencer</div>
-          <div class="vote-card" onclick="vote(this)">Le résultat est en mauvais français</div>
-          <div class="vote-card" onclick="vote(this)">Trop de paramètres à maîtriser</div>
-          <div class="vote-card" onclick="vote(this)">L'IA invente des informations</div>
-          <div class="vote-card" onclick="vote(this)">Pas accès à l'outil au travail</div>
-          <div class="vote-card" onclick="vote(this)">Je manque de temps pour apprendre</div>
+          <div class="vote-card">Le prompt est difficile à formuler</div>
+          <div class="vote-card">Le résultat est trop général</div>
+          <div class="vote-card">Je manque de confiance</div>
+          <div class="vote-card">Je ne sais pas si c'est fiable</div>
+          <div class="vote-card">Ça prend trop de temps à corriger</div>
+          <div class="vote-card">Questions de confidentialité</div>
+          <div class="vote-card">Je ne vois pas l'intérêt</div>
+          <div class="vote-card">Le résultat ne respecte pas FIDE</div>
+          <div class="vote-card">Peur de perdre mon rôle de formateur</div>
+          <div class="vote-card">Je ne sais pas par où commencer</div>
+          <div class="vote-card">Le résultat est en mauvais français</div>
+          <div class="vote-card">Trop de paramètres à maîtriser</div>
+          <div class="vote-card">L'IA invente des informations</div>
+          <div class="vote-card">Pas accès à l'outil au travail</div>
+          <div class="vote-card">Je manque de temps pour apprendre</div>
         </div>
+        <ul class="live-notes" id="notes-freins"></ul>
       </div>
 
       <!-- Colonne 3 — Attentes -->
       <div class="column col-attentes">
         <div class="col-header">
           <span class="col-title">Attentes</span>
-          <button class="reset-btn" onclick="resetGrid('grid-attentes')">Réinitialiser</button>
+          <button class="reset-btn" type="button" disabled>Votes désactivés</button>
         </div>
         <div class="cards-grid" id="grid-attentes">
-          <div class="vote-card" onclick="vote(this)">Gagner du temps</div>
-          <div class="vote-card" onclick="vote(this)">Avoir un support prêt à l'emploi</div>
-          <div class="vote-card" onclick="vote(this)">Améliorer la qualité des cours</div>
-          <div class="vote-card" onclick="vote(this)">Personnaliser pour les apprenants</div>
-          <div class="vote-card" onclick="vote(this)">Trouver des idées nouvelles</div>
-          <div class="vote-card" onclick="vote(this)">Simplifier la différenciation</div>
-          <div class="vote-card" onclick="vote(this)">Mieux structurer mes fiches</div>
-          <div class="vote-card" onclick="vote(this)">Créer plus vite des variantes</div>
-          <div class="vote-card" onclick="vote(this)">Réduire la charge de préparation</div>
-          <div class="vote-card" onclick="vote(this)">Produire des dialogues réalistes</div>
-          <div class="vote-card" onclick="vote(this)">Mieux ancrer dans le contexte suisse</div>
-          <div class="vote-card" onclick="vote(this)">Partager des ressources en équipe</div>
-          <div class="vote-card" onclick="vote(this)">Adapter aux différents niveaux CECR</div>
-          <div class="vote-card" onclick="vote(this)">Générer des grilles d'évaluation</div>
-          <div class="vote-card" onclick="vote(this)">Me sentir plus à l'aise avec l'IA</div>
+          <div class="vote-card">Gagner du temps</div>
+          <div class="vote-card">Avoir un support prêt à l'emploi</div>
+          <div class="vote-card">Améliorer la qualité des cours</div>
+          <div class="vote-card">Personnaliser pour les apprenants</div>
+          <div class="vote-card">Trouver des idées nouvelles</div>
+          <div class="vote-card">Simplifier la différenciation</div>
+          <div class="vote-card">Mieux structurer mes fiches</div>
+          <div class="vote-card">Créer plus vite des variantes</div>
+          <div class="vote-card">Réduire la charge de préparation</div>
+          <div class="vote-card">Produire des dialogues réalistes</div>
+          <div class="vote-card">Mieux ancrer dans le contexte suisse</div>
+          <div class="vote-card">Partager des ressources en équipe</div>
+          <div class="vote-card">Adapter aux différents niveaux CECR</div>
+          <div class="vote-card">Générer des grilles d'évaluation</div>
+          <div class="vote-card">Me sentir plus à l'aise avec l'IA</div>
         </div>
+        <ul class="live-notes" id="notes-attentes"></ul>
       </div>
 
     </div>
 
     <section class="free-comment" aria-label="Commentaires libres">
       <h3>Autre / commentaire libre</h3>
+      <select id="comment-target">
+        <option value="usages">Usages fréquents</option>
+        <option value="freins">Freins &amp; craintes</option>
+        <option value="attentes">Attentes</option>
+      </select>
       <textarea id="free-comment-input" maxlength="300" placeholder="Écrivez un retour en 300 caractères max."></textarea>
       <div class="free-comment-controls">
         <span class="char-count" id="char-count">0/300</span>
@@ -264,99 +287,71 @@ const firebaseConfig = {
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
     const auth = getAuth(app);
-    const votesRef = ref(db, 'votes/etape1');
     const messagesRef = ref(db, 'messages/etape1');
-    const cards = Array.from(document.querySelectorAll('.vote-card'));
     const textarea = document.getElementById('free-comment-input');
+    const targetSelect = document.getElementById('comment-target');
     const sendBtn = document.getElementById('send-comment-btn');
     const messagesList = document.getElementById('messages-list');
+    const notesUsages = document.getElementById('notes-usages');
+    const notesFreins = document.getElementById('notes-freins');
+    const notesAttentes = document.getElementById('notes-attentes');
     const charCount = document.getElementById('char-count');
     const statusEl = document.getElementById('comment-status');
     const MESSAGE_COOLDOWN_MS = 15000;
     let currentUid = null;
     let sendLocked = false;
 
-    cards.forEach(function(card, index) {
-      card.dataset.index = String(index);
-      applyVoteClass(card, 0);
-    });
-
     function setStatus(message, isError) {
       statusEl.textContent = message || '';
       statusEl.classList.toggle('error', Boolean(isError));
     }
 
-    function applyVoteClass(card, n) {
-      card.dataset.votes = n;
-      card.classList.remove('voted-1','voted-2','voted-3','voted-4','voted-5plus');
-      if      (n === 1) card.classList.add('voted-1');
-      else if (n === 2) card.classList.add('voted-2');
-      else if (n === 3) card.classList.add('voted-3');
-      else if (n === 4) card.classList.add('voted-4');
-      else if (n >= 5)  card.classList.add('voted-5plus');
-
-      if (n > 0) {
-        let badge = card.querySelector('.badge');
-        if (!badge) {
-          badge = document.createElement('span');
-          badge.className = 'badge';
-          card.appendChild(badge);
-        }
-        badge.textContent = n;
-      } else {
-        const badge = card.querySelector('.badge');
-        if (badge) badge.remove();
-      }
-    }
-
-    async function vote(card) {
-      if (!currentUid) return;
-      const index = card.dataset.index;
-      if (typeof index === 'undefined') return;
-      await runTransaction(ref(db, 'votes/etape1/' + index), function(current) {
-        return (current || 0) + 1;
-      });
-    }
-
-    async function resetGrid(id) {
-      if (!currentUid) return;
-      const colCards = document.querySelectorAll('#' + id + ' .vote-card');
-      const writes = Array.from(colCards).map(function(c) {
-        return set(ref(db, 'votes/etape1/' + c.dataset.index), 0);
-      });
-      await Promise.all(writes);
-    }
-
-    function renderVotes(votes) {
-      cards.forEach(function(card, i) {
-        const value = votes && typeof votes[i] !== 'undefined' ? Number(votes[i]) : 0;
-        applyVoteClass(card, Number.isFinite(value) && value > 0 ? value : 0);
-      });
-    }
-
     function renderMessages(raw) {
       messagesList.innerHTML = '';
+      notesUsages.innerHTML = '';
+      notesFreins.innerHTML = '';
+      notesAttentes.innerHTML = '';
       if (!raw) return;
 
       const items = [];
-      Object.keys(raw).forEach(function(uid) {
-        const byUser = raw[uid];
-        if (!byUser || typeof byUser !== 'object') return;
-        Object.keys(byUser).forEach(function(ts) {
-          const msg = byUser[ts];
-          if (msg && typeof msg.texte === 'string') items.push(msg);
+      Object.keys(raw).forEach(function(colKey) {
+        const byColumn = raw[colKey];
+        if (!byColumn || typeof byColumn !== 'object') return;
+        Object.keys(byColumn).forEach(function(uid) {
+          const byUser = byColumn[uid];
+          if (!byUser || typeof byUser !== 'object') return;
+          Object.keys(byUser).forEach(function(ts) {
+            const msg = byUser[ts];
+            if (msg && typeof msg.texte === 'string') {
+              items.push({ col: colKey, texte: msg.texte, date: msg.date });
+            }
+          });
         });
       });
 
       items.sort(function(a, b) { return (a.date || 0) - (b.date || 0); });
-      const lastItems = items.slice(-25);
+      const lastItems = items.slice(-40);
 
       lastItems.forEach(function(msg) {
+        const targetList = msg.col === 'usages' ? notesUsages : (msg.col === 'freins' ? notesFreins : notesAttentes);
+        if (!targetList) return;
+        const targetLi = document.createElement('li');
+        const ts = Number(msg.date) || 0;
+        targetLi.textContent = '[' + formatMessageDate(ts) + '] ' + msg.texte;
+        targetList.appendChild(targetLi);
+
         const li = document.createElement('li');
         const ts = Number(msg.date) || 0;
-        li.textContent = '[' + formatMessageDate(ts) + '] ' + msg.texte;
+        li.textContent = '[' + formatMessageDate(ts) + '] ' + columnLabel(msg.col) + ' — ' + msg.texte;
         messagesList.appendChild(li);
       });
+    }
+
+    function columnLabel(col) {
+      if (col === 'usages') return 'Usages';
+      if (col === 'freins') return 'Freins';
+      if (col === 'attentes') return 'Attentes';
+      return 'Autre';
     }
 
     function formatMessageDate(timestamp) {
@@ -381,8 +376,10 @@ const firebaseConfig = {
     sendBtn.addEventListener('click', async function() {
       if (!currentUid || sendLocked) return;
       const texte = textarea.value.trim();
+      const col = targetSelect.value;
       if (!texte) return;
       if (texte.length > 300) return;
+      if (!['usages', 'freins', 'attentes'].includes(col)) return;
       sendLocked = true;
       sendBtn.disabled = true;
       try {
@@ -401,7 +398,7 @@ const firebaseConfig = {
           return;
         }
 
-        await set(ref(db, 'messages/etape1/' + currentUid + '/' + nowTs), {
+        await set(ref(db, 'messages/etape1/' + col + '/' + currentUid + '/' + nowTs), {
           texte: texte,
           date: nowTs
         });
@@ -418,10 +415,6 @@ const firebaseConfig = {
 
     textarea.addEventListener('input', updateCharCount);
     updateCharCount();
-
-    onValue(votesRef, function(snapshot) {
-      renderVotes(snapshot.val());
-    });
 
     onValue(messagesRef, function(snapshot) {
       renderMessages(snapshot.val());
@@ -440,9 +433,7 @@ const firebaseConfig = {
       setStatus('Connexion anonyme impossible. Verifiez Firebase Auth.', true);
     });
 
-    // Conserve les handlers HTML existants (onclick="vote(this)", onclick="resetGrid(...)").
-    window.vote = vote;
-    window.resetGrid = resetGrid;
+    // Votes desactives: plus de handler global necessaire.
   </script>
 </body>
 </html>
