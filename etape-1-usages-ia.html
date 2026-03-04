@@ -53,8 +53,12 @@
       scrollbar-width: thin;
     }
 
-    /* Légère variation sur les cartes pour cette page */
-    .vote-card { font-size: 0.93em; padding: 10px 14px; min-height: 44px; pointer-events: none; }
+    .empty-col {
+      margin: 0;
+      font-size: 0.92em;
+      color: #5f6b77;
+      font-style: italic;
+    }
 
     /* Couleur d'accentuation par colonne */
     .col-usages  .col-title { color: var(--green-deep); }
@@ -149,7 +153,7 @@
 
     <header>
       <h2>1. Vos usages actuels de l'IA</h2>
-      <p>Touchez les cartes qui vous correspondent — plus on vote, plus c'est visible.</p>
+      <p>Ajoutez vos retours libres dans la colonne choisie. Les commentaires s'affichent en direct.</p>
     </header>
 
     <div class="columns">
@@ -158,28 +162,9 @@
       <div class="column col-usages">
         <div class="col-header">
           <span class="col-title">Usages fréquents</span>
-          <button class="reset-btn" type="button" disabled>Votes désactivés</button>
+          <span class="notes">Saisie libre</span>
         </div>
-        <div class="cards-grid" id="grid-usages">
-          <div class="vote-card">Préparer un cours</div>
-          <div class="vote-card">Reformuler un texte</div>
-          <div class="vote-card">Trouver des idées d'activités</div>
-          <div class="vote-card">Traduire ou simplifier</div>
-          <div class="vote-card">Créer des exercices</div>
-          <div class="vote-card">Corriger des textes</div>
-          <div class="vote-card">Générer des images</div>
-          <div class="vote-card">Rechercher des informations</div>
-          <div class="vote-card">Rédiger des consignes claires</div>
-          <div class="vote-card">Adapter le niveau de langue</div>
-          <div class="vote-card">Créer des jeux ou quiz</div>
-          <div class="vote-card">Préparer une évaluation</div>
-          <div class="vote-card">Résumer un document long</div>
-          <div class="vote-card">Générer des dialogues modèles</div>
-          <div class="vote-card">Préparer des supports visuels</div>
-          <div class="vote-card">Écrire des e-mails ou courriers</div>
-          <div class="vote-card">Créer un lexique thématique</div>
-          <div class="vote-card">Je n'utilise pas encore l'IA</div>
-        </div>
+        <p class="empty-col">Les participants écrivent eux-mêmes leurs usages.</p>
         <ul class="live-notes" id="notes-usages"></ul>
       </div>
 
@@ -187,25 +172,9 @@
       <div class="column col-freins">
         <div class="col-header">
           <span class="col-title">Freins &amp; craintes</span>
-          <button class="reset-btn" type="button" disabled>Votes désactivés</button>
+          <span class="notes">Saisie libre</span>
         </div>
-        <div class="cards-grid" id="grid-freins">
-          <div class="vote-card">Le prompt est difficile à formuler</div>
-          <div class="vote-card">Le résultat est trop général</div>
-          <div class="vote-card">Je manque de confiance</div>
-          <div class="vote-card">Je ne sais pas si c'est fiable</div>
-          <div class="vote-card">Ça prend trop de temps à corriger</div>
-          <div class="vote-card">Questions de confidentialité</div>
-          <div class="vote-card">Je ne vois pas l'intérêt</div>
-          <div class="vote-card">Le résultat ne respecte pas FIDE</div>
-          <div class="vote-card">Peur de perdre mon rôle de formateur</div>
-          <div class="vote-card">Je ne sais pas par où commencer</div>
-          <div class="vote-card">Le résultat est en mauvais français</div>
-          <div class="vote-card">Trop de paramètres à maîtriser</div>
-          <div class="vote-card">L'IA invente des informations</div>
-          <div class="vote-card">Pas accès à l'outil au travail</div>
-          <div class="vote-card">Je manque de temps pour apprendre</div>
-        </div>
+        <p class="empty-col">Les participants écrivent eux-mêmes leurs freins.</p>
         <ul class="live-notes" id="notes-freins"></ul>
       </div>
 
@@ -213,25 +182,9 @@
       <div class="column col-attentes">
         <div class="col-header">
           <span class="col-title">Attentes</span>
-          <button class="reset-btn" type="button" disabled>Votes désactivés</button>
+          <span class="notes">Saisie libre</span>
         </div>
-        <div class="cards-grid" id="grid-attentes">
-          <div class="vote-card">Gagner du temps</div>
-          <div class="vote-card">Avoir un support prêt à l'emploi</div>
-          <div class="vote-card">Améliorer la qualité des cours</div>
-          <div class="vote-card">Personnaliser pour les apprenants</div>
-          <div class="vote-card">Trouver des idées nouvelles</div>
-          <div class="vote-card">Simplifier la différenciation</div>
-          <div class="vote-card">Mieux structurer mes fiches</div>
-          <div class="vote-card">Créer plus vite des variantes</div>
-          <div class="vote-card">Réduire la charge de préparation</div>
-          <div class="vote-card">Produire des dialogues réalistes</div>
-          <div class="vote-card">Mieux ancrer dans le contexte suisse</div>
-          <div class="vote-card">Partager des ressources en équipe</div>
-          <div class="vote-card">Adapter aux différents niveaux CECR</div>
-          <div class="vote-card">Générer des grilles d'évaluation</div>
-          <div class="vote-card">Me sentir plus à l'aise avec l'IA</div>
-        </div>
+        <p class="empty-col">Les participants écrivent eux-mêmes leurs attentes.</p>
         <ul class="live-notes" id="notes-attentes"></ul>
       </div>
 
@@ -267,7 +220,7 @@
 
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js';
-    import { getDatabase, ref, onValue, runTransaction, set } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js';
+    import { getDatabase, ref, onValue, push } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js';
     import { getAuth, signInAnonymously, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js';
 
     // A completer avec votre projet Firebase (console Firebase > Parametres du projet).
@@ -297,7 +250,6 @@ const firebaseConfig = {
     const notesAttentes = document.getElementById('notes-attentes');
     const charCount = document.getElementById('char-count');
     const statusEl = document.getElementById('comment-status');
-    const MESSAGE_COOLDOWN_MS = 15000;
     let currentUid = null;
     let sendLocked = false;
 
@@ -317,15 +269,11 @@ const firebaseConfig = {
       Object.keys(raw).forEach(function(colKey) {
         const byColumn = raw[colKey];
         if (!byColumn || typeof byColumn !== 'object') return;
-        Object.keys(byColumn).forEach(function(uid) {
-          const byUser = byColumn[uid];
-          if (!byUser || typeof byUser !== 'object') return;
-          Object.keys(byUser).forEach(function(ts) {
-            const msg = byUser[ts];
-            if (msg && typeof msg.texte === 'string') {
-              items.push({ col: colKey, texte: msg.texte, date: msg.date });
-            }
-          });
+        Object.keys(byColumn).forEach(function(messageId) {
+          const msg = byColumn[messageId];
+          if (msg && typeof msg.texte === 'string') {
+            items.push({ col: colKey, texte: msg.texte, date: msg.date });
+          }
         });
       });
 
@@ -384,23 +332,10 @@ const firebaseConfig = {
       sendBtn.disabled = true;
       try {
         const nowTs = Date.now();
-        const lastMessageRef = ref(db, 'userMeta/etape1/' + currentUid + '/lastMessageAt');
-
-        // Transaction atomique: reserve un envoi si le cooldown est respecte.
-        const tx = await runTransaction(lastMessageRef, function(current) {
-          const last = Number(current) || 0;
-          if (nowTs - last < MESSAGE_COOLDOWN_MS) return;
-          return nowTs;
-        });
-
-        if (!tx.committed) {
-          setStatus('Patientez quelques secondes avant un nouveau message.', true);
-          return;
-        }
-
-        await set(ref(db, 'messages/etape1/' + col + '/' + currentUid + '/' + nowTs), {
+        await push(ref(db, 'messages/etape1/' + col), {
           texte: texte,
-          date: nowTs
+          date: nowTs,
+          uid: currentUid
         });
         textarea.value = '';
         updateCharCount();
