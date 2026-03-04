@@ -303,7 +303,9 @@ const firebaseConfig = {
       if (!raw) return;
 
       const items = [];
+      const allowedCols = { usages: true, freins: true, attentes: true };
       Object.keys(raw).forEach(function(colKey) {
+        if (!allowedCols[colKey]) return;
         const byColumn = raw[colKey];
         if (!byColumn || typeof byColumn !== 'object') return;
         Object.keys(byColumn).forEach(function(messageId) {
@@ -329,8 +331,14 @@ const firebaseConfig = {
       items.sort(function(a, b) { return (a.date || 0) - (b.date || 0); });
       const lastItems = items.slice(-40);
 
+      const gridByCol = {
+        usages: cardsUsages,
+        freins: cardsFreins,
+        attentes: cardsAttentes
+      };
+
       lastItems.forEach(function(msg) {
-        const targetGrid = msg.col === 'usages' ? cardsUsages : (msg.col === 'freins' ? cardsFreins : cardsAttentes);
+        const targetGrid = gridByCol[msg.col];
         if (!targetGrid) return;
         const card = document.createElement('div');
         card.className = 'vote-card voted-1';
