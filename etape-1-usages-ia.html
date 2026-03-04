@@ -291,29 +291,13 @@ const firebaseConfig = {
         if (!targetGrid) return;
         const card = document.createElement('div');
         card.className = 'vote-card voted-1';
-        const ts = Number(msg.date) || 0;
-        card.textContent = '[' + formatMessageDate(ts) + '] ' + msg.texte;
+        card.textContent = msg.texte;
         targetGrid.appendChild(card);
       });
 
       if (!lastItems.length) {
         setStatus('Aucun message a afficher pour le moment.', false);
       }
-    }
-
-    function formatMessageDate(timestamp) {
-      if (!timestamp) return '--:--';
-      const d = new Date(timestamp);
-      const now = new Date();
-      const sameDay = d.getFullYear() === now.getFullYear()
-        && d.getMonth() === now.getMonth()
-        && d.getDate() === now.getDate();
-      const hh = String(d.getHours()).padStart(2, '0');
-      const mm = String(d.getMinutes()).padStart(2, '0');
-      if (sameDay) return hh + ':' + mm;
-      const dd = String(d.getDate()).padStart(2, '0');
-      const mo = String(d.getMonth() + 1).padStart(2, '0');
-      return dd + '/' + mo + ' ' + hh + ':' + mm;
     }
 
     function updateCharCount() {
