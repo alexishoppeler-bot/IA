@@ -197,7 +197,10 @@
       <textarea id="free-comment-input" maxlength="300" placeholder="Écrivez un retour en 300 caractères max."></textarea>
       <div class="free-comment-controls">
         <span class="char-count" id="char-count">0/300</span>
-        <button class="btn" type="button" id="send-comment-btn">Envoyer</button>
+        <div>
+          <button class="btn secondary" type="button" id="reset-comments-btn">Reset</button>
+          <button class="btn" type="button" id="send-comment-btn">Envoyer</button>
+        </div>
       </div>
       <p class="comment-status" id="comment-status" aria-live="polite"></p>
     </section>
@@ -216,7 +219,7 @@
 
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js';
-    import { getDatabase, ref, onValue, push } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js';
+    import { getDatabase, ref, onValue, push, remove } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js';
     import { getAuth, signInAnonymously, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js';
 
     // A completer avec votre projet Firebase (console Firebase > Parametres du projet).
@@ -240,6 +243,7 @@ const firebaseConfig = {
     const textarea = document.getElementById('free-comment-input');
     const targetSelect = document.getElementById('comment-target');
     const sendBtn = document.getElementById('send-comment-btn');
+    const resetBtn = document.getElementById('reset-comments-btn');
     const cardsUsages = document.getElementById('cards-usages');
     const cardsFreins = document.getElementById('cards-freins');
     const cardsAttentes = document.getElementById('cards-attentes');
@@ -333,6 +337,32 @@ const firebaseConfig = {
       } finally {
         sendLocked = false;
         sendBtn.disabled = false;
+      }
+    });
+
+    resetBtn.addEventListener('click', async function() {
+      if (sendLocked) return;
+      if (!currentUid) {
+        setStatus('Connexion Firebase non etablie. Activez Auth anonyme et rechargez la page.', true);
+        return;
+      }
+      sendLocked = true;
+      sendBtn.disabled = true;
+      resetBtn.disabled = true;
+      try {
+        await Promise.all([
+          remove(ref(db, 'messages/etape1/usages')),
+          remove(ref(db, 'messages/etape1/freins')),
+          remove(ref(db, 'messages/etape1/attentes'))
+        ]);
+        setStatus('Toutes les cartes ont ete reinitialisees.', false);
+      } catch (error) {
+        const details = error && (error.code || error.message) ? ' (' + (error.code || error.message) + ')' : '';
+        setStatus('Reset impossible' + details, true);
+      } finally {
+        sendLocked = false;
+        sendBtn.disabled = false;
+        resetBtn.disabled = false;
       }
     });
 
