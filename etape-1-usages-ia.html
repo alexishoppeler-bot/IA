@@ -173,6 +173,23 @@
       font: inherit;
       font-size: 0.85em;
     }
+
+    .qr-box {
+      margin-top: 8px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid #e7ebef;
+    }
+
+    .qr-label {
+      font-size: 0.86em;
+      color: #5f6b77;
+      max-width: 220px;
+    }
   </style>
 </head>
 <body>
@@ -239,6 +256,11 @@
       <p class="comment-status" id="comment-status" aria-live="polite"></p>
     </section>
 
+    <section class="qr-box" aria-label="QR participants">
+      <div id="participants-qr"></div>
+      <div class="qr-label">Scannez ce QR pour ouvrir cette étape sur téléphone.</div>
+    </section>
+
     <footer>
       <div class="notes">Dire&thinsp;: L'objectif n'est pas de juger les usages, mais de comprendre d'où on part.</div>
       <nav>
@@ -251,6 +273,7 @@
 
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js';
     import { getDatabase, ref, onValue, push, remove } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js';
@@ -281,6 +304,7 @@ const firebaseConfig = {
     const adminPanel = document.getElementById('admin-panel');
     const adminCodeInput = document.getElementById('admin-code-input');
     const adminResetBtn = document.getElementById('admin-reset-btn');
+    const qrContainer = document.getElementById('participants-qr');
     const cardsUsages = document.getElementById('cards-usages');
     const cardsFreins = document.getElementById('cards-freins');
     const cardsAttentes = document.getElementById('cards-attentes');
@@ -289,6 +313,16 @@ const firebaseConfig = {
     const ADMIN_CODE = '1984';
     let currentUid = null;
     let sendLocked = false;
+
+    if (qrContainer && window.QRCode) {
+      qrContainer.innerHTML = '';
+      new window.QRCode(qrContainer, {
+        text: window.location.href,
+        width: 96,
+        height: 96,
+        correctLevel: window.QRCode.CorrectLevel.M
+      });
+    }
     let unsubscribeMessages = null;
 
     function setStatus(message, isError) {
