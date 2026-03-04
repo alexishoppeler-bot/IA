@@ -190,6 +190,38 @@
       color: #5f6b77;
       max-width: 220px;
     }
+
+    @media (max-width: 900px) {
+      html, body { overflow: auto; }
+      .page { height: auto; min-height: 100vh; }
+      .columns {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      .column {
+        max-height: none;
+      }
+      .live-cards {
+        max-height: 180px;
+        overflow-y: auto;
+      }
+      .free-comment textarea {
+        min-height: 96px;
+      }
+      .free-comment-controls {
+        align-items: stretch;
+      }
+      .free-comment-controls .btn {
+        width: 100%;
+      }
+      .qr-box {
+        width: 100%;
+        justify-content: flex-start;
+      }
+      .admin-tools {
+        margin-bottom: 10px;
+      }
+    }
   </style>
 </head>
 <body>
