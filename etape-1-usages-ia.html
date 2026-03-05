@@ -462,10 +462,15 @@ const firebaseConfig = {
     let currentUid = null;
     let sendLocked = false;
 
+    const qrUrl = new URL(window.location.href);
+    qrUrl.hash = '';
+    qrUrl.searchParams.set('participant', '1');
+    const participantUrl = qrUrl.toString();
+
     if (qrContainer && window.QRCode) {
       qrContainer.innerHTML = '';
       new window.QRCode(qrContainer, {
-        text: window.location.href,
+        text: participantUrl,
         width: 96,
         height: 96,
         correctLevel: window.QRCode.CorrectLevel.M
@@ -473,7 +478,7 @@ const firebaseConfig = {
       if (qrLargeContainer) {
         qrLargeContainer.innerHTML = '';
         new window.QRCode(qrLargeContainer, {
-          text: window.location.href,
+          text: participantUrl,
           width: 320,
           height: 320,
           correctLevel: window.QRCode.CorrectLevel.M
