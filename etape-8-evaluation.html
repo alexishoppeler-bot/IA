@@ -215,7 +215,7 @@
     const db = getDatabase(app);
     const auth = getAuth(app);
     const statusEl = document.getElementById('firebase-status');
-    const votesRootRef = ref(db, 'votes/etape8');
+    const votesRootRef = ref(db, 'messages/etape8/votes');
     const allCards = Array.from(document.querySelectorAll('.vote-card'));
     let currentUid = null;
 
@@ -265,7 +265,7 @@
         return;
       }
       const cardId = card.dataset.cardId;
-      const voteRef = ref(db, 'votes/etape8/' + cardId);
+      const voteRef = ref(db, 'messages/etape8/votes/' + cardId);
       try {
         await runTransaction(voteRef, function(current) {
           return (Number(current) || 0) + 1;
