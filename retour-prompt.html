@@ -12,15 +12,41 @@
       grid-template-columns: 1fr;
       gap: 14px;
       align-content: start;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .intro-strip {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--blue-pale);
+      border: 1px solid var(--blue-light);
+      border-left: 5px solid var(--blue-main);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+      font-size: 0.9em;
+      color: var(--blue-deep);
+      line-height: 1.45;
     }
 
     .vote-row {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 12px;
+      align-items: start;
     }
 
-    .vote-col { display: flex; flex-direction: column; gap: 8px; }
+    .vote-col {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: #f8fafc;
+      border: 1px solid #dbe4ee;
+      border-radius: var(--radius-md);
+      padding: 10px;
+      min-height: 100%;
+    }
 
     .vote-col-header {
       display: flex;
@@ -35,7 +61,9 @@
     .vote-col-title.orange  { color: var(--orange-dark); }
     .vote-col-title.blue    { color: var(--blue-main); }
 
-    .cards-wrap { display: flex; flex-wrap: wrap; gap: 6px; }
+    .cards-wrap { display: flex; flex-wrap: wrap; gap: 6px; align-content: flex-start; }
+    .cards-wrap.stack-list { display: grid; grid-template-columns: 1fr; gap: 7px; }
+    .cards-wrap.stack-list .vote-card { width: 100%; }
     .vote-card  { font-size: 0.85em; padding: 8px 12px; min-height: 36px; }
 
     .sol-empty { font-size: 0.82em; color: #bbb; font-style: italic; padding: 6px 4px; }
@@ -62,6 +90,23 @@
       animation: fadeIn 0.25s ease;
     }
 
+    .solution-wrap {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      width: 100%;
+    }
+
+    @media (max-width: 1100px) {
+      .vote-row { grid-template-columns: 1fr 1fr; }
+      .vote-col:last-child { grid-column: 1 / -1; }
+    }
+
+    @media (max-width: 760px) {
+      .vote-row { grid-template-columns: 1fr; }
+      .vote-col:last-child { grid-column: auto; }
+    }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(4px); }
       to   { opacity: 1; transform: none; }
@@ -77,6 +122,9 @@
     </header>
 
     <div class="content">
+      <div class="intro-strip">
+        <strong>Mode d'emploi :</strong> cliquez sur les cartes partagées par le groupe, puis sélectionnez un point à corriger pour afficher les ajustements de prompt.
+      </div>
 
       <div class="vote-row">
 
@@ -85,7 +133,7 @@
             <span class="vote-col-title green">✅ Points forts du résultat</span>
             <button class="reset-btn" onclick="resetCards('grid-forts')">Réinitialiser</button>
           </div>
-          <div class="cards-wrap" id="grid-forts">
+          <div class="cards-wrap stack-list" id="grid-forts">
             <div class="vote-card" onclick="vote(this)">Contexte suisse réaliste</div>
             <div class="vote-card" onclick="vote(this)">Niveau de langue respecté</div>
             <div class="vote-card" onclick="vote(this)">Structure claire en 11 sections</div>
@@ -102,7 +150,7 @@
             <span class="vote-col-title orange">🔧 Points à corriger</span>
             <button class="reset-btn" onclick="resetCards('grid-correct')">Réinitialiser</button>
           </div>
-          <div class="cards-wrap" id="grid-correct">
+          <div class="cards-wrap stack-list" id="grid-correct">
             <div class="vote-card" data-label="Contexte pas assez local"          onclick="vote(this)">Contexte pas assez local</div>
             <div class="vote-card" data-label="Niveau trop difficile"             onclick="vote(this)">Niveau trop difficile</div>
             <div class="vote-card" data-label="Niveau trop facile"                onclick="vote(this)">Niveau trop facile</div>
@@ -118,7 +166,7 @@
           <div class="vote-col-header">
             <span class="vote-col-title blue">💡 Solutions proposées</span>
           </div>
-          <div class="cards-wrap" id="grid-solutions">
+          <div class="cards-wrap solution-wrap" id="grid-solutions">
             <select id="solutions-select" class="sol-select">
               <option value="">Choisir un point à corriger…</option>
             </select>
