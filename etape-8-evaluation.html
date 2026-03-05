@@ -83,6 +83,46 @@
       -webkit-overflow-scrolling: touch;
       scrollbar-width: thin;
     }
+
+    .live-monitor {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      padding: 10px 14px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px 14px;
+      align-items: start;
+      flex-shrink: 0;
+    }
+
+    .live-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .stat-chip {
+      background: #eef2f5;
+      border: 1px solid #d6dee6;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.82em;
+      color: #374957;
+      font-weight: 700;
+    }
+
+    .vote-feed {
+      margin: 0;
+      padding-left: 18px;
+      max-height: 78px;
+      overflow-y: auto;
+      font-size: 0.84em;
+      color: #516271;
+      line-height: 1.35;
+    }
+
+    .vote-feed li { margin-bottom: 4px; }
   </style>
 </head>
 <body>
@@ -93,7 +133,17 @@
       <p>Votez les cartes qui vous correspondent — votre retour nous aide à améliorer la formation.</p>
     </header>
 
-    
+    <div class="live-monitor">
+      <div>
+        <div class="live-stats">
+          <span class="stat-chip">Votes total: <span id="stat-total-votes">0</span></span>
+          <span class="stat-chip">Participant·e·s actifs: <span id="stat-active-voters">0</span></span>
+        </div>
+      </div>
+      <ol class="vote-feed" id="vote-feed">
+        <li>En attente de votes participants…</li>
+      </ol>
+    </div>
 
     <!-- Note globale + critères -->
     <div class="top-row" id="top-row">
@@ -215,12 +265,16 @@
     const db = getDatabase(app);
     const auth = getAuth(app);
     const statusEl = document.getElementById('firebase-status');
+    const totalVotesEl = document.getElementById('stat-total-votes');
+    const activeVotersEl = document.getElementById('stat-active-voters');
+    const voteFeedEl = document.getElementById('vote-feed');
     const votesRootRef = ref(db, 'messages/etape8/votes');
     const allCards = Array.from(document.querySelectorAll('.vote-card'));
     let currentUid = null;
 
     allCards.forEach(function(card, i) {
       card.dataset.cardId = String(i);
+      card.dataset.label = card.textContent.trim();
       card.dataset.votes = '0';
     });
 
@@ -240,6 +294,10 @@
     }
 
     function renderVotes(votes) {
+      let totalVotes = 0;
+      const voters = new Set();
+      const events = [];
+
       allCards.forEach(function(card) {
         const id = card.dataset.cardId;
         let n = 0;
@@ -248,9 +306,20 @@
           if (typeof node === 'number') {
             n = node;
           } else if (node && typeof node === 'object') {
-            n = Object.keys(node).length;
+            const entries = Object.values(node).filter(function(item) {
+              return item && typeof item === 'object';
+            });
+            n = entries.length;
+            entries.forEach(function(entry) {
+              if (entry.uid) voters.add(entry.uid);
+              events.push({
+                label: card.dataset.label || card.textContent.trim(),
+                date: Number(entry.date) || 0
+              });
+            });
           }
         }
+        totalVotes += n;
         card.dataset.votes = String(n);
         applyClass(card, n);
         let badge = card.querySelector('.badge');
@@ -265,6 +334,20 @@
           badge.remove();
         }
       });
+
+      if (totalVotesEl) totalVotesEl.textContent = String(totalVotes);
+      if (activeVotersEl) activeVotersEl.textContent = String(voters.size);
+      if (voteFeedEl) {
+        if (!events.length) {
+          voteFeedEl.innerHTML = '<li>En attente de votes participants…</li>';
+        } else {
+          const latest = events.sort(function(a, b) { return b.date - a.date; }).slice(0, 8);
+          voteFeedEl.innerHTML = latest.map(function(ev) {
+            const time = ev.date ? new Date(ev.date).toLocaleTimeString('fr-CH', { hour: '2-digit', minute: '2-digit' }) : '--:--';
+            return '<li><strong>' + ev.label + '</strong> (' + time + ')</li>';
+          }).join('');
+        }
+      }
     }
 
     async function vote(card) {
