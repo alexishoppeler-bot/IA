@@ -93,6 +93,26 @@
       <p>Votez les cartes qui vous correspondent — votre retour nous aide à améliorer la formation.</p>
     </header>
 
+    <!-- Vérification des acquis -->
+    <div style="background:var(--green-pale); border-left:5px solid var(--green-main); border-radius:0 var(--radius-md) var(--radius-md) 0; padding:12px 18px; display:grid; grid-template-columns:1fr 1fr; gap:12px; flex-shrink:0;">
+      <div>
+        <div style="font-weight:700; color:var(--green-deep); font-size:0.85em; margin-bottom:6px;">Question 1</div>
+        <div style="font-size:0.88em; color:#444; line-height:1.5;">Citez un élément essentiel d'un bon prompt FIDE.</div>
+        <div style="font-size:0.8em; color:var(--green-mid); margin-top:4px; font-style:italic;">Réponses : rôle · niveau CECR · objectif · scénario · format · contraintes</div>
+      </div>
+      <div>
+        <div style="font-weight:700; color:var(--green-deep); font-size:0.85em; margin-bottom:6px;">Question 2 — Vote à main levée</div>
+        <div style="font-size:0.88em; color:#444; line-height:1.5;">Sur une échelle de 1 à 5, je me sens capable de générer un cours FIDE avec le générateur.</div>
+        <div style="display:flex; gap:8px; margin-top:8px; flex-wrap:wrap;">
+          <div class="vote-card top-card" onclick="voteAcquis(this)" style="min-width:36px; text-align:center;">1</div>
+          <div class="vote-card top-card" onclick="voteAcquis(this)" style="min-width:36px; text-align:center;">2</div>
+          <div class="vote-card top-card" onclick="voteAcquis(this)" style="min-width:36px; text-align:center;">3</div>
+          <div class="vote-card top-card" onclick="voteAcquis(this)" style="min-width:36px; text-align:center;">4</div>
+          <div class="vote-card top-card" onclick="voteAcquis(this)" style="min-width:36px; text-align:center;">5</div>
+        </div>
+      </div>
+    </div>
+
     <!-- Note globale + critères -->
     <div class="top-row" id="top-row">
       <span class="top-label">Note globale</span>
@@ -180,7 +200,7 @@
     </div>
 
     <footer>
-      <div class="notes">👍&thinsp; Merci pour votre participation. Vos retours nous permettent d'améliorer chaque session.</div>
+      <div class="notes">👍&thinsp; 2 questions d'acquis d'abord, puis les cartes. Vos retours nous permettent d'améliorer chaque session.</div>
       <nav>
         <button class="btn secondary" type="button" data-fullscreen-toggle>Plein écran</button>
         <a class="btn secondary" href="etape-7-resume.html">← Précédent</a>
@@ -249,6 +269,15 @@
     }
 
     restoreEval();
+
+    function voteAcquis(card) {
+      var parent = card.parentElement;
+      parent.querySelectorAll('.vote-card').forEach(function(c) {
+        c.classList.remove('voted-1','voted-2','voted-3','voted-4','voted-5plus');
+        var b = c.querySelector('.badge'); if (b) b.remove();
+      });
+      card.classList.add('voted-1');
+    }
   </script>
 </body>
 </html>

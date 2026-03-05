@@ -195,13 +195,17 @@ FORMAT ATTENDU :
           </ul>
         </section>
         <section class="box error">
-          <h4>Points à ajuster</h4>
+          <h4>Points à ajuster avant d'utiliser</h4>
           <ul>
             <li>Ville/canton et réalité locale</li>
             <li>Niveau réel du groupe</li>
             <li>Temps et matériel disponibles</li>
           </ul>
         </section>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <button id="copy-btn" class="btn" type="button" style="width:100%;">Copier le prompt</button>
+          <div id="copy-status" style="font-size:0.82em; color:var(--green-mid); text-align:center; min-height:1.2em;"></div>
+        </div>
       </aside>
     </div>
 
@@ -227,6 +231,23 @@ FORMAT ATTENDU :
         : Math.max(fontSize - 0.06, 0.4);
       pre.style.fontSize = fontSize + 'em';
     }, { passive: false });
+
+    var copyBtn = document.getElementById('copy-btn');
+    var copyStatus = document.getElementById('copy-status');
+    if (copyBtn && pre) {
+      copyBtn.addEventListener('click', function() {
+        navigator.clipboard.writeText(pre.textContent).then(function() {
+          copyStatus.textContent = 'Copié !';
+          copyBtn.textContent = 'Copié ✓';
+          setTimeout(function() {
+            copyStatus.textContent = '';
+            copyBtn.textContent = 'Copier le prompt';
+          }, 2000);
+        }).catch(function() {
+          copyStatus.textContent = 'Ctrl+A puis Ctrl+C pour copier manuellement.';
+        });
+      });
+    }
   </script>
 </body>
 </html>

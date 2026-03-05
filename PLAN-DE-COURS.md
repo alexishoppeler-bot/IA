@@ -18,11 +18,13 @@ Cette formation vise à outiller les formateurs·rices FIDE pour intégrer l'int
 
 À l'issue de la séance, les participant·e·s seront capables de :
 
-1. Comprendre ce qu'une IA fait — et ce qu'elle ne fait pas
-2. Construire un prompt structuré et efficace
-3. Générer un cours FIDE complet avec le générateur de prompt
-4. Analyser et adapter le résultat avec un regard critique
-5. Repartir avec des outils immédiatement utilisables
+| # | Objectif | Critère d'atteinte |
+|---|---|---|
+| 1 | Comprendre ce qu'une IA fait — et ce qu'elle ne fait pas | Peut citer 2 limites et 2 forces de l'IA |
+| 2 | Construire un prompt structuré et efficace | Produit un prompt de niveau 3 minimum |
+| 3 | Générer un cours FIDE complet avec le générateur | A testé le générateur et téléchargé un prompt |
+| 4 | Analyser et adapter le résultat avec un regard critique | Identifie 1 point fort et 1 adaptation nécessaire |
+| 5 | Repartir avec des outils immédiatement utilisables | Nomme 1 action concrète à faire dès le lendemain |
 
 ---
 
@@ -44,10 +46,10 @@ Cette formation vise à outiller les formateurs·rices FIDE pour intégrer l'int
 
 | Heure | # | Étape | Fichier |
 |---|---|---|---|
-| 10h30–11h30 | 6 | Activité pratique — Générer, tester, analyser | `etape-6-acces-outil-prompts.html` |
-| 11h30–11h40 | 7 | Retour sur les prompts | `retour-prompt.html` |
-| 11h40–11h50 | 8 | Résumé — Ce qu'il faut retenir | `etape-7-resume.html` |
-| 11h50–12h00 | 9 | Évaluation de la formation | `etape-8-evaluation.html` |
+| 10h30–11h25 | 6 | Activité pratique — Générer, tester, analyser | `etape-6-acces-outil-prompts.html` |
+| 11h25–11h40 | 7 | Synthèse collective — Retour sur les prompts | `retour-prompt.html` |
+| 11h40–11h50 | 8 | Résumé + engagement écrit | `etape-7-resume.html` |
+| 11h50–12h00 | 9 | Évaluation + vérification des acquis | `etape-8-evaluation.html` |
 
 ---
 
@@ -76,7 +78,9 @@ Vue horaire de la séance avant démarrage des étapes.
 ### Étape 1 — Vos usages actuels de l'IA *(10 min)*
 **Fichier :** `etape-1-usages-ia.html`
 
-**Format :** Activité collective — vote sur cartes interactives (3 colonnes).
+**Format :** Micro-défi en binôme (1 min) → puis vote collectif sur cartes interactives (3 colonnes).
+
+**Lancement (1 min) :** Dire : *"En 30 secondes, montrez à votre voisin·e un usage IA concret que vous avez déjà fait ou voulu faire — ou une crainte."* Puis inviter à voter.
 
 | Colonne | Contenu |
 |---|---|
@@ -84,20 +88,20 @@ Vue horaire de la séance avant démarrage des étapes.
 | Freins & craintes | Prompt difficile, résultat trop général, fiabilité, confidentialité… |
 | Attentes | Gagner du temps, personnaliser, mieux structurer, ancrage suisse… |
 
-**Note animateur :** Dire : L'objectif n'est pas de juger les usages, mais de comprendre d'où on part.
+**Note animateur :** Le micro-défi binôme crée un échange vécu immédiat avant le vote. Dire : *L'objectif n'est pas de juger les usages, mais de comprendre d'où on part.*
 
 ---
 
 ### Étape 2 — Comment fonctionne une IA ? *(15 min)*
 **Fichier :** `etape-2-fonctionnement-ia.html`
 
-**3 points clés à transmettre :**
+**3 points clés (10 min) :**
 
-1. **Elle prédit du texte** — entraînée sur des milliards de textes, elle prédit le mot le plus probable après chaque mot (autocomplétion sophistiquée).
+1. **Elle prédit du texte** — entraînée sur des milliards de textes, elle prédit le mot le plus probable (autocomplétion sophistiquée).
 2. **Elle calcule des probabilités** — elle n'« comprend » pas le sens ; elle identifie des régularités statistiques. Probable ≠ vrai.
 3. **Elle dépend de votre demande** — la qualité de la réponse dépend entièrement de la qualité de la demande.
 
-**Ce que l'IA fait / ne fait pas :**
+**Ce que l'IA fait / ne fait pas — tableau affiché à l'écran :**
 
 | ✅ OUI | ❌ NON |
 |---|---|
@@ -106,14 +110,15 @@ Vue horaire de la séance avant démarrage des étapes.
 | Adapte le niveau de langue | Connaît vos apprenants |
 | Propose des variantes rapidement | Garantit l'exactitude des faits |
 
-**Analogie à utiliser :** L'IA, c'est comme un assistant très rapide qui a lu des millions de documents — mais qui n'a jamais enseigné. Il peut rédiger, reformuler, structurer. C'est vous qui apportez le jugement pédagogique.
+**3 règles d'usage responsable (5 min — conclusion de l'étape) :**
 
-**À retenir :**
-- L'IA amplifie ce que vous lui donnez
-- Cadre flou → résultat flou
-- Cadre précis → résultat exploitable
+| Règle | Ce qu'il faut dire |
+|---|---|
+| Confidentialité | Ne jamais saisir de données personnelles d'apprenants dans une IA publique |
+| Biais | Vérifier les représentations culturelles et de genre dans les résultats |
+| Toujours relire | L'IA produit des erreurs avec assurance — valider avant toute utilisation en classe |
 
-**Note animateur :** Dire : L'IA n'a pas de bon sens pédagogique — elle a le vôtre, si vous lui donnez un cadre clair.
+**Note animateur :** Dire : *L'IA n'a pas de bon sens pédagogique — elle a le vôtre, si vous lui donnez un cadre clair. Et trois règles simples pour l'utiliser sans risque : pas de données personnelles, vérifier les biais, toujours relire.*
 
 ---
 
@@ -154,6 +159,8 @@ Vue horaire de la séance avant démarrage des étapes.
 
 ### Étape 4 — Comparaison des niveaux de prompt *(15 min)*
 **Fichier :** `etape-4-niveaux-prompt.html`
+
+**Exercice de classement (3 min avant la révélation) :** Distribuer ou afficher 4 prompts mélangés et demander aux participants de les classer de 0 à 5 par ordre croissant de qualité — puis révéler le classement. Active la compréhension par l'action.
 
 **Scénario fil rouge :** Je raconte mes compétences | Objectif : Je peux raconter mes compétences techniques | Champ d'action : Recherche d'emploi
 
@@ -215,6 +222,8 @@ Formulaire qui construit automatiquement un prompt expert complet à partir de v
 | 💾 Export | Téléchargement de tous les prompts en un fichier .txt |
 | 🔁 Mémoire | Paramètres sauvegardés dans le navigateur |
 
+**Démonstration live (5 min avant la pause) :** L'animateur remplit le générateur en direct (niveau, champ, scénario), génère un prompt et montre le résultat en temps réel. Objectif : que les participants arrivent à la pause avec une image concrète de l'outil avant de le manipuler eux-mêmes.
+
 **Note animateur :** Dire : L'outil ne remplace pas votre expertise — il la structure et l'amplifie.
 
 ---
@@ -223,10 +232,18 @@ Formulaire qui construit automatiquement un prompt expert complet à partir de v
 
 ---
 
-### Étape 6 — Activité pratique — Générer, tester, analyser *(60 min)*
+### Étape 6 — Activité pratique — Générer, tester, analyser *(55 min)*
 **Fichier :** `etape-6-acces-outil-prompts.html`
 
 **Consigne générale :** Ouvrir le générateur, remplir le formulaire avec un scénario personnel, télécharger les prompts, coller dans une IA, analyser le résultat.
+
+**Différenciation — 3 parcours selon le rythme :**
+
+| Parcours | Public | Contenu |
+|---|---|---|
+| Standard | Majorité | Temps 1 + 2 + 3 complets |
+| Rapides | Avancent vite | Tester 2 champs d'action FIDE différents, comparer les résultats |
+| Lents | Besoin de temps | Se concentrer sur Temps 1 + Temps 2 uniquement |
 
 **Activité en 3 temps :**
 
@@ -257,19 +274,18 @@ Formulaire qui construit automatiquement un prompt expert complet à partir de v
 
 > 💡 L'IA produit un premier jet — votre expertise reste indispensable pour valider et adapter.
 
-**Mise en commun collective (cartes de vote) :**
-- ✅ Points forts : contexte suisse, niveau respecté, structure claire, dialogues utilisables…
-- 🔧 Points à corriger : contexte trop général, niveau inadapté, consignes trop complexes…
-- 💡 Solutions : ajuster les champs du générateur (lieu, niveau CECR, contraintes…)
+**Transition vers l'étape 7 :** Une fois le Temps 3 terminé individuellement, l'animateur ouvre `retour-prompt.html` pour la synthèse collective. Ne pas dupliquer la mise en commun ici — c'est le rôle de l'étape 7.
 
-**Note animateur :** Dire : L'IA produit un premier jet structuré — vous êtes le filtre pédagogique qui valide, adapte et décide.
+**Note animateur :** Dire : *Vous avez votre analyse. Maintenant on met en commun — passez sur l'écran suivant.*
 
 ---
 
-### Étape 7 — Retour sur les prompts *(10 min)*
+### Étape 7 — Synthèse collective — Retour sur les prompts *(15 min)*
 **Fichier :** `retour-prompt.html`
 
-**Format :** Vote collectif structuré en 3 colonnes.
+**Différence avec l'étape 6 :** L'étape 6 = analyse individuelle pendant l'activité. Cette étape 7 = synthèse collective animée. L'animateur consolide les patterns communs qui ressortent du groupe.
+
+**Format :** Vote collectif structuré en 3 colonnes — l'animateur commente les tendances en direct.
 
 | Colonne | Contenu |
 |---|---|
@@ -277,9 +293,9 @@ Formulaire qui construit automatiquement un prompt expert complet à partir de v
 | 🔧 Points à corriger | Niveau inadapté, consignes trop complexes, format trop long, ancrage culturel insuffisant… |
 | 💡 Solutions proposées | Ajustements ciblés dans le générateur (niveau CECR, durée, contraintes, lieu, format) |
 
-**But pédagogique :** Transformer les retours en actions concrètes sur les paramètres du prompt.
+**But pédagogique :** Identifier les patterns collectifs (ce qui revient chez plusieurs participants) et transformer les retours en actions concrètes sur les paramètres du prompt.
 
-**Note animateur :** Dire : On garde ce qui marche, on ajuste le reste — l'IA fournit un premier jet, vous décidez de la version finale.
+**Note animateur :** Dire : *On garde ce qui marche, on ajuste le reste — regardez ce qui revient chez plusieurs d'entre vous : c'est ça qu'on améliore ensemble.*
 
 ---
 
@@ -303,6 +319,10 @@ Formulaire qui construit automatiquement un prompt expert complet à partir de v
 - 🧠 La méthode des 5 niveaux de prompt
 - 🎯 Un regard critique sur les résultats de l'IA
 
+**Engagement écrit individuel (2 min) :** Chaque participant note sur une fiche (papier ou numérique) **une action concrète** qu'il s'engage à faire dans la semaine. Augmente le passage à l'acte.
+
+> Formulation suggérée : *"Dès [date], je vais…"*
+
 **Dès demain :**
 1. Ouvrir le générateur avant le prochain cours
 2. Ajuster les paramètres au groupe réel (niveau, scénario, canton)
@@ -310,16 +330,20 @@ Formulaire qui construit automatiquement un prompt expert complet à partir de v
 4. Lire le résultat avec son regard de formateur·rice
 5. Adapter ce qui ne colle pas — utiliser le reste tel quel
 
-**Note animateur :** Dire : Vous avez généré, testé, analysé. Vous savez maintenant ce que l'outil fait — et ce qu'il ne fera jamais à votre place.
+**Note animateur :** Dire : *Vous avez généré, testé, analysé. Prenez 2 minutes pour noter une chose concrète que vous ferez cette semaine — c'est ce qui fait la différence entre une formation qu'on oublie et une qui change une pratique.*
 
 ---
 
 ### Étape 9 — Évaluation de la formation *(10 min)*
 **Fichier :** `etape-8-evaluation.html`
 
-**Format :** Vote collectif sur cartes interactives (3 colonnes + note globale).
+**Format :** Vote collectif sur cartes interactives (3 colonnes + note globale) + 2 questions de vérification des acquis.
 
 **Note globale :** 1 à 5 · Critères : Clarté · Rythme · Générateur · Autonomie · Exemples
+
+**Vérification des acquis (2 questions orales en début d'étape) :**
+- "Citez un élément essentiel d'un bon prompt FIDE." *(réponse attendue : rôle, niveau, objectif, scénario, format, contraintes)*
+- "Sur une échelle de 1 à 5, je me sens capable de générer un cours FIDE avec le générateur." *(vote rapide à main levée)*
 
 | Colonne | Cartes proposées |
 |---|---|
@@ -327,7 +351,7 @@ Formulaire qui construit automatiquement un prompt expert complet à partir de v
 | Ce qui mériterait plus de temps | Plus de temps pour tester, d'autres champs FIDE, la différenciation, la confidentialité… |
 | Je vais essayer dès demain | Ouvrir le générateur, tester un autre champ, partager avec un collègue… |
 
-**Note animateur :** Dire : Merci pour votre participation. Vos retours nous permettent d'améliorer chaque session.
+**Note animateur :** Dire : *Merci pour votre participation. Ces deux questions d'abord — puis les cartes. Vos retours nous permettent d'améliorer chaque session.*
 
 ---
 
