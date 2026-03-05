@@ -182,6 +182,7 @@
       <div class="notes">👍&thinsp; Synthèse collective — ce qui revient chez plusieurs = ce qu'on améliore ensemble. L'étape 6 était votre analyse individuelle ; ici on consolide les patterns du groupe.</div>
       <nav>
         <button class="btn secondary" type="button" data-fullscreen-toggle>Plein écran</button>
+        <button class="btn secondary" type="button" onclick="resetAllWithAdminCode()">Reset admin</button>
         <a class="btn secondary" href="etape-6-acces-outil-prompts.html">← Précédent</a>
         <a class="btn secondary" href="index.html">Index</a>
         <a class="btn" href="etape-7-resume.html">Suivant →</a>
@@ -245,6 +246,7 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
     const auth = getAuth(app);
+    const ADMIN_RESET_CODE = '1984';
     const statusEl = document.getElementById('firebase-status');
     const selectEl = document.getElementById('solutions-select');
     const outputEl = document.getElementById('solutions-output');
@@ -366,9 +368,26 @@
       }
     }
 
+    async function resetAllWithAdminCode() {
+      const code = window.prompt('Code admin requis pour réinitialiser tous les votes :');
+      if (code === null) return;
+      if (code !== ADMIN_RESET_CODE) {
+        window.alert('Code admin incorrect.');
+        return;
+      }
+      try {
+        await remove(votesRootRef);
+        window.alert('Votes réinitialisés.');
+      } catch (error) {
+        const details = error && (error.code || error.message) ? ' (' + (error.code || error.message) + ')' : '';
+        window.alert('Réinitialisation refusée par Firebase' + details);
+      }
+    }
+
     selectEl.addEventListener('change', renderSelectedSolutions);
     window.vote = vote;
     window.resetCards = resetCards;
+    window.resetAllWithAdminCode = resetAllWithAdminCode;
 
     onAuthStateChanged(auth, function(user) {
       currentUid = user ? user.uid : null;
