@@ -196,7 +196,7 @@
 
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js';
-    import { getDatabase, ref, onValue, runTransaction, update, remove } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js';
+    import { getDatabase, ref, onValue, push, remove } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js';
     import { getAuth, signInAnonymously, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js';
 
     const ADMIN_RESET_CODE = 'FIDE2026';
@@ -242,7 +242,15 @@
     function renderVotes(votes) {
       allCards.forEach(function(card) {
         const id = card.dataset.cardId;
-        const n = (votes && Number(votes[id])) ? Number(votes[id]) : 0;
+        let n = 0;
+        if (votes && votes[id]) {
+          const node = votes[id];
+          if (typeof node === 'number') {
+            n = node;
+          } else if (node && typeof node === 'object') {
+            n = Object.keys(node).length;
+          }
+        }
         card.dataset.votes = String(n);
         applyClass(card, n);
         let badge = card.querySelector('.badge');
@@ -267,8 +275,10 @@
       const cardId = card.dataset.cardId;
       const voteRef = ref(db, 'messages/etape8/votes/' + cardId);
       try {
-        await runTransaction(voteRef, function(current) {
-          return (Number(current) || 0) + 1;
+        await push(voteRef, {
+          uid: currentUid,
+          date: Date.now(),
+          texte: 'vote'
         });
       } catch (error) {
         const details = error && (error.code || error.message) ? ' (' + (error.code || error.message) + ')' : '';
@@ -281,12 +291,12 @@
         setStatus('Connexion Firebase en cours...', true);
         return;
       }
-      const payload = {};
+      const tasks = [];
       document.querySelectorAll('#' + id + ' .vote-card').forEach(function(card) {
-        payload[card.dataset.cardId] = 0;
+        tasks.push(remove(ref(db, 'messages/etape8/votes/' + card.dataset.cardId)));
       });
       try {
-        await update(votesRootRef, payload);
+        await Promise.all(tasks);
       } catch (error) {
         const details = error && (error.code || error.message) ? ' (' + (error.code || error.message) + ')' : '';
         setStatus('Reinitialisation impossible' + details, true);
