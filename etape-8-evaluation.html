@@ -249,7 +249,7 @@
     import { getDatabase, ref, onValue, push, remove } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js';
     import { getAuth, signInAnonymously, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js';
 
-    const ADMIN_RESET_CODE = 'FIDE2026';
+    const ADMIN_RESET_CODE = '1984';
     const firebaseConfig = {
       apiKey: 'AIzaSyDzCPe5-f343AXu5SFMlSxfyf5xT2T2K_0',
       authDomain: 'wex9-8f6d7.firebaseapp.com',
@@ -389,7 +389,7 @@
     async function resetAllWithAdminCode() {
       const code = window.prompt('Code admin requis pour réinitialiser tous les votes :');
       if (code === null) return;
-      if (code !== ADMIN_RESET_CODE) {
+      if (code.trim() !== ADMIN_RESET_CODE) {
         window.alert('Code admin incorrect.');
         return;
       }
